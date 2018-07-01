@@ -1,0 +1,470 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Afx.Tcp.Host</name>
+    </assembly>
+    <members>
+        <member name="T:Afx.Tcp.Host.AllowAnonymousAttribute">
+            <summary>
+            允许匿名访问
+            </summary>
+        </member>
+        <member name="T:Afx.Tcp.Host.Action`2">
+            <summary>
+            Action
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <param name="arg1"></param>
+            <param name="arg2"></param>
+        </member>
+        <member name="T:Afx.Tcp.Host.ActionResult">
+            <summary>
+            ActionResult
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.ActionResult.Result">
+            <summary>
+            Result
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.ActionResult.#ctor">
+            <summary>
+            ActionResult
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg``1(Afx.Tcp.Protocols.MsgStatus,``0,System.String)">
+            <summary>
+            Set send msg data
+            </summary>
+            <typeparam name="T">protobuf model</typeparam>
+            <param name="status"></param>
+            <param name="data"></param>
+            <param name="msg"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg(Afx.Tcp.Protocols.MsgStatus,System.String)">
+            <summary>
+            SetMsg
+            </summary>
+            <param name="status">MsgStatus</param>
+            <param name="msg"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg(Afx.Tcp.Protocols.MsgStatus)">
+            <summary>
+            SetMsg
+            </summary>
+            <param name="status">MsgStatus</param>
+        </member>
+        <member name="M:Afx.Tcp.Host.ActionResult.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.Tcp.Host.AuthorizationContext">
+            <summary>
+            权限上下文
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.AuthorizationContext.IsAuth">
+            <summary>
+            是否授权
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.AuthorizationContext.Cmd">
+            <summary>
+            当前执行的cmd
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.AuthorizationContext.Session">
+            <summary>
+            Session
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.AuthorizationContext.Result">
+            <summary>
+            IsAuth = false 时返回的 ActionResult.
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.AuthorizationContext.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.Tcp.Host.AuthorizeAttribute">
+            <summary>
+            授权控制Attribute
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.AuthorizeAttribute.OnAuthorization(Afx.Tcp.Host.AuthorizationContext)">
+            <summary>
+            请求权限
+            </summary>
+            <param name="authContext"></param>
+        </member>
+        <member name="T:Afx.Tcp.Host.Controller">
+            <summary>
+            cmd Controller
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.Controller.Session">
+            <summary>
+            Session
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Init(Afx.Tcp.Host.Session,Afx.Tcp.Protocols.MsgData)">
+            <summary>
+            初始化
+            </summary>
+            <param name="session">Session</param>
+            <param name="msg">介绍到的msg</param>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.GetData``1">
+            <summary>
+            获取接收到model
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Result``1(Afx.Tcp.Protocols.MsgStatus,``0,System.String)">
+            <summary>
+            Result
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="status"></param>
+            <param name="data"></param>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Success``1(``0,System.String)">
+            <summary>
+            Success
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="data"></param>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Success``1(``0)">
+            <summary>
+            Success
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Success">
+            <summary>
+            Success
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Error(System.String)">
+            <summary>
+            Error
+            </summary>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Error">
+            <summary>
+            Error
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.OnExecuting">
+            <summary>
+            OnExecuting
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.OnResult(Afx.Tcp.Host.ActionResult)">
+            <summary>
+            OnResult
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.OnException(Afx.Tcp.Host.ExceptionContext)">
+            <summary>
+            OnException
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="P:Afx.Tcp.Host.Controller.IsDisposed">
+            <summary>
+            IsDisposed
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.Tcp.Host.MvcHostServerError">
+            <summary>
+            host 发生错误回调
+            </summary>
+            <param name="server"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="T:Afx.Tcp.Host.ClientConnected">
+            <summary>
+            client 链接成功回调
+            </summary>
+            <param name="server"></param>
+            <param name="session"></param>
+        </member>
+        <member name="T:Afx.Tcp.Host.ClientClosed">
+            <summary>
+            client closed 回调
+            </summary>
+            <param name="server"></param>
+            <param name="session"></param>
+        </member>
+        <member name="T:Afx.Tcp.Host.CmdExecuting">
+            <summary>
+            cmd 执行前回调
+            </summary>
+            <param name="server"></param>
+            <param name="session"></param>
+            <param name="input"></param>
+        </member>
+        <member name="T:Afx.Tcp.Host.CmdExecuted">
+            <summary>
+            cmd 执行后回调
+            </summary>
+            <param name="server"></param>
+            <param name="session"></param>
+            <param name="input"></param>
+            <param name="output"></param>
+        </member>
+        <member name="T:Afx.Tcp.Host.ExceptionContext">
+            <summary>
+            异常上下文
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.ExceptionContext.Msg">
+            <summary>
+            接收到的消息
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.ExceptionContext.Result">
+            <summary>
+            IsHandle = true时返回的ActionResult
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.ExceptionContext.IsHandle">
+            <summary>
+            是否处理异常
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.ExceptionContext.Exception">
+            <summary>
+            异常信息
+            </summary>
+        </member>
+        <member name="T:Afx.Tcp.Host.IAuthorize">
+            <summary>
+            鉴权接口
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.IAuthorize.OnAuthorization(Afx.Tcp.Host.AuthorizationContext)">
+            <summary>
+            发生鉴权
+            </summary>
+            <param name="authContext"></param>
+        </member>
+        <member name="T:Afx.Tcp.Host.Session">
+            <summary>
+            Session
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.Session.Sid">
+            <summary>
+            Sid
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.Session.Address">
+            <summary>
+            client Address
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.Session.IsConnected">
+            <summary>
+            IsConnected
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.Session.LastReceiveTime">
+            <summary>
+            最后接收数据时间
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Host.Session.Item(System.String)">
+            <summary>
+            Session数据
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Session.Get(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Session.Set(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.Session.Clear">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.Session.Send(Afx.Tcp.Protocols.MsgData)">
+            <summary>
+            向client发送消息
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.Session.Close">
+            <summary>
+            关闭client
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.Session.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="T:Afx.Tcp.Host.TcpHost">
+            <summary>
+            tcp host
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.#ctor">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="F:Afx.Tcp.Host.TcpHost.Encrypt">
+            <summary>
+            加密回调
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.OnEncrypt(System.Byte[])">
+            <summary>
+            加密数据
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Afx.Tcp.Host.TcpHost.Decrypt">
+            <summary>
+            解密回调
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.OnDecrypt(System.Byte[])">
+            <summary>
+            解密数据
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.Start(System.Int32)">
+            <summary>
+            启动host 监听客户端连接
+            </summary>
+            <param name="port"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.Stop">
+            <summary>
+            停止监听客户端连接
+            </summary>
+        </member>
+        <member name="E:Afx.Tcp.Host.TcpHost.ClientConnectedEvent">
+            <summary>
+            客户端连接成功回调
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.OnClientConnected(Afx.Tcp.Host.Session)">
+            <summary>
+            客户端连接成功
+            </summary>
+            <param name="session"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.OnAccept(Afx.Sockets.TcpSocketAsync)">
+            <summary>
+            监听到客户端连接
+            </summary>
+            <param name="client"></param>
+        </member>
+        <member name="E:Afx.Tcp.Host.TcpHost.MvcHostServerErrorEvent">
+            <summary>
+            host 发生错误回调
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.OnMvcHostServerErrorEvent(System.Exception)">
+            <summary>
+            host 发生错误回调
+            </summary>
+            <param name="ex"></param>
+        </member>
+        <member name="E:Afx.Tcp.Host.TcpHost.ClientClosedEvent">
+            <summary>
+            client 关闭 回调
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.OnClientClosedEvent(Afx.Tcp.Host.Session)">
+            <summary>
+            client 关闭事件
+            </summary>
+            <param name="session"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.SendMsg(Afx.Tcp.Protocols.MsgData,Afx.Tcp.Host.Session)">
+            <summary>
+            向客户端发送消息
+            </summary>
+            <param name="msg"></param>
+            <param name="session"></param>
+        </member>
+        <member name="E:Afx.Tcp.Host.TcpHost.CmdExecutingEvent">
+            <summary>
+            执行cmd前回调
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.OnCmdExecutingEvent(Afx.Tcp.Host.Session,Afx.Tcp.Protocols.MsgData)">
+            <summary>
+            执行cmd前回调
+            </summary>
+            <param name="session"></param>
+            <param name="msg"></param>
+        </member>
+        <member name="E:Afx.Tcp.Host.TcpHost.CmdExecutedEvent">
+            <summary>
+            执行cmd后回调
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.OnCmdExecutedEvent(Afx.Tcp.Host.Session,Afx.Tcp.Protocols.MsgData,Afx.Tcp.Protocols.MsgData)">
+            <summary>
+            执行cmd后回调
+            </summary>
+            <param name="session"></param>
+            <param name="msg"></param>
+            <param name="result"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Host.TcpHost.LoadCmdMethod(System.String)">
+            <summary>
+            加载cmd 对于contoller
+            </summary>
+            <param name="configFile"></param>
+        </member>
+    </members>
+</doc>

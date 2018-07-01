@@ -1,0 +1,314 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Afx.ActiveDirectory</name>
+    </assembly>
+    <members>
+        <member name="T:Afx.ActiveDirectory.ADDomain">
+            <summary>
+            AD域操作类
+            </summary>
+        </member>
+        <member name="F:Afx.ActiveDirectory.ADDomain.ErrorCall">
+            <summary>
+            异常回调
+            </summary>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="domain">域名</param>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.#ctor(System.String,System.String,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="domain">域名</param>
+            <param name="account">域账号</param>
+            <param name="password">域密码</param>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Set(System.String,System.String)">
+            <summary>
+            设置账户密码
+            </summary>
+            <param name="account">域账号</param>
+            <param name="password">域密码</param>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Login">
+            <summary>
+            使用默认账号密码登录AD域
+            </summary>
+            <returns>true：登录成功，false：登录失败</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Login(System.Int32)">
+            <summary>
+            使用默认账号密码登录AD域
+            </summary>
+            <param name="millisecondsTimeout">超时时间（毫秒）</param>
+            <returns>true：登录成功，false：登录失败</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Login(System.String,System.String)">
+            <summary>
+            登录AD域
+            </summary>
+            <param name="account">域账号</param>
+            <param name="password">域密码</param>
+            <returns>true：登录成功，false：登录失败</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Login(System.String,System.String,System.Int32)">
+            <summary>
+            登录AD域
+            </summary>
+            <param name="account">域账号</param>
+            <param name="password">域密码</param>
+            <param name="millisecondsTimeout">超时时间（毫秒）</param>
+            <returns>true：登录成功，false：登录失败</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Exists(System.String)">
+            <summary>
+            是否存在域账号
+            </summary>
+            <param name="account">域账号</param>
+            <returns>true：存在，false：不存在</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Exists(System.String,System.Int32)">
+            <summary>
+            是否存在域账号
+            </summary>
+            <param name="account">域账号</param>
+            <param name="millisecondsTimeout">超时时间（毫秒）</param>
+            <returns>true：存在，false：不存在</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.GetUserFields">
+            <summary>
+            获取用户所有属性名称
+            </summary>
+            <returns>所有属性名称</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.GetUserFields(System.Int32)">
+            <summary>
+            获取用户所有属性名称
+            </summary>
+            <param name="millisecondsTimeout">超时时间（毫秒）</param>
+            <returns>所有属性名称</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.GetUserFields(System.Int32,System.Int32)">
+            <summary>
+            获取用户所有属性名称
+            </summary>
+            <param name="millisecondsTimeout">超时时间（毫秒）</param>
+            <param name="searchUserCount">需要搜索的用户数量</param>
+            <returns>所有属性名称</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.GetUserInfo(System.String)">
+            <summary>
+            获取指定域账号信息
+            </summary>
+            <param name="account">域账号</param>
+            <returns>域账号信息</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.GetUserInfo(System.String,System.Int32)">
+            <summary>
+            获取指定域账号信息
+            </summary>
+            <param name="account">域账号</param>
+            <param name="millisecondsTimeout">超时时间（毫秒）</param>
+            <returns>域账号信息</returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Search(System.String)">
+            <summary>
+            搜索AD域对象信息
+            </summary>
+            <param name="searchPath">搜索路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Search(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+            <summary>
+            搜索AD域对象信息
+            </summary>
+            <param name="searchPath">搜索路径</param>
+            <param name="noSchemaClassName">跳过的SchemaClassName</param>
+            <param name="noName">跳过的AD域对象名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Search(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+            <summary>
+            搜索AD域对象信息
+            </summary>
+            <param name="searchPath">搜索路径</param>
+            <param name="noSchemaClassName">跳过的SchemaClassName</param>
+            <param name="noName">跳过的AD域对象名称</param>
+            <param name="propertiesToLoad">指示搜索过程中要检索的属性列表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Search(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            搜索AD域对象信息
+            </summary>
+            <param name="searchPath">搜索路径</param>
+            <param name="noSchemaClassName">跳过的SchemaClassName</param>
+            <param name="noName">跳过的AD域对象名称</param>
+            <param name="propertiesToLoad">指示搜索过程中要检索的属性列表</param>
+            <param name="filter">指示轻量目录访问协议 (LDAP) 格式筛选器字符串的值。如“(objectClass=user)”。 默认值为“(objectClass=*)”，它检索所有对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Search(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String,System.Int32)">
+            <summary>
+            搜索AD域对象信息
+            </summary>
+            <param name="searchPath">搜索路径</param>
+            <param name="noSchemaClassName">跳过的SchemaClassName</param>
+            <param name="noName">跳过的AD域对象名称</param>
+            <param name="propertiesToLoad">指示搜索过程中要检索的属性列表</param>
+            <param name="filter">指示轻量目录访问协议 (LDAP) 格式筛选器字符串的值。如“(objectClass=user)”。 默认值为“(objectClass=*)”，它检索所有对象</param>
+            <param name="searchScope">0.将搜索限于基对象, 1.搜索基对象的直接子对象，但不搜索基对象, 2.搜索整个子树，包括基对象及其所有子对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADDomain.Search(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String,System.Int32,System.Int32)">
+            <summary>
+            搜索AD域对象信息
+            </summary>
+            <param name="searchPath">搜索路径</param>
+            <param name="noSchemaClassName">跳过的SchemaClassName</param>
+            <param name="noName">跳过的AD域对象名称</param>
+            <param name="propertiesToLoad">指示搜索过程中要检索的属性列表</param>
+            <param name="filter">指示轻量目录访问协议 (LDAP) 格式筛选器字符串的值。如“(objectClass=user)”。 默认值为“(objectClass=*)”，它检索所有对象</param>
+            <param name="searchScope">0.将搜索限于基对象, 1.搜索基对象的直接子对象，但不搜索基对象, 2.搜索整个子树，包括基对象及其所有子对象</param>
+            <param name="millisecondsTimeout">超时时间（毫秒）</param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.ActiveDirectory.ADPropertyModel">
+            <summary>
+            ADPropertyModel
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADPropertyModel.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADPropertyModel.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="T:Afx.ActiveDirectory.ADPropertyCollection">
+            <summary>
+            ADPropertyCollection
+            </summary>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.#ctor">
+            <summary>
+            ADPropertyCollection
+            </summary>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.#ctor(System.Int32)">
+            <summary>
+            ADPropertyCollection
+            </summary>
+            <param name="capacity"></param>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADPropertyCollection.Count">
+            <summary>
+            Count
+            </summary>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.TrimExcess">
+            <summary>
+            TrimExcess
+            </summary>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.Add(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.Get(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.Remove(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.Contains(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.Clear">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADPropertyCollection.Item(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADPropertyCollection.GetEnumerator">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.ActiveDirectory.ADInfoModel">
+            <summary>
+            AD域对象
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADInfoModel.Name">
+            <summary>
+            AD域对象的名称
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADInfoModel.Guid">
+            <summary>
+            AD域对象GUID
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADInfoModel.Path">
+            <summary>
+            AD域对象路径
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADInfoModel.SchemaClassName">
+            <summary>
+            AD域对象架构类的名称
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADInfoModel.Properties">
+            <summary>
+            AD域对象属性
+            </summary>
+        </member>
+        <member name="P:Afx.ActiveDirectory.ADInfoModel.Children">
+            <summary>
+            AD域对象 Children
+            </summary>
+        </member>
+        <member name="M:Afx.ActiveDirectory.ADInfoModel.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>jerrylai@aliyun.com</Authors>
+    <Version>6.1.0</Version>
+    <Company>mycsv.cn</Company>
+    <PackageTags>mycsv.cn</PackageTags>
+    <Product>Afx.Data.MSSQLServer.Entity for .NET Standard 2.0</Product>
+    <Description>Afx.Data.MSSQLServer.Entity for .NET Standard 2.0</Description>
+    <Copyright>Copyright © mycsv 2018</Copyright>
+    <PackageReleaseNotes>Afx.Data.MSSQLServer.Entity for .NET Standard 2.0</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Publish\Afx.Data.MSSQLServer.Entity\</OutputPath>
+    <DocumentationFile>..\..\Publish\Afx.Data.MSSQLServer.Entity\netstandard2.0\Afx.Data.MSSQLServer.Entity.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Data.MSSQLServer.Entity\Schema\MsSqlDatabaseSchema.cs" Link="Schema\MsSqlDatabaseSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data.MSSQLServer.Entity\Schema\MsSqlModelSchema.cs" Link="Schema\MsSqlModelSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data.MSSQLServer.Entity\Schema\MsSqlTableSchema.cs" Link="Schema\MsSqlTableSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data\MsSqlDatabase.cs" Link="MsSqlDatabase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Afx.Data.Entity\Afx.Data.Entity.csproj" />
+    <ProjectReference Include="..\Afx.Data\Afx.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Schema\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
+  </ItemGroup>
+
+</Project>

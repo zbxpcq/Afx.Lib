@@ -1,0 +1,557 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Afx.Sockets</name>
+    </assembly>
+    <members>
+        <member name="T:Afx.Sockets.BufferModel">
+            <summary>
+            BufferModel
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.BufferModel.Size">
+            <summary>
+            缓存大小
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.BufferModel.Position">
+            <summary>
+            成功读取位置
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.BufferModel.Data">
+            <summary>
+            缓存
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.BufferModel.#ctor(System.Int32)">
+            <summary>
+            初始化
+            </summary>
+            <param name="size">缓存大小</param>
+        </member>
+        <member name="M:Afx.Sockets.BufferModel.Clear">
+            <summary>
+            清除读取数据
+            </summary>
+        </member>
+        <member name="T:Afx.Sockets.TcpAsyncConnectEvent">
+            <summary>
+            tcp socket 连接成功回调
+            </summary>
+            <param name="client">TcpSocket</param>
+            <param name="isSuccess">isSuccess</param>
+        </member>
+        <member name="T:Afx.Sockets.TcpReceiveEvent">
+            <summary>
+            tcp socket 接收数据回调
+            </summary>
+            <param name="client">TcpSocket</param>
+            <param name="data">接收数据</param>
+            <param name="length">接收数据长度</param>
+        </member>
+        <member name="T:Afx.Sockets.TcpErrorEvent">
+            <summary>
+            tcp socket 异常回调
+            </summary>
+            <param name="client">TcpSocket</param>
+            <param name="ex">Exception</param>
+        </member>
+        <member name="T:Afx.Sockets.TcpReadingEvent">
+            <summary>
+            tcp soket 正在接收数据回调
+            </summary>
+            <param name="client">TcpSocketAsync</param>
+            <param name="position">已读取数据position</param>
+            <param name="length">数据总长度</param>
+        </member>
+        <member name="T:Afx.Sockets.TcpAcceptEvent">
+            <summary>
+            tcp server  监听客户端连接回调
+            </summary>
+            <param name="client">TcpSocket</param>
+        </member>
+        <member name="T:Afx.Sockets.TcpServerErrorEvent">
+            <summary>
+            tcp server 异常回调
+            </summary>
+            <param name="server">TcpServer</param>
+            <param name="ex">Exception</param>
+        </member>
+        <member name="T:Afx.Sockets.UdpReceiveEvent">
+            <summary>
+            udp socket 接收数据回调
+            </summary>
+            <param name="remoteEP">发送端终结点</param>
+            <param name="data">接收的数据</param>
+            <param name="length">接收数据长度</param>
+        </member>
+        <member name="T:Afx.Sockets.UdpServerErrorEvent">
+            <summary>
+            udp socket 异常回调
+            </summary>
+            <param name="remoteEP">发送端终结点</param>
+            <param name="ex">异常</param>
+        </member>
+        <member name="T:Afx.Sockets.SocketHelper">
+            <summary>
+            SocketHelper
+            </summary>
+        </member>
+        <member name="F:Afx.Sockets.SocketHelper.PREFIX_LENGTH">
+            <summary>
+            数据包头长度
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.SocketHelper.ToPrefixLength(System.Byte[])">
+            <summary>
+            数据长度byte[] 转换int
+            </summary>
+            <param name="prefixBytes">数据长度byte[]</param>
+            <returns>数据长度</returns>
+        </member>
+        <member name="M:Afx.Sockets.SocketHelper.ToPrefixBytes(System.Int32)">
+            <summary>
+            int 转换 byte[]
+            </summary>
+            <param name="length"></param>
+            <returns>byte[]</returns>
+        </member>
+        <member name="M:Afx.Sockets.SocketHelper.GetTcpKeepAlive(System.Int32,System.Int32)">
+            <summary>
+            获取TcpKeepAlive byte[]
+            </summary>
+            <param name="keepAliveTime">keepAliveTime</param>
+            <param name="keepAliveInterval">keepAliveInterval</param>
+            <returns>byte[]</returns>
+        </member>
+        <member name="M:Afx.Sockets.SocketHelper.ToSendData(System.Byte[])">
+            <summary>
+            获取发送数据的长度byte[] 与数据组成的新byte[]
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Sockets.TcpSendData">
+            <summary>
+            tcp 发送数据对象
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSendData.Buffer">
+            <summary>
+            发送数据
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSendData.BufferIndex">
+            <summary>
+            发送数据起始位置
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpSendData.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="T:Afx.Sockets.TcpServer">
+            <summary>
+            tcp server
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.TcpServer.AcceptEvent">
+            <summary>
+            监听客户端回调
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.TcpServer.ServerErrorEvent">
+            <summary>
+            异常回调
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.TcpServer.ClientReceiveEvent">
+            <summary>
+            客户端接收数据回调
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.TcpServer.ClientErrorEvent">
+            <summary>
+            客户端异常回调
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.TcpServer.ClientReadingEvent">
+            <summary>
+            客户端正在接收数据回调
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpServer.IsAccept">
+            <summary>
+            是否在监听
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpServer.IsDisposed">
+            <summary>
+            是否释放
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpServer.Handle">
+            <summary>
+            监听 socket Handle，未调用Start之前值为IntPtr.Zero
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpServer.Socket">
+            <summary>
+            监听 socket，未调用Start之前值为null
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpServer.SendBufferSize">
+            <summary>
+            发送Buffer缓存大小
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpServer.ReceiveBufferSize">
+            <summary>
+            接收数据Buffer缓存大小
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpServer.#ctor(System.Int32,System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sendBufferSize">16 &lt;=  sendBufferSize &lt;= 8 * 1024</param>
+            <param name="receiveBufferSize">16 &lt;=  receiveBufferSize &lt;= 8 * 1024</param>
+        </member>
+        <member name="M:Afx.Sockets.TcpServer.Start(System.Int32)">
+            <summary>
+            启动监听，端口占用异常
+            </summary>
+            <param name="port">本地端口号</param>
+        </member>
+        <member name="M:Afx.Sockets.TcpServer.Start(System.Net.IPAddress,System.Int32)">
+            <summary>
+            启动监听，端口占用异常
+            </summary>
+            <param name="ipAddress">监听ip</param>
+            <param name="port">本地端口号</param>
+        </member>
+        <member name="M:Afx.Sockets.TcpServer.Close">
+            <summary>
+            关闭服务端监听
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpServer.Dispose">
+            <summary>
+            释放所有资源
+            </summary>
+        </member>
+        <member name="T:Afx.Sockets.TcpSocket">
+            <summary>
+            TcpSocket
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.UserState">
+            <summary>
+            用户定义的对象
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.IsConnected">
+            <summary>
+            是否连接
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.Handle">
+            <summary>
+            socket Handle，未调用Connect之前值为IntPtr.Zero
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.LocalEndPoint">
+            <summary>
+            LocalEndPoint
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.RemoteEndPoint">
+            <summary>
+            RemoteEndPoint
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.SendTimeout">
+            <summary>
+            SendTimeout（毫秒）
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.ReceiveTimeout">
+            <summary>
+            ReceiveTimeout（毫秒）
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.Socket">
+            <summary>
+            Socket
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.IsDisposed">
+            <summary>
+            是否释放
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.SendBufferSize">
+            <summary>
+            SendBufferSize 
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocket.ReceiveBufferSize">
+            <summary>
+            ReceiveBufferSize
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocket.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            初始化
+            </summary>
+            <param name="sendBufferSize"></param>
+            <param name="receiveBufferSize"></param>
+            <param name="sendTimeout">（毫秒）</param>
+            <param name="receiveTimeout">（毫秒）</param>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocket.Connect(System.String,System.Int32,System.Int32)">
+            <summary>
+            连接服务端
+            </summary>
+            <param name="host">服务端ip或域名</param>
+            <param name="port">服务端端口</param>
+            <param name="millisecondsTimeout">（毫秒）</param>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocket.SetKeepAlive(System.Int32,System.Int32)">
+            <summary>
+            KeepAlive
+            </summary>
+            <param name="keepAliveTime">连接多长时间（毫秒）没有数据就开始发送心跳包，有数据传递的时候不发送心跳包</param>
+            <param name="keepAliveInterval">每隔多长时间（毫秒）发送一个心跳包，发5次（系统默认值）</param>
+            <returns>The number of bytes in the optionOutValue parameter.</returns>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocket.Send(System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocket.Receive">
+            <summary>
+            接收数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocket.Close">
+            <summary>
+            关闭连接
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocket.Dispose">
+            <summary>
+            释放所有资源
+            </summary>
+        </member>
+        <member name="T:Afx.Sockets.TcpSocketAsync">
+            <summary>
+            TcpClientAsync
+            </summary>
+        </member>
+        <member name="F:Afx.Sockets.TcpSocketAsync.SEND_QUEUE_SIZE">
+            <summary>
+            发送队列大小
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocketAsync.SetKeepAlive(System.Int32,System.Int32)">
+            <summary>
+            KeepAlive
+            </summary>
+            <param name="keepAliveTime">连接多长时间（毫秒）没有数据就开始发送心跳包，有数据传递的时候不发送心跳包</param>
+            <param name="keepAliveInterval">每隔多长时间（毫秒）发送一个心跳包，发5次（系统默认值）</param>
+            <returns></returns>
+        </member>
+        <member name="E:Afx.Sockets.TcpSocketAsync.AsyncConnectEvent">
+            <summary>
+            连接成功回调
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.TcpSocketAsync.ReceiveEvent">
+            <summary>
+            接收数据回调
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.TcpSocketAsync.ErrorEvent">
+            <summary>
+            异常回调
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.TcpSocketAsync.ReadingEvent">
+            <summary>
+            正在接收数据回调
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.UserState">
+            <summary>
+            用户定义的对象
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.IsConnected">
+            <summary>
+            是否连接
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.Handle">
+            <summary>
+            socket Handle，未调用Connect之前值为IntPtr.Zero
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.LocalEndPoint">
+            <summary>
+            LocalEndPoint
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.RemoteEndPoint">
+            <summary>
+            RemoteEndPoint
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.SendBufferSize">
+            <summary>
+            SendBufferSize
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.ReceiveBufferSize">
+            <summary>
+            ReceiveBufferSize
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.Client">
+            <summary>
+            Socket
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.TcpSocketAsync.IsDisposed">
+            <summary>
+            是否释放
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocketAsync.#ctor(System.Int32,System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocketAsync.AsyncConnect(System.String,System.Int32)">
+            <summary>
+            连接服务端
+            </summary>
+            <param name="host">服务端ip或域名</param>
+            <param name="port">服务端端口</param>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocketAsync.Connect(System.String,System.Int32,System.Int32)">
+            <summary>
+            连接服务端
+            </summary>
+            <param name="host">服务端ip或域名</param>
+            <param name="port">服务端端口</param>
+            <param name="millisecondsTimeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocketAsync.Send(System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocketAsync.Close">
+            <summary>
+            关闭连接
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.TcpSocketAsync.Dispose">
+            <summary>
+            释放所有资源
+            </summary>
+        </member>
+        <member name="T:Afx.Sockets.UdpSendData">
+            <summary>
+            udp 发送数据对象
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.UdpSendData.RemoteEP">
+            <summary>
+            接收端终结点
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.UdpSendData.Buffer">
+            <summary>
+            发送数据
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.UdpSendData.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="T:Afx.Sockets.UdpServer">
+            <summary>
+            UdpSocketServer
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.UdpServer.ReceiveEvent">
+            <summary>
+            接收数据回调
+            </summary>
+        </member>
+        <member name="E:Afx.Sockets.UdpServer.ServerErrorEvent">
+            <summary>
+            异常回调
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.UdpServer.IsAccept">
+            <summary>
+            是否监听
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.UdpServer.IsDisposed">
+            <summary>
+            是否释放
+            </summary>
+        </member>
+        <member name="P:Afx.Sockets.UdpServer.Socket">
+            <summary>
+            Socket
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.UdpServer.#ctor(System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="receiveSize">接收数据最大长度</param>
+        </member>
+        <member name="M:Afx.Sockets.UdpServer.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.UdpServer.Start(System.Int32)">
+            <summary>
+            绑定本地端口，端口占用异常
+            </summary>
+            <param name="port">本地端口</param>
+        </member>
+        <member name="M:Afx.Sockets.UdpServer.Send(System.Net.EndPoint,System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="remoteEP">远程终结点</param>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:Afx.Sockets.UdpServer.Close">
+            <summary>
+            关闭监听
+            </summary>
+        </member>
+        <member name="M:Afx.Sockets.UdpServer.Dispose">
+            <summary>
+            释放所有资源
+            </summary>
+        </member>
+    </members>
+</doc>

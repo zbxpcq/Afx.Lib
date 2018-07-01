@@ -1,0 +1,2209 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Afx.Base</name>
+    </assembly>
+    <members>
+        <member name="T:Afx.Utils.DiskFreeSpaceModel">
+            <summary>
+            磁盘信息
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.DiskFreeSpaceModel.Name">
+            <summary>
+            盘符
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.DiskFreeSpaceModel.AvailableFreeSpace">
+            <summary>
+            可用大小
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.DiskFreeSpaceModel.TotalFreeSpace">
+            <summary>
+            未使用大小
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.DiskFreeSpaceModel.TotalSize">
+            <summary>
+            总大小
+            </summary>
+        </member>
+        <member name="T:Afx.Utils.MemoryStatusModel">
+            <summary>
+            内存信息
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.MemoryStatusModel.MemoryLoad">
+            <summary>
+            已用内存的百分比
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.MemoryStatusModel.TotalPhys">
+            <summary>
+            物理内存总量
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.MemoryStatusModel.AvailPhys">
+            <summary>
+            可用物理内存
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.MemoryStatusModel.TotalPageFile">
+            <summary>
+            交换文件总的大小
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.MemoryStatusModel.AvailPageFile">
+            <summary>
+            交换文件中空闲部分大小
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.MemoryStatusModel.TotalVirtual">
+            <summary>
+            用户可用的地址空间
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.MemoryStatusModel.AvailVirtual">
+            <summary>
+            当前空闲的地址空间
+            </summary>
+        </member>
+        <member name="T:Afx.Utils.OSVersionInfoModel">
+            <summary>
+            系统详细信息
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.MajorVersion">
+            <summary>
+            系统主版本号
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.MinorVersion">
+            <summary>
+            系统次版本号
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.BuildNumber">
+            <summary>
+            系统构建号
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.PlatformId">
+            <summary>
+            系统支持的平台
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.CSDVersion">
+            <summary>
+            系统补丁包的名称
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.ServicePackMajor">
+            <summary>
+            系统补丁包的主版本
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.ServicePackMinor">
+            <summary>
+            系统补丁包的次版本
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.SuiteMask">
+            <summary>
+            标识系统上的程序组
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.ProductType">
+            <summary>
+            标识系统类型
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.Reserved">
+            <summary>
+            保留,未使用
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.OSVersionInfoModel.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="T:Afx.Utils.VolumeInfoModel">
+            <summary>
+            磁盘序列号model
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.VolumeInfoModel.SerialNumber">
+            <summary>
+            序列号
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.VolumeInfoModel.FileSystemFlags">
+            <summary>
+            FileSystemFlags
+            </summary>
+        </member>
+        <member name="P:Afx.Utils.VolumeInfoModel.FileSystemName">
+            <summary>
+            FileSystemName
+            </summary>
+        </member>
+        <member name="T:Afx.Utils.PathUtils">
+            <summary>
+            PathUtils
+            </summary>
+        </member>
+        <member name="M:Afx.Utils.PathUtils.GetFileFullPath(System.String)">
+            <summary>
+            获取文件全路径
+            </summary>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.PathUtils.GetDirectoryFullPath(System.String)">
+            <summary>
+            获取目录全路径
+            </summary>
+            <param name="directory"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.PathUtils.GetPath(System.String)">
+            <summary>
+            GetPath
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Utils.DesUtils">
+            <summary>
+            DES 加密、解密
+            </summary>
+        </member>
+        <member name="F:Afx.Utils.DesUtils.DefaultKey">
+            <summary>
+            加密、解密默认 key
+            </summary>
+        </member>
+        <member name="F:Afx.Utils.DesUtils.DefaultMode">
+            <summary>
+            加密、解密默认 CipherMode
+            </summary>
+        </member>
+        <member name="F:Afx.Utils.DesUtils.DefaultPadding">
+            <summary>
+            加密、解密默认CipherMode
+            </summary>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.CreateKey">
+            <summary>
+            生成 8 个ASCII字符的 des key
+            </summary>
+            <returns>8 个ASCII字符</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Encrypt(System.Byte[])">
+            <summary>
+            加密 byte[]
+            </summary>
+            <param name="input">byte[]</param>
+            <returns>加密成功返回byte[], 加密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Encrypt(System.Byte[],System.String)">
+            <summary>
+            加密 byte[]
+            </summary>
+            <param name="input">byte[]</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <returns>加密成功返回byte[], 加密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Encrypt(System.Byte[],System.String,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            加密 byte[]
+            </summary>
+            <param name="input">byte[]</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <param name="mode">指定用于加密的块密码模式</param>
+            <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
+            <returns>加密成功返回byte[], 加密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Decrypt(System.Byte[])">
+            <summary>
+            解密 byte[]
+            </summary>
+            <param name="input">byte[]</param>
+            <returns>解密成功返回byte[], 解密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Decrypt(System.Byte[],System.String)">
+            <summary>
+            解密 byte[]
+            </summary>
+            <param name="input">byte[]</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <returns>解密成功返回byte[], 解密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Decrypt(System.Byte[],System.String,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            解密 byte[]
+            </summary>
+            <param name="input">byte[]</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <param name="mode">指定用于解密的块密码模式</param>
+            <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
+            <returns>解密成功返回byte[], 解密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Encrypt(System.String)">
+            <summary>
+            加密 string
+            </summary>
+            <param name="input">string</param>
+            <returns>加密成功返回string, 加密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Encrypt(System.String,System.String)">
+            <summary>
+            加密 string
+            </summary>
+            <param name="input">string</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <returns>加密成功返回string, 加密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Encrypt(System.String,System.String,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            加密 string
+            </summary>
+            <param name="input">string</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <param name="mode">指定用于加密的块密码模式</param>
+            <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
+            <returns>加密成功返回string, 加密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Decrypt(System.String)">
+            <summary>
+            解密 string
+            </summary>
+            <param name="input">string</param>
+            <returns>解密成功返回string, 解密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Decrypt(System.String,System.String)">
+            <summary>
+            解密 string
+            </summary>
+            <param name="input">string</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <returns>解密成功返回string, 解密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.Decrypt(System.String,System.String,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            解密 string
+            </summary>
+            <param name="input">string</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <param name="mode">指定用于解密的块密码模式</param>
+            <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
+            <returns>解密成功返回string, 解密失败返回null</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.EncryptFile(System.String,System.String)">
+            <summary>
+            加密文件
+            </summary>
+            <param name="inputFile">要加密文件路径</param>
+            <param name="outputFile">加密成功文件存放路径</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.EncryptFile(System.String,System.String,System.String)">
+            <summary>
+            加密文件
+            </summary>
+            <param name="inputFile">要加密文件路径</param>
+            <param name="outputFile">加密成功文件存放路径</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.EncryptFile(System.String,System.String,System.String,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            加密文件
+            </summary>
+            <param name="inputFile">要加密文件路径</param>
+            <param name="outputFile">加密成功文件存放路径</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <param name="mode">指定用于加密的块密码模式</param>
+            <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.DecryptFile(System.String,System.String)">
+            <summary>
+            解密文件
+            </summary>
+            <param name="inputFile">要解密文件路径</param>
+            <param name="outputFile">解密成功文件存放路径</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.DecryptFile(System.String,System.String,System.String)">
+            <summary>
+            解密文件
+            </summary>
+            <param name="inputFile">要解密文件路径</param>
+            <param name="outputFile">解密成功文件存放路径</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Afx.Utils.DesUtils.DecryptFile(System.String,System.String,System.String,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            解密文件
+            </summary>
+            <param name="inputFile">要解密文件路径</param>
+            <param name="outputFile">解密成功文件存放路径</param>
+            <param name="key">8 个ASCII字符 key</param>
+            <param name="mode">指定用于解密的块密码模式</param>
+            <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="T:Afx.Utils.HMACSha256Utils">
+            <summary>
+            HMACSha256 哈希值
+            </summary>
+        </member>
+        <member name="M:Afx.Utils.HMACSha256Utils.GetHash(System.Byte[],System.Byte[])">
+            <summary>
+            HMACSha256 哈希值
+            </summary>
+            <param name="input"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.HMACSha256Utils.GetHash(System.String,System.String)">
+            <summary>
+            获取哈希值
+            </summary>
+            <param name="input"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Utils.Md5Utils">
+            <summary>
+            Md5 Utils
+            </summary>
+        </member>
+        <member name="M:Afx.Utils.Md5Utils.GetMd5Hash(System.String)">
+            <summary>
+            获取MD5值
+            </summary>
+        </member>
+        <member name="M:Afx.Utils.Md5Utils.SetFipsAlgorithmPolicy">
+            <summary>
+            设置安全策略
+            </summary>
+        </member>
+        <member name="T:Afx.Utils.StringUtils">
+            <summary>
+            字符串 Utils
+            </summary>
+        </member>
+        <member name="M:Afx.Utils.StringUtils.StringToBase64(System.String)">
+            <summary>
+            将字符串转换base64字符串
+            </summary>
+            <param name="input">字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.StringUtils.Base64ToString(System.String)">
+            <summary>
+            将base64字符串转换字符串
+            </summary>
+            <param name="input">base64字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.StringUtils.ByteToHexString(System.Byte[])">
+            <summary>
+            byte[] 转换成 十六进制 string
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.StringUtils.HexStringToByte(System.String)">
+            <summary>
+            十六进制 string 转换成 byte[]
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.StringUtils.GetRandomString(System.Int32)">
+            <summary>
+            获取随机字符串(a-z,A-Z,0-9)
+            </summary>
+            <param name="count">字符串个数</param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Utils.SystemUtils">
+            <summary>
+            读取硬件序列号
+            </summary>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetMemoryStatus">
+            <summary>
+            获取当前机器内存状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetVolumeInformation(System.String)">
+            <summary>
+            获取指定盘符序列号
+            </summary>
+            <param name="rootPathName">盘符,如：C:\</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetDiskFreeSpace(System.String)">
+            <summary>
+            获取指定盘符存储信息
+            </summary>
+            <param name="rootPathName">盘符,如：C:\</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetOSVersion">
+            <summary>
+            获取当前操作系统信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetIPAddress">
+            <summary>
+            获取本机所有ip
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetMac">
+            <summary>
+            获取本机所有Mac
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.SetAllowRemoteSession">
+            <summary>
+            设置本地asp_status服务允许外部访问
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.SetTcpMaxUserPort">
+            <summary>
+            设置本机tcp port可以使用到最大
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.Ping(System.String,System.Int32)">
+            <summary>
+            ping 指定 host 或 ip
+            </summary>
+            <param name="ipOrHost"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetValidIpAddress(System.String[],System.Int32)">
+            <summary>
+            ping ip[]
+            </summary>
+            <param name="ips"></param>
+            <param name="timeout"></param>
+            <returns>可以ping的ip</returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetLocalUsedIpAddress(System.String,System.Int32,System.Int32)">
+            <summary>
+            根据指定远程服务，获取本机使用的ip
+            </summary>
+            <param name="remoteIP"></param>
+            <param name="remotePort"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.SystemUtils.GetSerialNumber(System.String,System.Action{System.String})">
+            <summary>
+            获取机器序列号
+            </summary>
+            <param name="appId">序列号标识</param>
+            <param name="logcall">日志回调</param>
+            <returns>序列号</returns>
+        </member>
+        <member name="T:Afx.Aop.AopAttribute">
+            <summary>
+            公共方法aop Attribute
+            </summary>
+        </member>
+        <member name="M:Afx.Aop.AopAttribute.OnExecuting(Afx.Aop.AopContext)">
+            <summary>
+            方法执行前
+            </summary>
+            <param name="context">Aop上下文</param>
+        </member>
+        <member name="M:Afx.Aop.AopAttribute.OnResult(Afx.Aop.AopContext,System.Object)">
+            <summary>
+            方法执行后
+            </summary>
+            <param name="context">Aop上下文</param>
+            <param name="returnValue">返回对象</param>
+        </member>
+        <member name="M:Afx.Aop.AopAttribute.OnException(Afx.Aop.AopContext,System.Exception)">
+            <summary>
+            方法异常
+            </summary>
+            <param name="context">Aop上下文</param>
+            <param name="ex">异常信息</param>
+        </member>
+        <member name="T:Afx.Aop.AopContext">
+            <summary>
+            Aop上下文
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopContext.TagetType">
+            <summary>
+            TagetType
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopContext.Method">
+            <summary>
+            Method
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopContext.Taget">
+            <summary>
+            Taget
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopContext.Parameters">
+            <summary>
+            Parameters
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopContext.UserState">
+            <summary>
+            UserState
+            </summary>
+        </member>
+        <member name="T:Afx.Aop.AopInfoModel">
+            <summary>
+            AopInfoModel
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopInfoModel.ClassId">
+            <summary>
+            ClassId
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopInfoModel.GlobalList">
+            <summary>
+            GlobalList
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopInfoModel.TypeList">
+            <summary>
+            TypeList
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopInfoModel.TypeAttributes">
+            <summary>
+            TypeAttributes
+            </summary>
+        </member>
+        <member name="P:Afx.Aop.AopInfoModel.MethodAttributes">
+            <summary>
+            MethodAttributes
+            </summary>
+        </member>
+        <member name="T:Afx.Aop.AopProxy">
+            <summary>
+            aop代理工厂
+            </summary>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.GetProxyType(System.Type)">
+            <summary>
+            获取指定类型的代理类型
+            </summary>
+            <param name="tagetType">指定类型</param>
+            <returns>返回代理类型</returns>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.Get``1">
+            <summary>
+            获取代理对象
+            </summary>
+            <typeparam name="T">要代理的类型</typeparam>
+            <returns>返回代理对象</returns>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.Get``1(System.Object[])">
+            <summary>
+            获取代理对象
+            </summary>
+            <typeparam name="T">要代理的类型</typeparam>
+            <param name="args">要代理的类型构函数参数</param>
+            <returns>返回代理对象</returns>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.Get``1(System.Type)">
+            <summary>
+            获取代理对象
+            </summary>
+            <typeparam name="T">代理的类型</typeparam>
+            <param name="tagetType">要代理的类型</param>
+            <returns>返回代理对象</returns>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.Get``1(System.Type,System.Object[])">
+            <summary>
+            获取代理对象
+            </summary>
+            <typeparam name="T">代理的类型</typeparam>
+            <param name="tagetType">要代理的类型</param>
+            <param name="args">要代理的类型构函数参数</param>
+            <returns>返回代理对象</returns>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.AddOfGlobal(System.Collections.Generic.List{System.Type})">
+            <summary>
+            添加全局IAop实现类型
+            </summary>
+            <param name="aopTypeList">IAop实现类型 list</param>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.AddOfGlobal(System.Type)">
+            <summary>
+            添加全局IAop实现类型
+            </summary>
+            <param name="aopType">IAop实现类型</param>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.AddOfType(System.Type,System.Collections.Generic.List{System.Type})">
+            <summary>
+            添加指定类型的IAop实现类型
+            </summary>
+            <param name="tagetType">需要aop的类型</param>
+            <param name="aopTypeList">IAop实现类型 list</param>
+        </member>
+        <member name="M:Afx.Aop.AopProxy.AddOfType(System.Type,System.Type)">
+            <summary>
+            添加指定类型的IAop实现类型
+            </summary>
+            <param name="tagetType">需要aop的类型</param>
+            <param name="aopType">IAop实现类型</param>
+        </member>
+        <member name="T:Afx.Aop.AopUtils">
+            <summary>
+            AopUtils
+            </summary>
+        </member>
+        <member name="M:Afx.Aop.AopUtils.OnExecuting(Afx.Aop.AopInfoModel,Afx.Aop.AopContext)">
+            <summary>
+            OnExecuting
+            </summary>
+            <param name="filterInfo"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:Afx.Aop.AopUtils.OnResult(Afx.Aop.AopInfoModel,Afx.Aop.AopContext,System.Object)">
+            <summary>
+            OnResult
+            </summary>
+            <param name="filterInfo"></param>
+            <param name="context"></param>
+            <param name="returnValue"></param>
+        </member>
+        <member name="M:Afx.Aop.AopUtils.OnException(Afx.Aop.AopInfoModel,Afx.Aop.AopContext,System.Exception)">
+            <summary>
+            OnException
+            </summary>
+            <param name="filterInfo"></param>
+            <param name="context"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="M:Afx.Aop.AopUtils.GetParameterType(System.Reflection.MethodBase)">
+            <summary>
+            GetParameterType
+            </summary>
+            <param name="methodInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Aop.IAop">
+            <summary>
+            Aop 接口
+            </summary>
+        </member>
+        <member name="M:Afx.Aop.IAop.OnExecuting(Afx.Aop.AopContext)">
+            <summary>
+            方法执行前
+            </summary>
+            <param name="context">Aop上下文</param>
+        </member>
+        <member name="M:Afx.Aop.IAop.OnResult(Afx.Aop.AopContext,System.Object)">
+            <summary>
+            方法执行后
+            </summary>
+            <param name="context">Aop上下文</param>
+            <param name="returnValue">返回对象</param>
+        </member>
+        <member name="M:Afx.Aop.IAop.OnException(Afx.Aop.AopContext,System.Exception)">
+            <summary>
+            方法异常
+            </summary>
+            <param name="context">Aop上下文</param>
+            <param name="ex">异常信息</param>
+        </member>
+        <member name="T:Afx.Collections.SafeDictionary`2">
+            <summary>
+            多线程安全的 Dictionary
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.#ctor">
+            <summary>
+            SafeDictionary
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.#ctor(System.Int32)">
+            <summary>
+            SafeDictionary
+            </summary>
+            <param name="capacity"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            SafeDictionary
+            </summary>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            SafeDictionary
+            </summary>
+            <param name="capacity"></param>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.Add(`0,`1)">
+            <summary>
+            Add
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.ContainsKey(`0)">
+            <summary>
+            ContainsKey
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.Remove(`0)">
+            <summary>
+            Remove
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.GetValue(`0)">
+            <summary>
+            GetValue
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.TryGetValue(`0,`1@)">
+            <summary>
+            TryGetValue
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.SetValue(`0,`1)">
+            <summary>
+            SetValue
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="P:Afx.Collections.SafeDictionary`2.Item(`0)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.Clear">
+            <summary>
+            Clear
+            </summary>
+        </member>
+        <member name="P:Afx.Collections.SafeDictionary`2.Count">
+            <summary>
+            Count
+            </summary>
+        </member>
+        <member name="P:Afx.Collections.SafeDictionary`2.Keys">
+            <summary>
+            Keys
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.GetAll">
+            <summary>
+            GetAll
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Afx.Collections.SafeDictionary`2.IsDisposed">
+            <summary>
+            IsDisposed
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.GetEnumerator">
+            <summary>
+            GetEnumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            GetEnumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Collections.SafeList`1">
+            <summary>
+            多线程安全的list
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.#ctor">
+            <summary>
+            SafeList
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.#ctor(System.Int32)">
+            <summary>
+            SafeList
+            </summary>
+            <param name="capacity"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            SafeList
+            </summary>
+            <param name="collection"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32)">
+            <summary>
+            SafeList
+            </summary>
+            <param name="collection"></param>
+            <param name="capacity"></param>
+        </member>
+        <member name="P:Afx.Collections.SafeList`1.Count">
+            <summary>
+            实际包含的元素数。
+            </summary>
+        </member>
+        <member name="P:Afx.Collections.SafeList`1.Capacity">
+            <summary>
+            获取或设置该内部数据结构在不调整大小的情况下能够容纳的元素总数, 返回结果:在需要调整大小之前 System.Collections.Generic.List 能够容纳的元素的数目。 
+            </summary>
+        </member>
+        <member name="P:Afx.Collections.SafeList`1.Item(System.Int32)">
+            <summary>
+            获取或设置位于指定索引处的元素。
+            </summary>
+            <param name="index">要获得或设置的元素从零开始的索引。</param>
+            <returns>位于指定索引处的元素。</returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Add(`0)">
+            <summary>
+            将对象添加的结尾处
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            将对象集合添加的结尾处
+            </summary>
+            <param name="collection"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.BinarySearch(`0)">
+            <summary>
+            BinarySearch
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.BinarySearch(`0,System.Collections.Generic.IComparer{`0})">
+            <summary>
+            BinarySearch
+            </summary>
+            <param name="item"></param>
+            <param name="comparer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Clear">
+            <summary>
+            Clear
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Contains(`0)">
+            <summary>
+            Contains
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.CopyTo(`0[])">
+            <summary>
+            CopyTo
+            </summary>
+            <param name="array"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            CopyTo
+            </summary>
+            <param name="array"></param>
+            <param name="arrayIndex"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)">
+            <summary>
+            CopyTo
+            </summary>
+            <param name="index"></param>
+            <param name="array"></param>
+            <param name="arrayIndex"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Exists(System.Predicate{`0})">
+            <summary>
+            Exists
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Find(System.Predicate{`0})">
+            <summary>
+            Find
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.FindAll(System.Predicate{`0})">
+            <summary>
+            FindAll
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.FindIndex(System.Predicate{`0})">
+            <summary>
+            FindIndex
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.FindIndex(System.Int32,System.Predicate{`0})">
+            <summary>
+            FindIndex
+            </summary>
+            <param name="startIndex"></param>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.FindIndex(System.Int32,System.Int32,System.Predicate{`0})">
+            <summary>
+            FindIndex
+            </summary>
+            <param name="startIndex"></param>
+            <param name="count"></param>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.FindLast(System.Predicate{`0})">
+            <summary>
+            FindLast
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.FindLastIndex(System.Predicate{`0})">
+            <summary>
+            FindLastIndex
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.FindLastIndex(System.Int32,System.Predicate{`0})">
+            <summary>
+            FindLastIndex
+            </summary>
+            <param name="startIndex"></param>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.FindLastIndex(System.Int32,System.Int32,System.Predicate{`0})">
+            <summary>
+            FindLastIndex
+            </summary>
+            <param name="startIndex"></param>
+            <param name="count"></param>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.ForEach(System.Action{`0})">
+            <summary>
+            ForEach
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.GetRange(System.Int32,System.Int32)">
+            <summary>
+            GetRange
+            </summary>
+            <param name="index"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.IndexOf(`0)">
+            <summary>
+            IndexOf
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.IndexOf(`0,System.Int32)">
+            <summary>
+            IndexOf
+            </summary>
+            <param name="item"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.IndexOf(`0,System.Int32,System.Int32)">
+            <summary>
+            IndexOf
+            </summary>
+            <param name="item"></param>
+            <param name="index"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Insert(System.Int32,`0)">
+            <summary>
+            Insert
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            InsertRange
+            </summary>
+            <param name="index"></param>
+            <param name="collection"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.LastIndexOf(`0)">
+            <summary>
+            LastIndexOf
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.LastIndexOf(`0,System.Int32)">
+            <summary>
+            LastIndexOf
+            </summary>
+            <param name="item"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.LastIndexOf(`0,System.Int32,System.Int32)">
+            <summary>
+            LastIndexOf
+            </summary>
+            <param name="item"></param>
+            <param name="index"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Remove(`0)">
+            <summary>
+            Remove
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.RemoveAll(System.Predicate{`0})">
+            <summary>
+            RemoveAll
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.RemoveAt(System.Int32)">
+            <summary>
+            RemoveAt
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.RemoveRange(System.Int32,System.Int32)">
+            <summary>
+            RemoveRange
+            </summary>
+            <param name="index"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Reverse">
+            <summary>
+            Reverse
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Reverse(System.Int32,System.Int32)">
+            <summary>
+            Reverse
+            </summary>
+            <param name="index"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Sort">
+            <summary>
+            Sort
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Sort(System.Comparison{`0})">
+            <summary>
+            Sort
+            </summary>
+            <param name="comparison"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Sort(System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Sort
+            </summary>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Sort(System.Int32,System.Int32,System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Sort
+            </summary>
+            <param name="index"></param>
+            <param name="count"></param>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.ToArray">
+            <summary>
+            ToArray
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.TrimExcess">
+            <summary>
+            TrimExcess
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.TrueForAll(System.Predicate{`0})">
+            <summary>
+            TrueForAll
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.GetAll">
+            <summary>
+            GetAll
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Afx.Collections.SafeList`1.IsDisposed">
+            <summary>
+            IsDisposed
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.GetEnumerator">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Collections.SafeList`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Collections.SafeList`1.Enumerator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.Collections.SafeList`1.IsReadOnly">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Afx.Configuration.IniConfigChangedEvent">
+            <summary>
+            ini 文件被外部修改事件
+            </summary>
+            <param name="iniConfig"></param>
+        </member>
+        <member name="T:Afx.Configuration.IniConfig">
+            <summary>
+            ini 配置文件
+            </summary>
+        </member>
+        <member name="P:Afx.Configuration.IniConfig.FileName">
+            <summary>
+            FileName
+            </summary>
+        </member>
+        <member name="E:Afx.Configuration.IniConfig.ChangedEvent">
+            <summary>
+            ini 文件被外部修改事件
+            </summary>
+        </member>
+        <member name="M:Afx.Configuration.IniConfig.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="iniFile">配置文件路径</param>
+        </member>
+        <member name="M:Afx.Configuration.IniConfig.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="iniFile">配置文件路径</param>
+            <param name="enabledChangedEvent">是否监听外部修改</param>
+        </member>
+        <member name="M:Afx.Configuration.IniConfig.Set(System.String,System.String,System.String)">
+            <summary>
+            保存配置
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="key">key</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:Afx.Configuration.IniConfig.Get(System.String,System.String,System.String)">
+            <summary>
+            获取配置
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="key">key</param>
+            <param name="defaultValue">未找到返回的默认值</param>
+            <returns>返回</returns>
+        </member>
+        <member name="M:Afx.Configuration.IniConfig.RemoveNode(System.String)">
+            <summary>
+            移除节点
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Afx.Configuration.IniConfig.RemoveKey(System.String,System.String)">
+            <summary>
+            移除指定节点key
+            </summary>
+            <param name="node"></param>
+            <param name="key"></param>
+        </member>
+        <member name="M:Afx.Configuration.IniConfig.Dispose">
+            <summary>
+            释放配置文件对象
+            </summary>
+        </member>
+        <member name="T:Afx.Configuration.ChangedXmlConfigEvent">
+            <summary>
+            xml 文件被外部修改事件
+            </summary>
+            <param name="xmlConfig"></param>
+        </member>
+        <member name="T:Afx.Configuration.XmlConfig">
+            <summary>
+            XmlConfig
+            </summary>
+        </member>
+        <member name="P:Afx.Configuration.XmlConfig.FileName">
+            <summary>
+            FileName
+            </summary>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="xmlFile">配置文件路径</param>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="xmlFile">配置文件路径</param>
+            <param name="enabledChangedEvent">是否监听外部修改</param>
+        </member>
+        <member name="E:Afx.Configuration.XmlConfig.ChangedEvent">
+            <summary>
+            xml 文件被外部修改事件
+            </summary>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.Get(System.String,System.String,System.String)">
+            <summary>
+            获取配置
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="item">item</param>
+            <param name="defaultValue">未找到返回的默认值</param>
+            <returns>返回</returns>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.Set(System.String,System.String,System.String)">
+            <summary>
+            保存配置
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="item">item</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.GetNodeAttribute(System.String,System.String,System.String)">
+            <summary>
+            获取指定节点 attribute
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="attribute">attribute名称</param>
+            <param name="defaultValue">未找到返回的默认值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.SetNodeAttribute(System.String,System.String,System.String)">
+            <summary>
+            设置指定节点 attribute
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="attribute">attribute名称</param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.GetItemAttribute(System.String,System.String,System.String,System.String)">
+            <summary>
+            获取指定item attribute
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="item">item name</param>
+            <param name="attribute">attribute名称</param>
+            <param name="defaultValue">未找到返回的默认值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.SetItemAttribute(System.String,System.String,System.String,System.String)">
+            <summary>
+            设置指定item attribute
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="item">item name</param>
+            <param name="attribute">attribute名称</param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.RemoveNode(System.String)">
+            <summary>
+            移除节点
+            </summary>
+            <param name="node">节点名称</param>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.RemoveKey(System.String,System.String)">
+            <summary>
+            移除指定节点key
+            </summary>
+            <param name="node">节点名称</param>
+            <param name="name">name</param>
+        </member>
+        <member name="M:Afx.Configuration.XmlConfig.Dispose">
+            <summary>
+            释放配置文件对象
+            </summary>
+        </member>
+        <member name="T:Afx.Map.IToObject">
+            <summary>
+            map to model
+            </summary>
+        </member>
+        <member name="M:Afx.Map.IToObject.To(System.Object)">
+            <summary>
+            to model
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Map.MapFactory">
+            <summary>
+            model map  Factory
+            </summary>
+        </member>
+        <member name="M:Afx.Map.MapFactory.#ctor">
+            <summary>
+            ObjectFactory
+            </summary>
+        </member>
+        <member name="M:Afx.Map.MapFactory.To(System.Object,System.Type)">
+            <summary>
+            map to
+            </summary>
+            <param name="obj"></param>
+            <param name="resultType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Map.MapFactory.To``1(System.Object)">
+            <summary>
+            map to
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Map.ToObject">
+            <summary>
+            ToObject
+            </summary>
+        </member>
+        <member name="F:Afx.Map.ToObject.m_objType">
+            <summary>
+            m_objType
+            </summary>
+        </member>
+        <member name="M:Afx.Map.ToObject.#ctor(System.Type)">
+            <summary>
+            ToObject
+            </summary>
+            <param name="objType"></param>
+        </member>
+        <member name="M:Afx.Map.ToObject.IsTo(System.Object)">
+            <summary>
+            IsTo
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Map.ToObject.Clear">
+            <summary>
+            Clear
+            </summary>
+        </member>
+        <member name="M:Afx.Map.ToObject.To(System.Object)">
+            <summary>
+            To
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Map.TypeKey">
+            <summary>
+            TypeKey
+            </summary>
+        </member>
+        <member name="P:Afx.Map.TypeKey.FromType">
+            <summary>
+            FromType
+            </summary>
+        </member>
+        <member name="P:Afx.Map.TypeKey.ToType">
+            <summary>
+            ToType
+            </summary>
+        </member>
+        <member name="M:Afx.Map.TypeKey.Equals(System.Object)">
+            <summary>
+            Equals
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Map.TypeKey.GetHashCode">
+            <summary>
+            GetHashCode
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.dwLength">
+            <summary>
+            本结构的长度
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.dwMemoryLoad">
+            <summary>
+            已用内存的百分比
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.ullTotalPhys">
+            <summary>
+            物理内存总量
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.ullAvailPhys">
+            <summary>
+            可用物理内存
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.ullTotalPageFile">
+            <summary>
+            交换文件总的大小
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.ullAvailPageFile">
+            <summary>
+            交换文件中空闲部分大小
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.ullTotalVirtual">
+            <summary>
+            用户可用的地址空间
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.ullAvailVirtual">
+            <summary>
+            当前空闲的地址空间
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.MEMORYSTATUSEX.ullAvailExtendedVirtual">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.dwOSVersionInfoSize">
+            <summary>
+            在使用GetVersionEx之前要将此初始化为结构的大小
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.dwMajorVersion">
+            <summary>
+            系统主版本号
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.dwMinorVersion">
+            <summary>
+            系统次版本号
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.dwBuildNumber">
+            <summary>
+            系统构建号
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.dwPlatformId">
+            <summary>
+            系统支持的平台
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.szCSDVersion">
+            <summary>
+            系统补丁包的名称
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.wServicePackMajor">
+            <summary>
+            系统补丁包的主版本
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.wServicePackMinor">
+            <summary>
+            系统补丁包的次版本
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.wSuiteMask">
+            <summary>
+            标识系统上的程序组
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.wProductType">
+            <summary>
+            标识系统类型
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.OSVERSIONINFOEX.wReserved">
+            <summary>
+            保留,未使用
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.wProcessorArchitecture">
+            <summary>
+            处理器架构
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.wReserved">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.dwPageSize">
+            <summary>
+            页面大小
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.lpMinimumApplicationAddress">
+            <summary>
+            应用程序最小地址
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.lpMaximumApplicationAddress">
+            <summary>
+            应用程序最大地址
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.dwActiveProcessorMask">
+            <summary>
+            处理器掩码 
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.dwNumberOfProcessors">
+            <summary>
+            处理器数量
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.dwProcessorType">
+            <summary>
+            处理器类型 
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.dwAllocationGranularity">
+            <summary>
+            虚拟内存分配粒度 
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.wProcessorLevel">
+            <summary>
+            处理器级别 
+            </summary>
+        </member>
+        <member name="F:Afx.Internal.SYSTEM_INFO.wProcessorRevision">
+            <summary>
+            处理器版本
+            </summary>
+        </member>
+        <member name="T:Afx.Ioc.IocContainer">
+            <summary>
+            ioc工厂
+            </summary>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.#ctor">
+            <summary>
+            IocContainer
+            </summary>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.#ctor(System.Boolean)">
+            <summary>
+            IocContainer
+            </summary>
+            <param name="isEnabledAop">true:Enabled Aop, false: disabled Aop</param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="configFile">配置文件</param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="configFile">配置文件</param>
+            <param name="isEnabledAop">是否使用Aop</param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Load(System.String)">
+            <summary>
+            加载配置
+            </summary>
+            <param name="configFile"></param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Register(System.Type,System.Type)">
+            <summary>
+            注册 ioc
+            </summary>
+            <param name="interfaceType">接口type</param>
+            <param name="classType">实现类type</param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Register``2">
+            <summary>
+            注册ioc
+            </summary>
+            <typeparam name="TInterface">接口</typeparam>
+            <typeparam name="TClass">实现类</typeparam>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Register``1(System.String)">
+            <summary>
+            注册程序集所有接口实现
+            </summary>
+            <typeparam name="TBaseInterface">接口</typeparam>
+            <param name="assemblyName">程序集名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Register``1(System.Reflection.Assembly)">
+            <summary>
+            注册程序集所有接口实现
+            </summary>
+            <typeparam name="TBaseInterface">接口</typeparam>
+            <param name="assembly">程序集</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Register(System.Type,System.String)">
+            <summary>
+            注册程序集所有接口实现
+            </summary>
+            <param name="baseInterfaceType">接口 type</param>
+            <param name="assemblyName">程序集名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Register(System.Type,System.Reflection.Assembly)">
+            <summary>
+            注册程序集所有接口实现
+            </summary>
+            <param name="baseInterfaceType">接口 type</param>
+            <param name="assembly">程序集</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Get``1(System.String,System.Object[])">
+            <summary>
+            根据指定类型获取
+            </summary>
+            <typeparam name="TInterface">返回接口类型</typeparam>
+            <param name="name">类名，不传返回最后注册实现类</param>
+            <param name="args">构造函数参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Get``1(System.String)">
+            <summary>
+            根据指定类型获取
+            </summary>
+            <typeparam name="TInterface">返回接口类型</typeparam>
+            <param name="name">类名，不传返回最后注册实现类</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.Get``1">
+            <summary>
+            根据指定类型获取
+            </summary>
+            <typeparam name="TInterface">返回类型</typeparam>
+            <returns>返回最后注册实现类</returns>
+        </member>
+        <member name="P:Afx.Ioc.IocContainer.CurrentAopProxy">
+            <summary>
+            当前AOP代理工厂，未启用aop 返回null
+            </summary>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.AddGlobalAop(System.Collections.Generic.List{System.Type})">
+            <summary>
+            添加全局IAop实现类型
+            </summary>
+            <param name="aopTypeList">IAop实现类型 list</param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.AddGlobalAop``1">
+            <summary>
+            添加全局IAop实现类型
+            </summary>
+            <typeparam name="TAop"></typeparam>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.AddGlobalAop(System.Type)">
+            <summary>
+            添加全局IAop实现类型
+            </summary>
+            <param name="aopType">IAop实现类型</param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.AddClassAop``1(System.Collections.Generic.List{System.Type})">
+            <summary>
+            添加指定实现类的IAop
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="aopTypeList"></param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.AddClassAop(System.Type,System.Collections.Generic.List{System.Type})">
+            <summary>
+            添加指定类型的IAop实现类型
+            </summary>
+            <param name="classType">需要aop的类型</param>
+            <param name="aopTypeList">IAop实现类型 list</param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.AddClassAop``2">
+            <summary>
+            添加指定实现类的IAop
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <typeparam name="TAop"></typeparam>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.AddClassAop``1(System.Type)">
+            <summary>
+            添加指定实现类的IAop
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <param name="aopType"></param>
+        </member>
+        <member name="M:Afx.Ioc.IocContainer.AddClassAop(System.Type,System.Type)">
+            <summary>
+            添加指定类型的IAop实现类型
+            </summary>
+            <param name="classType">需要aop的类型</param>
+            <param name="aopType">IAop实现类型</param>
+        </member>
+        <member name="T:Afx.IO.FindByteStream">
+            <summary>
+            查找byte流
+            </summary>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.#ctor(System.Byte[])">
+            <summary>
+            初始化流
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Afx.IO.FindByteStream.CanRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.IO.FindByteStream.CanSeek">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.IO.FindByteStream.CanWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.Flush">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.IO.FindByteStream.Length">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.IO.FindByteStream.Position">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            
+            </summary>
+            <param name="offset"></param>
+            <param name="origin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.SetLength(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.ReadByte">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.Close">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.ReadKeyData(System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.GetKeyIndex(System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.GetKeyIndex(System.Byte[],System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="maxCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.ReadToEnd">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindByteStream.Dispose(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="T:Afx.IO.FindStream">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.IO.FindStream.#ctor(System.IO.Stream)">
+            <summary>
+            
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:Afx.IO.FindStream.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="stream"></param>
+            <param name="disposingStream"></param>
+        </member>
+        <member name="P:Afx.IO.FindStream.CanRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.IO.FindStream.CanSeek">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.IO.FindStream.CanWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.IO.FindStream.Flush">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.IO.FindStream.Length">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Afx.IO.FindStream.Position">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.IO.FindStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            
+            </summary>
+            <param name="offset"></param>
+            <param name="origin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindStream.SetLength(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.IO.FindStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Afx.IO.FindStream.ReadByte">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindStream.Close">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.IO.FindStream.ReadKeyData(System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindStream.GetKeyIndex(System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindStream.GetKeyIndex(System.Byte[],System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="maxCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindStream.ReadToEnd">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.IO.FindStream.Dispose(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="T:Afx.Threading.ReadLock">
+            <summary>
+            只读锁对象
+            </summary>
+        </member>
+        <member name="P:Afx.Threading.ReadLock.Current">
+            <summary>
+            Current
+            </summary>
+        </member>
+        <member name="M:Afx.Threading.ReadLock.ReleaseLock">
+            <summary>
+            释放锁
+            </summary>
+        </member>
+        <member name="M:Afx.Threading.ReadLock.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.Threading.ReadWriteLock">
+            <summary>
+            读写琐
+            </summary>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.#ctor">
+            <summary>
+            ReadWriteLock
+            </summary>
+        </member>
+        <member name="P:Afx.Threading.ReadWriteLock.IsReaderLockHeld">
+            <summary>
+            获取一个值，该值指示当前线程是否持有读线程锁。如果当前线程持有读线程锁，则为 true；否则为 false。
+            </summary>
+        </member>
+        <member name="P:Afx.Threading.ReadWriteLock.IsWriterLockHeld">
+            <summary>
+            获取一个值，该值指示当前线程是否持有写线程锁。如果当前线程持有写线程锁，则为 true；否则为 false。
+            </summary>
+        </member>
+        <member name="P:Afx.Threading.ReadWriteLock.WriterSeqNum">
+            <summary>
+            获取当前序列号。
+            </summary>
+        </member>
+        <member name="P:Afx.Threading.ReadWriteLock.IsDisposed">
+            <summary>
+            IsDisposed
+            </summary>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.GetReadLock">
+            <summary>
+            尝试进入读取模式锁定状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.GetReadLock(System.Int32)">
+            <summary>
+            获取读锁
+            </summary>
+            <param name="millisecondsTimeout">超时时间，超时异常</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.GetReadLock(System.TimeSpan)">
+            <summary>
+            获取读锁
+            </summary>
+            <param name="timeout">超时时间，超时异常</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.GetWriteLock">
+            <summary>
+            尝试进入写入模式锁定状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.GetWriteLock(System.TimeSpan)">
+            <summary>
+            获取写锁
+            </summary>
+            <param name="timeout">超时时间，超时异常</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.GetWriteLock(System.Int32)">
+            <summary>
+            获取写锁
+            </summary>
+            <param name="millisecondsTimeout">超时时间，超时异常</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.ReleaseReadLock">
+            <summary>
+            减少读取模式的递归计数，并在生成的计数为 0（零）时退出读取模式。
+            </summary>
+        </member>
+        <member name="M:Afx.Threading.ReadWriteLock.ReleaseWriteLock">
+            <summary>
+            减少写入模式的递归计数，并在生成的计数为 0（零）时退出写入模式。
+            </summary>
+        </member>
+        <member name="T:Afx.Threading.WriteLock">
+            <summary>
+            写锁
+            </summary>
+        </member>
+        <member name="P:Afx.Threading.WriteLock.Current">
+            <summary>
+            Current
+            </summary>
+        </member>
+        <member name="M:Afx.Threading.WriteLock.ReleaseLock">
+            <summary>
+            释放锁
+            </summary>
+        </member>
+        <member name="M:Afx.Threading.WriteLock.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+    </members>
+</doc>

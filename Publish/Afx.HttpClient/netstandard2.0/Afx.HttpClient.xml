@@ -1,0 +1,690 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Afx.HttpClient</name>
+    </assembly>
+    <members>
+        <member name="T:Afx.HttpClient.ByteContent">
+            <summary>
+            ByteContent
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.ByteContent.Buffer">
+            <summary>
+            Buffer
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.ByteContent.#ctor">
+            <summary>
+            ByteContent
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.ByteContent.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.EmptyContent">
+            <summary>
+            EmptyContent
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.HtmlContent">
+            <summary>
+            HtmlContent
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HtmlContent.Body">
+            <summary>
+            Body
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.HtmlContent.#ctor">
+            <summary>
+            HtmlContent
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.HtmlContent.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.HttpContent">
+            <summary>
+            HttpContent
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.IsSucceed">
+            <summary>
+            IsSucceed
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.Error">
+            <summary>
+            Error
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.StatusCode">
+            <summary>
+            HttpStatusCode
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.StatusDescription">
+            <summary>
+            StatusDescription
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.CharacterSet">
+            <summary>
+            CharacterSet
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.ContentEncoding">
+            <summary>
+            ContentEncoding
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.ContentLength">
+            <summary>
+            ContentLength
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.ContentType">
+            <summary>
+            ContentType
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.Cookies">
+            <summary>
+            CookieCollection
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.Headers">
+            <summary>
+            Headers
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.LastModified">
+            <summary>
+            LastModified
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.Method">
+            <summary>
+            Method
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.ProtocolVersion">
+            <summary>
+            ProtocolVersion
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.ResponseUri">
+            <summary>
+            ResponseUri
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpContent.Server">
+            <summary>
+            Server
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.HttpContent.#ctor">
+            <summary>
+            HttpContent
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.HttpContent.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.StreamContent">
+            <summary>
+            StreamContent
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.StreamContent.Stream">
+            <summary>
+            Stream
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.StreamContent.#ctor">
+            <summary>
+            StreamContent
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.StreamContent.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.ByteFormData">
+            <summary>
+            原始byte[] 表单提交
+            </summary>
+        </member>
+        <member name="F:Afx.HttpClient.ByteFormData.buffer">
+            <summary>
+            buffer
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.ByteFormData.SetContentType(System.String)">
+            <summary>
+            SetContentType
+            </summary>
+            <param name="contentType"></param>
+        </member>
+        <member name="M:Afx.HttpClient.ByteFormData.SetContentEncoding(System.Text.Encoding)">
+            <summary>
+            SetContentEncoding
+            </summary>
+            <param name="encoding"></param>
+        </member>
+        <member name="M:Afx.HttpClient.ByteFormData.#ctor(System.Byte[])">
+            <summary>
+            ByteFormData
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="M:Afx.HttpClient.ByteFormData.#ctor(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            ByteFormData
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Afx.HttpClient.ByteFormData.Serialize(System.IO.Stream)">
+            <summary>
+            Serialize
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:Afx.HttpClient.ByteFormData.GetLength">
+            <summary>
+            GetLength
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.ByteFormData.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.FormData">
+            <summary>
+            请求 FormData
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.FormData.ContentEncoding">
+            <summary>
+            请求 Content Encoding
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.FormData.ContentType">
+            <summary>
+            请求 ContentType
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.FormData.Serialize(System.IO.Stream)">
+            <summary>
+            Serialize 请求 数据
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:Afx.HttpClient.FormData.GetLength">
+            <summary>
+            获取请求数据byte 总长度
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.FormData.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.JsonFormData">
+            <summary>
+            JsonFormData
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.JsonFormData.#ctor(System.String)">
+            <summary>
+            JsonFormData
+            </summary>
+            <param name="json">json 字符串</param>
+        </member>
+        <member name="T:Afx.HttpClient.MultipartFormData">
+            <summary>
+            multipart/form-data 表单提交
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.#ctor">
+            <summary>
+            MultipartFormData
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.AddParam(System.String,System.String)">
+            <summary>
+            添加参数
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.GetParam(System.String)">
+            <summary>
+            获取参数
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.RemoveParam(System.String)">
+            <summary>
+            移除参数
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.AddFile(System.String,System.String)">
+            <summary>
+            添加上传文件
+            </summary>
+            <param name="key"></param>
+            <param name="fileName"></param>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.GetFile(System.String)">
+            <summary>
+            获取上传文件
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.RemoveFile(System.String)">
+            <summary>
+            移除上传文件
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.Serialize(System.IO.Stream)">
+            <summary>
+            Serialize
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.GetLength">
+            <summary>
+            GetLength
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.MultipartFormData.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.StreamFormData">
+            <summary>
+            原始流表单提交
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.StreamFormData.#ctor(System.IO.Stream)">
+            <summary>
+            StreamFormData
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:Afx.HttpClient.StreamFormData.Serialize(System.IO.Stream)">
+            <summary>
+            Serialize
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:Afx.HttpClient.StreamFormData.SetContentType(System.String)">
+            <summary>
+            SetContentType
+            </summary>
+            <param name="contentType"></param>
+        </member>
+        <member name="M:Afx.HttpClient.StreamFormData.SetContentEncoding(System.Text.Encoding)">
+            <summary>
+            SetContentEncoding
+            </summary>
+            <param name="encoding"></param>
+        </member>
+        <member name="M:Afx.HttpClient.StreamFormData.GetLength">
+            <summary>
+            GetLength
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.StreamFormData.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.StringFormData">
+            <summary>
+            StringFormData application/string
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.StringFormData.#ctor(System.String)">
+            <summary>
+            StringFormData  application/string
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="T:Afx.HttpClient.TextPlainFormData">
+            <summary>
+            text/plain 表单提交
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.TextPlainFormData.#ctor">
+            <summary>
+            TextPlainFormData
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.TextPlainFormData.AddParam(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.HttpClient.TextPlainFormData.GetParam(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.TextPlainFormData.RemoveParam(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Afx.HttpClient.TextPlainFormData.Serialize(System.IO.Stream)">
+            <summary>
+            
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:Afx.HttpClient.TextPlainFormData.GetLength">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.TextPlainFormData.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.UrlencodedFormData">
+            <summary>
+            application/x-www-form-urlencoded 表单提交
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.UrlencodedFormData.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.UrlencodedFormData.AddParam(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.HttpClient.UrlencodedFormData.GetParam(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.UrlencodedFormData.RemoveParam(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Afx.HttpClient.UrlencodedFormData.Serialize(System.IO.Stream)">
+            <summary>
+            
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:Afx.HttpClient.UrlencodedFormData.GetLength">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.UrlencodedFormData.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Afx.HttpClient.ProgressCall">
+            <summary>
+            进度回调
+            </summary>
+            <param name="length">数据总长度</param>
+            <param name="position">处理位置</param>
+        </member>
+        <member name="T:Afx.HttpClient.HttpClient">
+            <summary>
+            HttpClient
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.Accept">
+            <summary>
+            Accept
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.AcceptLanguage">
+            <summary>
+            AcceptLanguage
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.AcceptCharset">
+            <summary>
+            AcceptCharset
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.UserAgent">
+            <summary>
+            UserAgent
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.Timeout">
+            <summary>
+            Timeout
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.KeepAlive">
+            <summary>
+            KeepAlive
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.Cookies">
+            <summary>
+            Cookies
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.UseDefaultCredentials">
+            <summary>
+            UseDefaultCredentials
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.ServerCertificateValidationCallback">
+            <summary>
+            ServerCertificateValidationCallback
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.ClientCertificates">
+            <summary>
+            ClientCertificates
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.BaseAddress">
+            <summary>
+            BaseAddress
+            </summary>
+        </member>
+        <member name="P:Afx.HttpClient.HttpClient.AllowWriteStreamBuffering">
+            <summary>
+            AllowWriteStreamBuffering
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.#ctor">
+            <summary>
+            HttpClient
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.#ctor(System.String)">
+            <summary>
+            HttpClient
+            </summary>
+            <param name="baseAddress"></param>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.AddHeader(System.String,System.String)">
+            <summary>
+            AddHeaders
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.GetHeader(System.String)">
+            <summary>
+            GetHeaders
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.RemoveHeader(System.String)">
+            <summary>
+            RemoveHeader
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.ClearHeader">
+            <summary>
+            ClearHeader
+            </summary>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.GetAllHeader">
+            <summary>
+            GetAllHeaders
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.GetHtmlContent(System.String,System.String,Afx.HttpClient.FormData)">
+            <summary>
+            GetHtmlContent
+            </summary>
+            <param name="url"></param>
+            <param name="method"></param>
+            <param name="formData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.Get(System.String)">
+            <summary>
+            get
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.Post(System.String,Afx.HttpClient.FormData)">
+            <summary>
+            post
+            </summary>
+            <param name="url"></param>
+            <param name="formData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.Delete(System.String)">
+            <summary>
+            delete
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.Put(System.String,Afx.HttpClient.FormData)">
+            <summary>
+            put
+            </summary>
+            <param name="url"></param>
+            <param name="formData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.DownloadFile(System.String,System.String)">
+            <summary>
+            DownloadFile
+            </summary>
+            <param name="url"></param>
+            <param name="saveFileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.DownloadFile(System.String,System.String,Afx.HttpClient.FormData,System.String)">
+            <summary>
+            DownloadFile
+            </summary>
+            <param name="url"></param>
+            <param name="method"></param>
+            <param name="formData"></param>
+            <param name="saveFileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.DownloadFile(System.String,System.String,Afx.HttpClient.FormData,System.String,Afx.HttpClient.ProgressCall)">
+            <summary>
+            DownloadFile
+            </summary>
+            <param name="url"></param>
+            <param name="method"></param>
+            <param name="formData"></param>
+            <param name="saveFileName"></param>
+            <param name="call"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.GetBytes(System.String)">
+            <summary>
+            GetBytes
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.GetBytes(System.String,System.String,Afx.HttpClient.FormData)">
+            <summary>
+            GetBytes
+            </summary>
+            <param name="url"></param>
+            <param name="method"></param>
+            <param name="formData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.GetStream(System.String)">
+            <summary>
+            GetStream
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.GetStream(System.String,System.String,Afx.HttpClient.FormData)">
+            <summary>
+            GetStream
+            </summary>
+            <param name="url"></param>
+            <param name="method"></param>
+            <param name="formData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.HttpClient.HttpClient.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+    </members>
+</doc>

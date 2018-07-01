@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>jerrylai@aliyun.com</Authors>
+    <Version>6.1.0</Version>
+    <Company>mycsv.cn</Company>
+    <Product>Afx.Tcp.Protocols for .NET Standard 2.0</Product>
+    <Description>Afx.Tcp.Protocols for .NET Standard 2.0</Description>
+    <PackageReleaseNotes>Afx.Tcp.Protocols for .NET Standard 2.0</PackageReleaseNotes>
+    <PackageTags>mycsv.cn</PackageTags>
+    <Copyright>Copyright © mycsv 2018</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Publish\Afx.Tcp.Protocols\</OutputPath>
+    <DocumentationFile>..\..\Publish\Afx.Tcp.Protocols\netstandard2.0\Afx.Tcp.Protocols.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\Delegate.cs" Link="Delegate.cs" />
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\Func.cs" Link="Func.cs" />
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\IMsgClient.cs" Link="IMsgClient.cs" />
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\Internal\MsgCmdCallModel.cs" Link="Internal\MsgCmdCallModel.cs" />
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\Internal\MsgIdCallModel.cs" Link="Internal\MsgIdCallModel.cs" />
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\MsgClient.cs" Link="MsgClient.cs" />
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\MsgData.cs" Link="MsgData.cs" />
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\MsgStatus.cs" Link="MsgStatus.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\src\Afx.Tcp.Protocols\Langue\Enum\zh-CN\MsgStatus.xml" Link="Langue\Enum\zh-CN\MsgStatus.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Internal\" />
+    <Folder Include="Langue\Enum\zh-CN\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="protobuf-net" Version="2.3.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Afx.Sockets\Afx.Sockets.csproj" />
+  </ItemGroup>
+
+</Project>

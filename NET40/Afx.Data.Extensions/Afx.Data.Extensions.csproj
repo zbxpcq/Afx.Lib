@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6DD18FB9-FAF6-40EB-8BC9-00C6FF5E3689}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Afx.Data.Extensions</RootNamespace>
+    <AssemblyName>Afx.Data.Extensions</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Publish\Afx.Data.Extensions\net40\</OutputPath>
+    <DefineConstants>TRACE;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Publish\Afx.Data.Extensions\net40\Afx.Data.Extensions.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Assembly.cs">
+      <Link>Properties\Assembly.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Data.Extensions\DatabaseExtension.cs">
+      <Link>DatabaseExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Data.Extensions\IModelToParam.cs">
+      <Link>IModelToParam.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Data.Extensions\IReaderToModel.cs">
+      <Link>IReaderToModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Data.Extensions\ModelToParam.cs">
+      <Link>ModelToParam.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Data.Extensions\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Data.Extensions\ReaderToModel.cs">
+      <Link>ReaderToModel.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Afx.Data\Afx.Data.csproj">
+      <Project>{2001c439-ff25-4770-80ad-70d0a7ecc97f}</Project>
+      <Name>Afx.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

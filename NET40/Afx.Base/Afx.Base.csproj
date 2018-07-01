@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3A939D4B-366B-4E78-945B-AE4BA9DBC0FB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Afx.Base</RootNamespace>
+    <AssemblyName>Afx.Base</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Publish\Afx.Base\net40\</OutputPath>
+    <DefineConstants>TRACE;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Publish\Afx.Base\net40\Afx.Base.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Afx.Base\Ioc.xml">
+      <Link>Ioc.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Base\Utils\Models\DiskFreeSpaceModel.cs">
+      <Link>Utils\Models\DiskFreeSpaceModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\Models\MemoryStatusModel.cs">
+      <Link>Utils\Models\MemoryStatusModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\Models\OSVersionInfoModel.cs">
+      <Link>Utils\Models\OSVersionInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\Models\VolumeInfoModel.cs">
+      <Link>Utils\Models\VolumeInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\PathUtils.cs">
+      <Link>Utils\PathUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Assembly.cs">
+      <Link>Properties\Assembly.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Aop\AopAttribute.cs">
+      <Link>Aop\AopAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Aop\AopContext.cs">
+      <Link>Aop\AopContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Aop\AopInfoModel.cs">
+      <Link>Aop\AopInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Aop\AopProxy.cs">
+      <Link>Aop\AopProxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Aop\AopUtils.cs">
+      <Link>Aop\AopUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Aop\IAop.cs">
+      <Link>Aop\IAop.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Collections\SafeDictionary.cs">
+      <Link>Collections\SafeDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Collections\SafeList.cs">
+      <Link>Collections\SafeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Configuration\IniConfig.cs">
+      <Link>Configuration\IniConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Configuration\ItemModel.cs">
+      <Link>Configuration\ItemModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Configuration\NodeModel.cs">
+      <Link>Configuration\NodeModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Configuration\XmlConfig.cs">
+      <Link>Configuration\XmlConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Map\IToObject.cs">
+      <Link>Map\IToObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Map\MapFactory.cs">
+      <Link>Map\MapFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Map\ToObject.cs">
+      <Link>Map\ToObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Map\TypeKey.cs">
+      <Link>Map\TypeKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Internal\MEMORYSTATUSEX.cs">
+      <Link>Internal\MEMORYSTATUSEX.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Internal\OSVERSIONINFOEX.cs">
+      <Link>Internal\OSVERSIONINFOEX.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Internal\SYSTEM_INFO.cs">
+      <Link>Internal\SYSTEM_INFO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\IocContainer.cs">
+      <Link>Ioc\IocContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\IO\FindByteStream.cs">
+      <Link>IO\FindByteStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\IO\FindStream.cs">
+      <Link>IO\FindStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Threading\ReadLock.cs">
+      <Link>Threading\ReadLock.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Threading\ReadWriteLock.cs">
+      <Link>Threading\ReadWriteLock.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Threading\WriteLock.cs">
+      <Link>Threading\WriteLock.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\DESUtils.cs">
+      <Link>Utils\DESUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\HMACSha256Utils.cs">
+      <Link>Utils\HMACSha256Utils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\Md5Utils.cs">
+      <Link>Utils\Md5Utils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\StringUtils.cs">
+      <Link>Utils\StringUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\SystemUtils.cs">
+      <Link>Utils\SystemUtils.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

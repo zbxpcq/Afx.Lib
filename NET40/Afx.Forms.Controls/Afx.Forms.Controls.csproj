@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B0D8F905-471A-4DC8-A29C-F3DFC98DF458}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Afx.Forms.Controls</RootNamespace>
+    <AssemblyName>Afx.Forms.Controls</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Publish\Afx.Forms.Controls\net40\</OutputPath>
+    <DefineConstants>TRACE;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Forms.Controls\AfxButton.cs">
+      <Link>AfxButton.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\AfxButtonType.cs">
+      <Link>AfxButtonType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\AfxDropDownList.cs">
+      <Link>AfxDropDownList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Base\AfxBaseForm.cs">
+      <Link>Base\AfxBaseForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Base\AfxBaseUserControl.cs">
+      <Link>Base\AfxBaseUserControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\src\Assembly.cs">
+      <Link>Properties\Assembly.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Forms\ShowMsgForm.cs">
+      <Link>Forms\ShowMsgForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Forms\ShowMsgForm.Designer.cs">
+      <Link>Forms\ShowMsgForm.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Forms\ShowYesNoCancelForm.cs">
+      <Link>Forms\ShowYesNoCancelForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Forms\ShowYesNoCancelForm.Designer.cs">
+      <Link>Forms\ShowYesNoCancelForm.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Forms\ShowYesNoForm.cs">
+      <Link>Forms\ShowYesNoForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Forms\ShowYesNoForm.Designer.cs">
+      <Link>Forms\ShowYesNoForm.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\UCFormTitle.cs">
+      <Link>UCFormTitle.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\UCFormTitle.designer.cs">
+      <Link>UCFormTitle.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\UCPageFooter.cs">
+      <Link>UCPageFooter.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\UCPageFooter.Designer.cs">
+      <Link>UCPageFooter.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\FlashWindowUtil.cs">
+      <Link>Win32Api\FlashWindowUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\KeyHook.cs">
+      <Link>Win32Api\KeyHook.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\MouseEventExtArgs.cs">
+      <Link>Win32Api\MouseEventExtArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\MouseHook.cs">
+      <Link>Win32Api\MouseHook.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\NativeMethods.cs">
+      <Link>Win32Api\NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\SoundUtils.cs">
+      <Link>Win32Api\SoundUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\Structs.cs">
+      <Link>Win32Api\Structs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\Win32ApiConsts.cs">
+      <Link>Win32Api\Win32ApiConsts.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Forms.Controls\Win32Api\WindowsMessage.cs">
+      <Link>Win32Api\WindowsMessage.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\src\Afx.Forms.Controls\Forms\ShowMsgForm.resx">
+      <Link>Forms\ShowMsgForm.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\src\Afx.Forms.Controls\Forms\ShowYesNoCancelForm.resx">
+      <Link>Forms\ShowYesNoCancelForm.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\src\Afx.Forms.Controls\Forms\ShowYesNoForm.resx">
+      <Link>Forms\ShowYesNoForm.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\src\Afx.Forms.Controls\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\src\Afx.Forms.Controls\UCFormTitle.resx">
+      <Link>UCFormTitle.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\src\Afx.Forms.Controls\UCPageFooter.resx">
+      <Link>UCPageFooter.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\close_search.jpg">
+      <Link>images\close_search.jpg</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\frmTitle\frmTitle_close_down.png">
+      <Link>images\frmTitle\frmTitle_close_down.png</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\frmTitle\frmTitle_close_normal.png">
+      <Link>images\frmTitle\frmTitle_close_normal.png</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\frmTitle\frmTitle_max_down.png">
+      <Link>images\frmTitle\frmTitle_max_down.png</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\frmTitle\frmTitle_max_normal.png">
+      <Link>images\frmTitle\frmTitle_max_normal.png</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\frmTitle\frmTitle_mini_down.png">
+      <Link>images\frmTitle\frmTitle_mini_down.png</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\frmTitle\frmTitle_mini_normal.png">
+      <Link>images\frmTitle\frmTitle_mini_normal.png</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\frmTitle\frmTitle_normal_down.png">
+      <Link>images\frmTitle\frmTitle_normal_down.png</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\frmTitle\frmTitle_normal_normal.png">
+      <Link>images\frmTitle\frmTitle_normal_normal.png</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\search.jpg">
+      <Link>images\search.jpg</Link>
+    </Content>
+    <Content Include="..\..\src\Afx.Forms.Controls\images\sys_setting.png">
+      <Link>images\sys_setting.png</Link>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

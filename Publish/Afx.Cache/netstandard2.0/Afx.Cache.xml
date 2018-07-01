@@ -1,0 +1,391 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Afx.Cache</name>
+    </assembly>
+    <members>
+        <member name="T:Afx.Cache.CacheKey">
+            <summary>
+            缓存key配置
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.CacheKey.#ctor(System.String)">
+            <summary>
+            初始化
+            </summary>
+            <param name="xmlFile">配置文件</param>
+        </member>
+        <member name="M:Afx.Cache.CacheKey.GetKey(System.String,System.String)">
+            <summary>
+            获取key
+            </summary>
+            <param name="node">节点</param>
+            <param name="name">名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Cache.CacheKey.GetExpire(System.String,System.String)">
+            <summary>
+            获取过期时间
+            </summary>
+            <param name="node"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Cache.CacheKey.GetDb(System.String,System.String)">
+            <summary>
+            获取db
+            </summary>
+            <param name="node"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afx.Cache.EmptyCache">
+            <summary>
+            空缓存类
+            </summary>
+        </member>
+        <member name="P:Afx.Cache.EmptyCache.Default">
+            <summary>
+            默认对象
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.Get``1(System.Int32,System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T">缓存对象类型,始终返回default(T)</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.Set``1(System.Int32,System.String,``0)">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="value">缓存对象</param>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.Set``1(System.Int32,System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="value">缓存对象</param>
+            <param name="expiresIn">过期时间</param>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.Expire(System.Int32,System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            延长缓存过期时间
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="expireIn">过期时间</param>
+            <returns>始终返回true</returns>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.ContainsKey(System.Int32,System.String)">
+            <summary>
+            是否存在缓存key
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <returns>始终返回false</returns>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.Remove(System.Int32,System.String)">
+            <summary>
+            移除缓存
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.Remove(System.Int32,System.Collections.Generic.List{System.String})">
+            <summary>
+            批量移除缓存key
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="keys">缓存key list</param>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.FlushDb(System.Int32)">
+            <summary>
+            移除指定db所有缓存
+            </summary>
+            <param name="db">缓存所在db</param>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.FlushAll">
+            <summary>
+            移除所有缓存
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.EmptyCache.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afx.Cache.ICache">
+            <summary>
+            缓存接口
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.ICache.Get``1(System.Int32,System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <returns>不存在返回default(T)</returns>
+        </member>
+        <member name="M:Afx.Cache.ICache.Set``1(System.Int32,System.String,``0)">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="value">缓存对象</param>
+        </member>
+        <member name="M:Afx.Cache.ICache.Set``1(System.Int32,System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="value">缓存对象</param>
+            <param name="expireIn">过期时间</param>
+        </member>
+        <member name="M:Afx.Cache.ICache.Expire(System.Int32,System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            延长缓存过期时间
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="expireIn">过期时间</param>
+            <returns>true：成功，false：失败</returns>
+        </member>
+        <member name="M:Afx.Cache.ICache.ContainsKey(System.Int32,System.String)">
+            <summary>
+            是否存在缓存key
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <returns>true：存在，false：不存在</returns>
+        </member>
+        <member name="M:Afx.Cache.ICache.Remove(System.Int32,System.String)">
+            <summary>
+            移除缓存
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+        </member>
+        <member name="M:Afx.Cache.ICache.Remove(System.Int32,System.Collections.Generic.List{System.String})">
+            <summary>
+            批量移除缓存key
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="keys">缓存key list</param>
+        </member>
+        <member name="M:Afx.Cache.ICache.FlushDb(System.Int32)">
+            <summary>
+            移除指定db所有缓存
+            </summary>
+            <param name="db">缓存所在db</param>
+        </member>
+        <member name="M:Afx.Cache.ICache.FlushAll">
+            <summary>
+            移除所有缓存
+            </summary>
+        </member>
+        <member name="T:Afx.Cache.ProcCache">
+            <summary>
+            进程内缓存对象
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.#ctor(System.Int32,System.Int32)">
+            <summary>
+            初始化
+            </summary>
+            <param name="dbCount"></param>
+            <param name="autoClearTime"></param>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.Get``1(System.Int32,System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <returns>不存在返回default(T)</returns>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.Set``1(System.Int32,System.String,``0)">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="value">缓存对象</param>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.Set``1(System.Int32,System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="value">缓存对象</param>
+            <param name="expireIn">过期时间</param>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.Expire(System.Int32,System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            延长缓存过期时间
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="expireIn">过期时间</param>
+            <returns>true：成功，false：失败</returns>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.ContainsKey(System.Int32,System.String)">
+            <summary>
+            是否存在缓存key
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <returns>true：存在，false：不存在</returns>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.Remove(System.Int32,System.String)">
+            <summary>
+            移除缓存
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.Remove(System.Int32,System.Collections.Generic.List{System.String})">
+            <summary>
+            批量移除缓存key
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="keys">缓存key list</param>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.FlushDb(System.Int32)">
+            <summary>
+            移除指定db所有缓存
+            </summary>
+            <param name="db">缓存所在db</param>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.FlushAll">
+            <summary>
+            移除所有缓存
+            </summary>
+        </member>
+        <member name="P:Afx.Cache.ProcCache.IsDisposed">
+            <summary>
+            是否释放释放对象
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.Dispose">
+            <summary>
+            释放对象，并清除所有缓存
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.ProcCache.Close">
+            <summary>
+            Close
+            </summary>
+        </member>
+        <member name="T:Afx.Cache.RedisCache">
+            <summary>
+            redis缓存对象
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.#ctor(StackExchange.Redis.IConnectionMultiplexer)">
+            <summary>
+            RedisCache
+            </summary>
+            <param name="redisMultiplexer"></param>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.Get``1(System.Int32,System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <returns>不存在返回default(T)</returns>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.Set``1(System.Int32,System.String,``0)">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="value">缓存对象</param>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.Set``1(System.Int32,System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="value">缓存对象</param>
+            <param name="expireIn">过期时间</param>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.Expire(System.Int32,System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            延长缓存过期时间
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <param name="expireIn">过期时间</param>
+            <returns>true：成功，false：失败</returns>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.ContainsKey(System.Int32,System.String)">
+            <summary>
+            是否存在缓存key
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+            <returns>true：存在，false：不存在</returns>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.Remove(System.Int32,System.String)">
+            <summary>
+            移除缓存
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="key">缓存key</param>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.Remove(System.Int32,System.Collections.Generic.List{System.String})">
+            <summary>
+            批量移除缓存key
+            </summary>
+            <param name="db">缓存所在db</param>
+            <param name="keys">缓存key list</param>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.FlushDb(System.Int32)">
+            <summary>
+            移除指定db所有缓存
+            </summary>
+            <param name="db">缓存所在db</param>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.FlushAll">
+            <summary>
+            移除所有缓存
+            </summary>
+        </member>
+        <member name="P:Afx.Cache.RedisCache.IsDisposed">
+            <summary>
+            是否释放释放对象
+            </summary>
+        </member>
+        <member name="M:Afx.Cache.RedisCache.Dispose">
+            <summary>
+            释放对象，并清除所有缓存
+            </summary>
+        </member>
+    </members>
+</doc>

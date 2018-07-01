@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Afx.Base</RootNamespace>
+    <Version>6.1.0</Version>
+    <PackageTags>mycsv.cn</PackageTags>
+    <Authors>jerrylai@aliyun.com</Authors>
+    <Description>Afx.Base for .NET Standard 2.0</Description>
+    <PackageReleaseNotes>Afx.Base for .NET Standard 2.0</PackageReleaseNotes>
+    <Product>Afx.Base for .NET Standard 2.0</Product>
+    <Company>mycsv.cn</Company>
+    <Copyright>Copyright © mycsv 2018</Copyright>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Publish\Afx.Base\</OutputPath>
+    <DocumentationFile>..\..\Publish\Afx.Base\netstandard2.0\Afx.Base.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Base\Aop\AopAttribute.cs" Link="Aop\AopAttribute.cs" />
+    <Compile Include="..\..\src\Afx.Base\Aop\AopContext.cs" Link="Aop\AopContext.cs" />
+    <Compile Include="..\..\src\Afx.Base\Aop\AopInfoModel.cs" Link="Aop\AopInfoModel.cs" />
+    <Compile Include="..\..\src\Afx.Base\Aop\AopProxy.cs" Link="Aop\AopProxy.cs" />
+    <Compile Include="..\..\src\Afx.Base\Aop\AopUtils.cs" Link="Aop\AopUtils.cs" />
+    <Compile Include="..\..\src\Afx.Base\Aop\IAop.cs" Link="Aop\IAop.cs" />
+    <Compile Include="..\..\src\Afx.Base\Collections\SafeDictionary.cs" Link="Collections\SafeDictionary.cs" />
+    <Compile Include="..\..\src\Afx.Base\Collections\SafeList.cs" Link="Collections\SafeList.cs" />
+    <Compile Include="..\..\src\Afx.Base\Configuration\IniConfig.cs" Link="Configuration\IniConfig.cs" />
+    <Compile Include="..\..\src\Afx.Base\Configuration\ItemModel.cs" Link="Configuration\ItemModel.cs" />
+    <Compile Include="..\..\src\Afx.Base\Configuration\NodeModel.cs" Link="Configuration\NodeModel.cs" />
+    <Compile Include="..\..\src\Afx.Base\Configuration\XmlConfig.cs" Link="Configuration\XmlConfig.cs" />
+    <Compile Include="..\..\src\Afx.Base\Map\IToObject.cs" Link="Map\IToObject.cs" />
+    <Compile Include="..\..\src\Afx.Base\Map\MapFactory.cs" Link="Map\MapFactory.cs" />
+    <Compile Include="..\..\src\Afx.Base\Map\ToObject.cs" Link="Map\ToObject.cs" />
+    <Compile Include="..\..\src\Afx.Base\Map\TypeKey.cs" Link="Map\TypeKey.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\IocContainer.cs" Link="Ioc\IocContainer.cs" />
+    <Compile Include="..\..\src\Afx.Base\IO\FindByteStream.cs" Link="IO\FindByteStream.cs" />
+    <Compile Include="..\..\src\Afx.Base\IO\FindStream.cs" Link="IO\FindStream.cs" />
+    <Compile Include="..\..\src\Afx.Base\Threading\ReadLock.cs" Link="Threading\ReadLock.cs" />
+    <Compile Include="..\..\src\Afx.Base\Threading\ReadWriteLock.cs" Link="Threading\ReadWriteLock.cs" />
+    <Compile Include="..\..\src\Afx.Base\Threading\WriteLock.cs" Link="Threading\WriteLock.cs" />
+    <Compile Include="..\..\src\Afx.Base\Utils\DESUtils.cs" Link="Utils\DESUtils.cs" />
+    <Compile Include="..\..\src\Afx.Base\Utils\EnumUtils.cs" Link="Utils\EnumUtils.cs" />
+    <Compile Include="..\..\src\Afx.Base\Utils\HMACSha256Utils.cs" Link="Utils\HMACSha256Utils.cs" />
+    <Compile Include="..\..\src\Afx.Base\Utils\Md5Utils.cs" Link="Utils\Md5Utils.cs" />
+    <Compile Include="..\..\src\Afx.Base\Utils\PathUtils.cs" Link="Utils\PathUtils.cs" />
+    <Compile Include="..\..\src\Afx.Base\Utils\StringUtils.cs" Link="Utils\StringUtils.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\src\Afx.Base\Ioc.xml" Link="Ioc.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Aop\" />
+    <Folder Include="Collections\" />
+    <Folder Include="Configuration\" />
+    <Folder Include="Map\" />
+    <Folder Include="IO\" />
+    <Folder Include="Ioc\" />
+    <Folder Include="Threading\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

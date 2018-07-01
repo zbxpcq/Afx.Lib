@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>6.1.0</Version>
+    <Description>Afx.Data.Extensions for .NET Standard 2.0</Description>
+    <PackageReleaseNotes>Afx.Data.Extensions for .NET Standard 2.0</PackageReleaseNotes>
+    <PackageTags>mycsv.cn</PackageTags>
+    <Company>mycsv.cn</Company>
+    <Authors>jerrylai@aliyun.com</Authors>
+    <Copyright>Copyright © mycsv 2018</Copyright>
+    <Product>Afx.Data.Extensions for .NET Standard 2.0</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Publish\Afx.Data.Extensions\</OutputPath>
+    <DocumentationFile>..\..\Publish\Afx.Data.Extensions\netstandard2.0\Afx.Data.Extensions.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Data.Extensions\DatabaseExtension.cs" Link="DatabaseExtension.cs" />
+    <Compile Include="..\..\src\Afx.Data.Extensions\IModelToParam.cs" Link="IModelToParam.cs" />
+    <Compile Include="..\..\src\Afx.Data.Extensions\IReaderToModel.cs" Link="IReaderToModel.cs" />
+    <Compile Include="..\..\src\Afx.Data.Extensions\ModelToParam.cs" Link="ModelToParam.cs" />
+    <Compile Include="..\..\src\Afx.Data.Extensions\ReaderToModel.cs" Link="ReaderToModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NETStandard2.0\Afx.Data\Afx.Data.csproj" />
+  </ItemGroup>
+
+</Project>

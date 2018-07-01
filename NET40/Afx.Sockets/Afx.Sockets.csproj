@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{698EC012-4620-47C8-AC2B-A78FC02119FE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Afx.Sockets</RootNamespace>
+    <AssemblyName>Afx.Sockets</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Publish\Afx.Sockets\net40\</OutputPath>
+    <DefineConstants>TRACE;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Publish\Afx.Sockets\net40\Afx.Sockets.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Assembly.cs">
+      <Link>Properties\Assembly.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\BufferModel.cs">
+      <Link>BufferModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\CacheModel.cs">
+      <Link>CacheModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\Delegate.cs">
+      <Link>Delegate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\SocketHelper.cs">
+      <Link>SocketHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\TcpSendData.cs">
+      <Link>TcpSendData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\TcpServer.cs">
+      <Link>TcpServer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\TcpSocket.cs">
+      <Link>TcpSocket.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\TcpSocketAsync.cs">
+      <Link>TcpSocketAsync.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\UdpSendData.cs">
+      <Link>UdpSendData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\UdpServer.cs">
+      <Link>UdpServer.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
