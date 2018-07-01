@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Afx.Cache</id>
+    <version>6.2.0</version>
+    <authors>jerrylai</authors>
+    <owners>jerrylai</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Afx.Cache</description>
+    <releaseNotes>Afx.Cache</releaseNotes>
+    <copyright>Copyright © mycsv 2018</copyright>
+    <tags>Afx.Cache Redis RedisCache ProcCache Cache Afx StackExchange.Redis</tags>
+    <dependencies>
+	  <group targetFramework=".NETFramework4.0">
+		<dependency id="Microsoft.Bcl" version="1.1.10" exclude="Build,Analyzers" />
+		<dependency id="Microsoft.Bcl.Async" version="1.0.168" exclude="Build,Analyzers" />
+		<dependency id="Microsoft.Bcl.Build" version="1.0.14" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="1.2.6" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="1.2.6" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="1.2.6" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  
+  <files>
+    <file src="..\Publish\Afx.Cache\netstandard2.0\**" target="lib\netstandard2.0" />
+	
+	<file src="..\Publish\Afx.Cache\net452\Afx.Cache.dll" target="lib\net452\Afx.Cache.dll" />
+	<file src="..\Publish\Afx.Cache\net452\Afx.Cache.xml" target="lib\net452\Afx.Cache.xml" />
+	<file src="..\Publish\Afx.Cache\net452\CacheKey.xml" target="lib\net452\CacheKey.xml" />
+	
+	<file src="..\Publish\Afx.Cache\net40\Afx.Cache.dll" target="lib\net40\Afx.Cache.dll" />
+	<file src="..\Publish\Afx.Cache\net40\Afx.Cache.xml" target="lib\net40\Afx.Cache.xml" />
+	<file src="..\Publish\Afx.Cache\net40\CacheKey.xml" target="lib\net40\CacheKey.xml" />
+  </files>
+</package>

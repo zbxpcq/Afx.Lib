@@ -1,0 +1,1 @@
+DeleteDebug -dir=".vs,bin,obj" -f=".user"

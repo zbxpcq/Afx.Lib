@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Afx.Data.Entity</id>
+    <version>6.2.0</version>
+    <authors>jerrylai</authors>
+    <owners>jerrylai</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Afx.Data.Entity</description>
+    <releaseNotes>Afx.Data.Entity</releaseNotes>
+    <copyright>Copyright © mycsv 2018</copyright>
+    <tags>Afx.Data.Entity EF EntityFramework EntityFrameworkCore Afx</tags>
+    <dependencies>
+	  <group targetFramework=".NETFramework4.0">
+        <dependency id="EntityFramework" version="6.2.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="EntityFramework" version="6.2.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.EntityFrameworkCore" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.1.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Publish\Afx.Data.Entity\netstandard2.0\**" target="lib\netstandard2.0" />
+	
+	<file src="..\Publish\Afx.Data.Entity\net452\template\**" target="lib\net452\template" />
+	<file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.dll" target="lib\net452\Afx.Data.Entity.dll" />
+	<file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.xml" target="lib\net452\Afx.Data.Entity.xml" />
+	<file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.dll.config" target="lib\net452\Afx.Data.Entity.dll.config" />
+	
+	<file src="..\Publish\Afx.Data.Entity\net40\template\**" target="lib\net40\template" />
+	<file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.dll" target="lib\net40\Afx.Data.Entity.dll" />
+	<file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.xml" target="lib\net40\Afx.Data.Entity.xml" />
+	<file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.dll.config" target="lib\net40\Afx.Data.Entity.dll.config" />
+  </files>
+</package>

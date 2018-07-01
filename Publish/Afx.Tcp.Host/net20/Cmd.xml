@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Cmd>
+    <Global defaultAssembly="">
+        <Authorize type=""></Authorize>
+    </Global>
+    <Controller>
+        <Action cmd="" type="" method="">
+            <Authorize type=""></Authorize>
+        </Action>
+    </Controller>
+</Cmd>

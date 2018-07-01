@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Afx.Tcp.Host</id>
+    <version>6.2.0</version>
+    <authors>jerrylai</authors>
+    <owners>jerrylai</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Afx.Tcp.Host</description>
+    <releaseNotes>Afx.Tcp.Host</releaseNotes>
+    <copyright>Copyright © mycsv 2018</copyright>
+    <tags>Afx.Tcp.Host Socket TCP UDP TcpHost Afx</tags>
+    <dependencies>
+	  <group targetFramework=".NETFramework2.0">
+        <dependency id="Afx.Sockets" version="6.2.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Tcp.Protocols" version="6.2.0" exclude="Build,Analyzers" />
+      </group>
+	  <group targetFramework=".NETFramework4.0">
+        <dependency id="Afx.Sockets" version="6.2.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Tcp.Protocols" version="6.2.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Afx.Sockets" version="6.2.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Tcp.Protocols" version="6.2.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Afx.Sockets" version="6.2.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Tcp.Protocols" version="6.2.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="..\Publish\Afx.Tcp.Host\netstandard2.0\Afx.Tcp.Host.dll" target="lib\netstandard2.0\Afx.Tcp.Host.dll" />
+	<file src="..\Publish\Afx.Tcp.Host\netstandard2.0\Afx.Tcp.Host.xml" target="lib\netstandard2.0\Afx.Tcp.Host.xml" />
+	<file src="..\Publish\Afx.Tcp.Host\netstandard2.0\Afx.Tcp.Host.deps.json" target="lib\netstandard2.0\Afx.Tcp.Host.deps.json" />
+	<file src="..\Publish\Afx.Tcp.Host\netstandard2.0\Cmd.xml" target="lib\netstandard2.0\Cmd.xml" />
+	
+	<file src="..\Publish\Afx.Tcp.Host\net452\Afx.Tcp.Host.dll" target="lib\net452\Afx.Tcp.Host.dll" />
+	<file src="..\Publish\Afx.Tcp.Host\net452\Afx.Tcp.Host.xml" target="lib\net452\Afx.Tcp.Host.xml" />
+	<file src="..\Publish\Afx.Tcp.Host\net452\Cmd.xml" target="lib\net452\Cmd.xml" />
+	
+	<file src="..\Publish\Afx.Tcp.Host\net40\Afx.Tcp.Host.dll" target="lib\net40\Afx.Tcp.Host.dll" />
+	<file src="..\Publish\Afx.Tcp.Host\net40\Afx.Tcp.Host.xml" target="lib\net40\Afx.Tcp.Host.xml" />
+	<file src="..\Publish\Afx.Tcp.Host\net40\Cmd.xml" target="lib\net40\Cmd.xml" />
+	
+	<file src="..\Publish\Afx.Tcp.Host\net20\Afx.Tcp.Host.dll" target="lib\net20\Afx.Tcp.Host.dll" />
+	<file src="..\Publish\Afx.Tcp.Host\net20\Afx.Tcp.Host.xml" target="lib\net20\Afx.Tcp.Host.xml" />
+	<file src="..\Publish\Afx.Tcp.Host\net20\Cmd.xml" target="lib\net20\Cmd.xml" />
+  </files>
+</package>

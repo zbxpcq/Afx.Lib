@@ -85,5 +85,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Afx.Tcp.Protocols\Langue\Enum\zh-CN\MsgStatus.xml">
+      <Link>Langue\Enum\zh-CN\MsgStatus.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

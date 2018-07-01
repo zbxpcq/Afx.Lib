@@ -7,10 +7,10 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Afx.Data.MySql.Entity/6.1.0": {
+      "Afx.Data.MySql.Entity/6.2.0": {
         "dependencies": {
-          "Afx.Data": "6.1.0",
-          "Afx.Data.Entity": "6.1.0",
+          "Afx.Data": "6.2.0",
+          "Afx.Data.Entity": "6.2.0",
           "MySql.Data": "6.10.7",
           "MySql.Data.EntityFrameworkCore": "6.10.7",
           "NETStandard.Library": "2.0.3"
@@ -619,12 +619,12 @@
           "System.Runtime": "4.1.0"
         }
       },
-      "Afx.Data/6.1.0": {
+      "Afx.Data/6.2.0": {
         "runtime": {
           "Afx.Data.dll": {}
         }
       },
-      "Afx.Data.Entity/6.1.0": {
+      "Afx.Data.Entity/6.2.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "2.1.1",
           "Microsoft.EntityFrameworkCore.Relational": "2.1.1"
@@ -636,7 +636,7 @@
     }
   },
   "libraries": {
-    "Afx.Data.MySql.Entity/6.1.0": {
+    "Afx.Data.MySql.Entity/6.2.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -1047,12 +1047,12 @@
       "path": "system.threading.tasks/4.0.11",
       "hashPath": "system.threading.tasks.4.0.11.nupkg.sha512"
     },
-    "Afx.Data/6.1.0": {
+    "Afx.Data/6.2.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Afx.Data.Entity/6.1.0": {
+    "Afx.Data.Entity/6.2.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

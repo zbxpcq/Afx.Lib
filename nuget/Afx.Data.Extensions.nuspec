@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Afx.Data.Extensions</id>
+    <version>6.2.0</version>
+    <authors>jerrylai</authors>
+    <owners>jerrylai</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Afx.Data.Extensions</description>
+    <releaseNotes>Afx.Data.Extensions</releaseNotes>
+    <copyright>Copyright © mycsv 2018</copyright>
+    <tags>Afx.Data.Extensions Database SQL Entity Afx</tags>
+    <dependencies>
+	  <group targetFramework=".NETFramework4.0">
+        <dependency id="Afx.Data" version="6.2.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Afx.Data" version="6.2.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Afx.Data" version="6.2.0" exclude="Build,Analyzers" />
+        <dependency id="System.Reflection.Emit" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="..\Publish\Afx.Data.Extensions\netstandard2.0\Afx.Data.Extensions.dll" target="lib\netstandard2.0\Afx.Data.Extensions.dll" />
+	<file src="..\Publish\Afx.Data.Extensions\netstandard2.0\Afx.Data.Extensions.xml" target="lib\netstandard2.0\Afx.Data.Extensions.xml" />
+	<file src="..\Publish\Afx.Data.Extensions\netstandard2.0\Afx.Data.Extensions.deps.json" target="lib\netstandard2.0\Afx.Data.Extensions.deps.json" />
+	
+	<file src="..\Publish\Afx.Data.Extensions\net452\Afx.Data.Extensions.dll" target="lib\net452\Afx.Data.Extensions.dll" />
+	<file src="..\Publish\Afx.Data.Extensions\net452\Afx.Data.Extensions.xml" target="lib\net452\Afx.Data.Extensions.xml" />
+	
+	<file src="..\Publish\Afx.Data.Extensions\net40\Afx.Data.Extensions.dll" target="lib\net40\Afx.Data.Extensions.dll" />
+	<file src="..\Publish\Afx.Data.Extensions\net40\Afx.Data.Extensions.xml" target="lib\net40\Afx.Data.Extensions.xml" />
+  </files>
+</package>
