@@ -1,8 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <Description>Afx.Cache for .NET Standard 2.0</Description>
     <Company>mycsv.cn</Company>
     <Copyright>Copyright © mycsv 2018</Copyright>
@@ -11,17 +10,15 @@
     <Product>Afx.Cache for .NET Standard 2.0</Product>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Cache</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.Cache\netstandard2.0\Afx.Cache.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\src\Afx.Cache\CacheKey.cs" Link="CacheKey.cs" />
     <Compile Include="..\..\src\Afx.Cache\EmptyCache.cs" Link="EmptyCache.cs" />
@@ -29,14 +26,11 @@
     <Compile Include="..\..\src\Afx.Cache\ProcCache.cs" Link="ProcCache.cs" />
     <Compile Include="..\..\src\Afx.Cache\RedisCache.cs" Link="RedisCache.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="..\..\src\Afx.Cache\CacheKey.xml" Link="CacheKey.xml" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="StackExchange.Redis" Version="1.2.6" />
   </ItemGroup>
-
 </Project>

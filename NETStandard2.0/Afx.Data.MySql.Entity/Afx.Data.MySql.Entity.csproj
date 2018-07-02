@@ -1,9 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <Company>mycsv.cn</Company>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <Product>Afx.Data.MySql.Entity for .NET Standard 2.0</Product>
@@ -11,36 +10,30 @@
     <PackageReleaseNotes>Afx.Data.MySql.Entity for .NET Standard 2.0</PackageReleaseNotes>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Data.MySql.Entity\</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.Data.MySql.Entity\netstandard2.0\Afx.Data.MySql.Entity.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\src\Afx.Data.MySql.Entity\MySqlDatabase.cs" Link="MySqlDatabase.cs" />
     <Compile Include="..\..\src\Afx.Data.MySql.Entity\Schema\MySqlDatabaseSchema.cs" Link="Schema\MySqlDatabaseSchema.cs" />
     <Compile Include="..\..\src\Afx.Data.MySql.Entity\Schema\MySqlModelSchema.cs" Link="Schema\MySqlModelSchema.cs" />
     <Compile Include="..\..\src\Afx.Data.MySql.Entity\Schema\MySqlTableSchema.cs" Link="Schema\MySqlTableSchema.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="6.10.7" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.7" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Schema\" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Afx.Data.Entity\Afx.Data.Entity.csproj" />
     <ProjectReference Include="..\Afx.Data\Afx.Data.csproj" />
   </ItemGroup>
-
 </Project>

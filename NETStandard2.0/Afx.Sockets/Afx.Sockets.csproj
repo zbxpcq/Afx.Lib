@@ -1,8 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <Authors>jerrylai@aliyun.com</Authors>
     <Company>mycsv.cn</Company>
     <Product>Afx.Sockets for .NET Standard 2.0</Product>
@@ -10,17 +9,15 @@
     <PackageReleaseNotes>Afx.Sockets for .NET Standard 2.0</PackageReleaseNotes>
     <Copyright>Copyright © mycsv 2018</Copyright>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Sockets\</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.Sockets\netstandard2.0\Afx.Sockets.xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\src\Afx.Sockets\BufferModel.cs" Link="BufferModel.cs" />
     <Compile Include="..\..\src\Afx.Sockets\CacheModel.cs" Link="CacheModel.cs" />
@@ -33,5 +30,4 @@
     <Compile Include="..\..\src\Afx.Sockets\UdpSendData.cs" Link="UdpSendData.cs" />
     <Compile Include="..\..\src\Afx.Sockets\UdpServer.cs" Link="UdpServer.cs" />
   </ItemGroup>
-
 </Project>

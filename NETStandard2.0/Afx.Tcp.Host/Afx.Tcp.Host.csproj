@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Afx.Tcp.Host .NET Standard 2.0</Description>
@@ -8,20 +7,18 @@
     <Authors>jerrylai@aliyun.com</Authors>
     <Product>Afx.Tcp.Host .NET Standard 2.0</Product>
     <PackageReleaseNotes>Afx.Tcp.Host .NET Standard 2.0</PackageReleaseNotes>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Tcp.Host</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.Tcp.Host\netstandard2.0\Afx.Tcp.Host.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\src\Afx.Tcp.Host\Action.cs" Link="Action.cs" />
     <Compile Include="..\..\src\Afx.Tcp.Host\ActionResult.cs" Link="ActionResult.cs" />
@@ -36,16 +33,13 @@
     <Compile Include="..\..\src\Afx.Tcp.Host\Session.cs" Link="Session.cs" />
     <Compile Include="..\..\src\Afx.Tcp.Host\TcpHost.cs" Link="TcpHost.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\src\Afx.Tcp.Host\Cmd.xml" Link="Cmd.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Afx.Sockets\Afx.Sockets.csproj" />
     <ProjectReference Include="..\Afx.Tcp.Protocols\Afx.Tcp.Protocols.csproj" />
   </ItemGroup>
-
 </Project>

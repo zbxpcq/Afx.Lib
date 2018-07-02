@@ -1,9 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <Company>mycsv.cn</Company>
     <Product>Afx.HttpClient for .NETCore2.1</Product>
@@ -11,17 +10,15 @@
     <PackageReleaseNotes>Afx.HttpClient for .NETCore2.1</PackageReleaseNotes>
     <PackageTags>mycsv.cn</PackageTags>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.HttpClient\</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.HttpClient\netcoreapp2.1\Afx.HttpClient.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\src\Afx.HttpClient\Content\ByteContent.cs" Link="Content\ByteContent.cs" />
     <Compile Include="..\..\src\Afx.HttpClient\Content\EmptyContent.cs" Link="Content\EmptyContent.cs" />
@@ -38,10 +35,8 @@
     <Compile Include="..\..\src\Afx.HttpClient\FormData\UrlencodedFormData.cs" Link="FormData\UrlencodedFormData.cs" />
     <Compile Include="..\..\src\Afx.HttpClient\HttpClient.cs" Link="HttpClient.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="FormData\" />
     <Folder Include="Content\" />
   </ItemGroup>
-
 </Project>

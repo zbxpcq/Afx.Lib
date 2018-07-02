@@ -1,33 +1,30 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Description>Afx.Data for .NETCore2.1</Description>
     <PackageReleaseNotes>Afx.Data for .NETCore2.1</PackageReleaseNotes>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <Authors>jerrylai@aliyun.com</Authors>
     <Company>mycsv.cn</Company>
-    <PackageTags></PackageTags>
+    <PackageTags>
+    </PackageTags>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <Product>Afx.Data for .NETCore2.1</Product>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Data\</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.Data\netcoreapp2.1\Afx.Data.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\src\Afx.Data\AfxDataReader.cs" Link="AfxDataReader.cs" />
     <Compile Include="..\..\src\Afx.Data\Database.cs" Link="Database.cs" />
     <Compile Include="..\..\src\Afx.Data\IDatabase.cs" Link="IDatabase.cs" />
     <Compile Include="..\..\src\Afx.Data\Transaction.cs" Link="Transaction.cs" />
   </ItemGroup>
-
 </Project>

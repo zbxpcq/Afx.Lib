@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Data.Entity</id>
-    <version>6.2.1</version>
+    <version>6.2.2</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -11,13 +11,13 @@
     <copyright>Copyright © mycsv 2018</copyright>
     <tags>Afx.Data.Entity EF EntityFramework EntityFrameworkCore Afx</tags>
     <dependencies>
-	  <group targetFramework=".NETFramework4.0">
+      <group targetFramework=".NETFramework4.0">
         <dependency id="EntityFramework" version="6.2.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.5.2">
         <dependency id="EntityFramework" version="6.2.0" exclude="Build,Analyzers" />
       </group>
-	  <group targetFramework=".NETCoreApp2.1">
+      <group targetFramework=".NETCoreApp2.1">
         <dependency id="Microsoft.EntityFrameworkCore" version="2.1.1" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.1.1" exclude="Build,Analyzers" />
       </group>
@@ -29,17 +29,14 @@
   </metadata>
   <files>
     <file src="..\Publish\Afx.Data.Entity\netstandard2.0\**" target="lib\netstandard2.0" />
-	
-	<file src="..\Publish\Afx.Data.Entity\netcoreapp2.1\**" target="lib\netcoreapp2.1" />
-	
-	<file src="..\Publish\Afx.Data.Entity\net452\template\**" target="lib\net452\template" />
-	<file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.dll" target="lib\net452\Afx.Data.Entity.dll" />
-	<file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.xml" target="lib\net452\Afx.Data.Entity.xml" />
-	<file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.dll.config" target="lib\net452\Afx.Data.Entity.dll.config" />
-	
-	<file src="..\Publish\Afx.Data.Entity\net40\template\**" target="lib\net40\template" />
-	<file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.dll" target="lib\net40\Afx.Data.Entity.dll" />
-	<file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.xml" target="lib\net40\Afx.Data.Entity.xml" />
-	<file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.dll.config" target="lib\net40\Afx.Data.Entity.dll.config" />
+    <file src="..\Publish\Afx.Data.Entity\netcoreapp2.1\**" target="lib\netcoreapp2.1" />
+    <file src="..\Publish\Afx.Data.Entity\net452\template\**" target="lib\net452\template" />
+    <file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.dll" target="lib\net452\Afx.Data.Entity.dll" />
+    <file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.xml" target="lib\net452\Afx.Data.Entity.xml" />
+    <file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.dll.config" target="lib\net452\Afx.Data.Entity.dll.config" />
+    <file src="..\Publish\Afx.Data.Entity\net40\template\**" target="lib\net40\template" />
+    <file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.dll" target="lib\net40\Afx.Data.Entity.dll" />
+    <file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.xml" target="lib\net40\Afx.Data.Entity.xml" />
+    <file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.dll.config" target="lib\net40\Afx.Data.Entity.dll.config" />
   </files>
 </package>

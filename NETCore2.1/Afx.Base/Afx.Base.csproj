@@ -1,9 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Afx.Base</RootNamespace>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <PackageTags>Afx.Base AOP IOC MAP Utils Afx</PackageTags>
     <Authors>jerrylai@aliyun.com</Authors>
     <Description>Afx.Base AOP IOC MAP Utils</Description>
@@ -13,17 +12,15 @@
     <Copyright>Copyright © mycsv 2018</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Base\</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.Base\netcoreapp2.1\Afx.Base.xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\src\Afx.Base\Aop\AopAttribute.cs" Link="Aop\AopAttribute.cs" />
     <Compile Include="..\..\src\Afx.Base\Aop\AopContext.cs" Link="Aop\AopContext.cs" />
@@ -54,11 +51,9 @@
     <Compile Include="..\..\src\Afx.Base\Utils\PathUtils.cs" Link="Utils\PathUtils.cs" />
     <Compile Include="..\..\src\Afx.Base\Utils\StringUtils.cs" Link="Utils\StringUtils.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="..\..\src\Afx.Base\Ioc.xml" Link="Ioc.xml" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Aop\" />
     <Folder Include="Collections\" />
@@ -68,5 +63,4 @@
     <Folder Include="Ioc\" />
     <Folder Include="Threading\" />
   </ItemGroup>
-
 </Project>

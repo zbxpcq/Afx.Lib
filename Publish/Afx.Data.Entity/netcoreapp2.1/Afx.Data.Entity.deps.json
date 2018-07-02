@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Afx.Data.Entity/6.2.1": {
+      "Afx.Data.Entity/6.2.2": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "2.1.1",
           "Microsoft.EntityFrameworkCore.Relational": "2.1.1"
@@ -371,7 +371,7 @@
     }
   },
   "libraries": {
-    "Afx.Data.Entity/6.2.1": {
+    "Afx.Data.Entity/6.2.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

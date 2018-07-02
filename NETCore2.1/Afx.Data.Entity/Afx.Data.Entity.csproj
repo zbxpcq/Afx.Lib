@@ -1,29 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Description>Afx.Data.Entity for .NETCore2.1</Description>
     <PackageReleaseNotes>Afx.Data.Entity for .NETCore2.1</PackageReleaseNotes>
     <Product>Afx.Data.Entity for .NETCore2.1</Product>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <Authors>jerrylai@aliyun.com</Authors>
     <Company>mycsv.cn</Company>
-    <PackageTags></PackageTags>
+    <PackageTags>
+    </PackageTags>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Data.Entity\</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.Data.Entity\netcoreapp2.1\Afx.Data.Entity.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\src\Afx.Data.Entity\DecimalAttribute.cs" Link="Attribute\DecimalAttribute.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\EntityContext.cs" Link="EntityContext.cs" />
@@ -44,13 +42,11 @@
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\ModelSchema.cs" Link="Schema\ModelSchema.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\TableSchema.cs" Link="Schema\TableSchema.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Schema\interface\" />
     <Folder Include="template\" />
     <Folder Include="Attribute\" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\src\Afx.Data.Entity\template\DbContext.tmpl" Link="template\DbContext.tmpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -71,10 +67,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.1" />
   </ItemGroup>
-
 </Project>
