@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>6.2.0</Version>
+    <Version>6.2.1</Version>
     <Description>Afx.Data.Extensions for .NET Standard 2.0</Description>
     <PackageReleaseNotes>Afx.Data.Extensions for .NET Standard 2.0</PackageReleaseNotes>
-    <PackageTags>mycsv.cn</PackageTags>
     <Company>mycsv.cn</Company>
     <Authors>jerrylai@aliyun.com</Authors>
     <Copyright>Copyright © mycsv 2018</Copyright>

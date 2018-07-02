@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Authors>jerrylai@aliyun.com</Authors>
+    <Version>6.2.1</Version>
+    <Company>mycsv.cn</Company>
+    <Product>Afx.Data.SQLite.Entity for .NETCore2.1</Product>
+    <Description>Afx.Data.SQLite.Entity for .NETCore2.1</Description>
+    <PackageReleaseNotes>Afx.Data.SQLite.Entity for .NETCore2.1</PackageReleaseNotes>
+    <PackageTags></PackageTags>
+    <Copyright>Copyright © mycsv 2018</Copyright>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Publish\Afx.Data.SQLite.Entity\</OutputPath>
+    <DocumentationFile>..\..\Publish\Afx.Data.SQLite.Entity\netcoreapp2.1\Afx.Data.SQLite.Entity.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Data.SQLite.Entity\Schema\SQLiteDatabaseSchema.cs" Link="Schema\SQLiteDatabaseSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data.SQLite.Entity\Schema\SQLiteModelSchema.cs" Link="Schema\SQLiteModelSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data.SQLite.Entity\Schema\SQLiteTableSchema.cs" Link="Schema\SQLiteTableSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data.SQLite.Entity\SQLiteDatabase.cs" Link="SQLiteDatabase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Schema\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Afx.Data.Entity\Afx.Data.Entity.csproj" />
+    <ProjectReference Include="..\Afx.Data\Afx.Data.csproj" />
+  </ItemGroup>
+
+</Project>

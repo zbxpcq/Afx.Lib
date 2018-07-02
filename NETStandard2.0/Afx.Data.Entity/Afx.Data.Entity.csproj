@@ -5,10 +5,9 @@
     <Description>Afx.Data.Entity for .NET Standard 2.0</Description>
     <PackageReleaseNotes>Afx.Data.Entity for .NET Standard 2.0</PackageReleaseNotes>
     <Product>Afx.Data.Entity for .NET Standard 2.0</Product>
-    <Version>6.2.0</Version>
+    <Version>6.2.1</Version>
     <Authors>jerrylai@aliyun.com</Authors>
     <Company>mycsv.cn</Company>
-    <PackageTags>mycsv.cn</PackageTags>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

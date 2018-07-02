@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>6.2.0</Version>
+    <Version>6.2.1</Version>
     <Description>Afx.Cache for .NET Standard 2.0</Description>
     <Company>mycsv.cn</Company>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <PackageReleaseNotes>Afx.Cache for .NET Standard 2.0</PackageReleaseNotes>
-    <PackageTags>mycsv.cn</PackageTags>
     <Authors>jerrylai@aliyun.com</Authors>
     <Product>Afx.Cache for .NET Standard 2.0</Product>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Data.MSSQLServer.Entity</id>
-    <version>6.2.0</version>
+    <version>6.2.1</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,14 +12,18 @@
     <tags>Afx.Data.MSSQLServer.Entity SQLServer EF EntityFramework EntityFrameworkCore Afx</tags>
     <dependencies>
 	  <group targetFramework=".NETFramework4.0">
-        <dependency id="Afx.Data.Entity" version="6.2.0" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="6.2.0" exclude="Build,Analyzers" />
-		<dependency id="EntityFramework" version="6.2.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="6.2.1" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="6.2.1" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Afx.Data.Entity" version="6.2.0" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="6.2.0" exclude="Build,Analyzers" />
-		<dependency id="EntityFramework" version="6.2.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="6.2.1" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="6.2.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp2.1">
+        <dependency id="Afx.Data.Entity" version="6.2.1" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="6.2.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="System.Data.SqlClient" version="4.5.1" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Afx.Data.Entity" version="6.2.0" exclude="Build,Analyzers" />
@@ -33,6 +37,10 @@
     <file src="..\Publish\Afx.Data.MSSQLServer.Entity\netstandard2.0\Afx.Data.MSSQLServer.Entity.dll" target="lib\netstandard2.0\Afx.Data.MSSQLServer.Entity" />
 	<file src="..\Publish\Afx.Data.MSSQLServer.Entity\netstandard2.0\Afx.Data.MSSQLServer.Entity.xml" target="lib\netstandard2.0\Afx.Data.MSSQLServer.Entity.xml" />
 	<file src="..\Publish\Afx.Data.MSSQLServer.Entity\netstandard2.0\Afx.Data.MSSQLServer.Entity.deps.json" target="lib\netstandard2.0\Afx.Data.MSSQLServer.Entity.deps.json" />
+	
+	<file src="..\Publish\Afx.Data.MSSQLServer.Entity\netcoreapp2.1\Afx.Data.MSSQLServer.Entity.dll" target="lib\netcoreapp2.1\Afx.Data.MSSQLServer.Entity" />
+	<file src="..\Publish\Afx.Data.MSSQLServer.Entity\netcoreapp2.1\Afx.Data.MSSQLServer.Entity.xml" target="lib\netcoreapp2.1\Afx.Data.MSSQLServer.Entity.xml" />
+	<file src="..\Publish\Afx.Data.MSSQLServer.Entity\netcoreapp2.1\Afx.Data.MSSQLServer.Entity.deps.json" target="lib\netcoreapp2.1\Afx.Data.MSSQLServer.Entity.deps.json" />
 	
 	<file src="..\Publish\Afx.Data.MSSQLServer.Entity\net452\Afx.Data.MSSQLServer.Entity.dll" target="lib\net452\Afx.Data.MSSQLServer.Entity.dll" />
 	<file src="..\Publish\Afx.Data.MSSQLServer.Entity\net452\Afx.Data.MSSQLServer.Entity.xml" target="lib\net452\Afx.Data.MSSQLServer.Entity.xml" />

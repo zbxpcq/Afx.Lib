@@ -5,11 +5,10 @@
     <Description>Afx.Tcp.Host .NET Standard 2.0</Description>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <Company>mycsv.cn</Company>
-    <PackageTags>mycsv.cn</PackageTags>
     <Authors>jerrylai@aliyun.com</Authors>
     <Product>Afx.Tcp.Host .NET Standard 2.0</Product>
     <PackageReleaseNotes>Afx.Tcp.Host .NET Standard 2.0</PackageReleaseNotes>
-    <Version>6.2.0</Version>
+    <Version>6.2.1</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
