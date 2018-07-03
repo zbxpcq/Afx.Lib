@@ -1,1 +1,1 @@
-DeleteDebug -dir=".vs,bin,obj" -f=".user"
+Tool\DeleteDebug -dir=".vs,bin,obj" -f=".user" dir="%cd%"

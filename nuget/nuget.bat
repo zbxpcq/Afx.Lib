@@ -1,4 +1,8 @@
+
+IF NOT EXIST "nupkg" MD "nupkg"
+
 cd nupkg
+
 ..\nuget pack ..\Afx.Base.nuspec
 ..\nuget pack ..\Afx.ActiveDirectory.nuspec
 ..\nuget pack ..\Afx.AspNetCore.Mvc.nuspec
