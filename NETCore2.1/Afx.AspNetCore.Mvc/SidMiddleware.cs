@@ -75,23 +75,28 @@ namespace Afx.AspNetCore.Mvc
 
             this.option.RequestSidCallback?.Invoke(oldSid);
 
-            await this.next.Invoke(context);
-
-            var newSid = oldSid;
-            if (this.option.ResponseSidCallback != null) newSid = this.option.ResponseSidCallback(oldSid);
-
-            if (oldSid != newSid && !string.IsNullOrEmpty(newSid))
+            context.Response.OnStarting((o) =>
             {
-                s = this.OnEncryptSid(newSid);
-                context.Response.Cookies.Append(this.option.Name, s, this.option.Cookie);
+                var newSid = o as string;
+                if (this.option.ResponseSidCallback != null) newSid = this.option.ResponseSidCallback(oldSid);
 
-                if (this.option.IsHeader)
+                if (oldSid != newSid && !string.IsNullOrEmpty(newSid))
                 {
-                    context.Request.Headers.Add(this.option.Name, s);
-                }
-            }
+                    s = this.OnEncryptSid(newSid);
+                    context.Response.Cookies.Append(this.option.Name, s, this.option.Cookie);
 
-            this.option.EndRequestCallback?.Invoke(context);
+                    if (this.option.IsHeader)
+                    {
+                        context.Request.Headers.Add(this.option.Name, s);
+                    }
+                }
+
+                this.option.EndRequestCallback?.Invoke(context);
+
+                return Task.CompletedTask;
+            }, oldSid);
+
+            await this.next.Invoke(context);
         }
     }
 }

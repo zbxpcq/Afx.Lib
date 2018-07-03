@@ -52,13 +52,14 @@ namespace Afx.Cache
             {
                 return (T)((object)data);
             }
+            
+            string json = Encoding.UTF8.GetString(data);
 
             if (typeof(T) == typeof(string))
             {
-                return (T)((object)data);
+                return (T)((object)json);
             }
 
-            string json = Encoding.UTF8.GetString(data);
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
         }
 
