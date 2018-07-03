@@ -4,94 +4,60 @@
         <name>Afx.Data.Entity</name>
     </assembly>
     <members>
-        <member name="T:Afx.Data.Entity.EntityLog.EntityLogger">
+        <member name="T:System.ComponentModel.DataAnnotations.DecimalAttribute">
             <summary>
-            Entity Logger
+            Decimal Attribute
             </summary>
         </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLogger.#ctor(Afx.Data.Entity.EntityContext,System.String)">
+        <member name="P:System.ComponentModel.DataAnnotations.DecimalAttribute.Precision">
             <summary>
-            Entity Logger
-            </summary>
-            <param name="context">EntityContext</param>
-            <param name="categoryName">categoryName</param>
-        </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLogger.BeginScope``1(``0)">
-            <summary>
-            return null
-            </summary>
-            <typeparam name="TState">TState</typeparam>
-            <param name="state">state</param>
-            <returns>null</returns>
-        </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLogger.Dispose">
-            <summary>
-            Dispose
+            总长度
             </summary>
         </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel)">
+        <member name="P:System.ComponentModel.DataAnnotations.DecimalAttribute.Scale">
             <summary>
-            return true
-            </summary>
-            <param name="logLevel"></param>
-            <returns>true</returns>
-        </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
-            <summary>
-            Log
-            </summary>
-            <typeparam name="TState">TState</typeparam>
-            <param name="logLevel">logLevel</param>
-            <param name="eventId">eventId</param>
-            <param name="state">state</param>
-            <param name="exception">exception</param>
-            <param name="formatter">formatter</param>
-        </member>
-        <member name="T:Afx.Data.Entity.EntityLog.EntityLoggerFactory">
-            <summary>
-            Entity LoggerFactory
+            小数位数
             </summary>
         </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLoggerFactory.AddProvider(Microsoft.Extensions.Logging.ILoggerProvider)">
+        <member name="M:System.ComponentModel.DataAnnotations.DecimalAttribute.#ctor(System.Int32,System.Int32)">
             <summary>
-            Entity LoggerFactory
+            构造函数
             </summary>
-            <param name="provider">Entity LoggerProvider</param>
+            <param name="precision">总长度</param>
+            <param name="scale">小数位数</param>
         </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLoggerFactory.CreateLogger(System.String)">
+        <member name="T:System.ComponentModel.DataAnnotations.IndexAttribute">
             <summary>
-            Creates a new Microsoft.Extensions.Logging.ILogger instance.
-            </summary>
-            <param name="categoryName">The category name for messages produced by the logger.</param>
-            <returns>Entity LoggerFactory</returns>
-        </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLoggerFactory.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            索引 Attribute
             </summary>
         </member>
-        <member name="T:Afx.Data.Entity.EntityLog.EntityLoggerProvider">
+        <member name="P:System.ComponentModel.DataAnnotations.IndexAttribute.Name">
             <summary>
-            Entity LoggerProvider
+            索引名称
             </summary>
         </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLoggerProvider.#ctor(Afx.Data.Entity.EntityContext)">
+        <member name="P:System.ComponentModel.DataAnnotations.IndexAttribute.IsUnique">
             <summary>
-            Entity LoggerProvider
+            是否唯一索引
             </summary>
-            <param name="context">EntityContext</param>
         </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLoggerProvider.CreateLogger(System.String)">
+        <member name="M:System.ComponentModel.DataAnnotations.IndexAttribute.#ctor">
             <summary>
-            CreateLogger
+            构造函数
             </summary>
-            <param name="categoryName">categoryName</param>
-            <returns></returns>
         </member>
-        <member name="M:Afx.Data.Entity.EntityLog.EntityLoggerProvider.Dispose">
+        <member name="M:System.ComponentModel.DataAnnotations.IndexAttribute.#ctor(System.String)">
             <summary>
-            释放资源
+            构造函数
             </summary>
+            <param name="name">索引名称</param>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.IndexAttribute.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="name">索引名称</param>
+            <param name="isUnique">是否唯一索引</param>
         </member>
         <member name="T:Afx.Data.Entity.EntityContext">
             <summary>
@@ -234,23 +200,6 @@
             <param name="acceptAllChangesOnSuccess">Indicates whether Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AcceptAllChanges  is called after the changes have been sent successfully to the database.</param>
             <param name="cancellationToken">A System.Threading.CancellationToken to observe while waiting for the task to complete.</param>
             <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
-        </member>
-        <member name="F:Afx.Data.Entity.EntityContext.Log">
-            <summary>
-            sql logs action.
-            </summary>
-        </member>
-        <member name="M:Afx.Data.Entity.EntityContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
-            <summary>
-            Override this method to configure the database (and other options) to be used
-            for this context. This method is called for each instance of the context that
-            is created. The base implementation does nothing.
-            In situations where an instance of Microsoft.EntityFrameworkCore.DbContextOptions
-            may or may not have been passed to the constructor, you can use Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.IsConfigured
-            to determine if the options have already been set, and skip some or all of the
-            logic in Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder).
-            </summary>
-            <param name="optionsBuilder">A builder used to create or modify options for this context. Databases (and other extensions) typically define extension methods on this object that allow you to configure the context.</param>
         </member>
         <member name="M:Afx.Data.Entity.EntityContext.Dispose">
             <summary>
@@ -704,12 +653,12 @@
             <param name="index">索引名称</param>
             <returns></returns>
         </member>
-        <member name="M:Afx.Data.Entity.Schema.ITableSchema.GetModelType(System.Type)">
+        <member name="M:Afx.Data.Entity.Schema.ITableSchema.GetModelType``1">
             <summary>
             获取所有model type
             </summary>
-            <param name="dbContextType">dbContext Type</param>
-            <returns>model type</returns>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
         </member>
         <member name="M:Afx.Data.Entity.Schema.ITableSchema.GetTableName(System.Type)">
             <summary>
@@ -887,12 +836,12 @@
             <param name="table">表名</param>
             <returns>列信息</returns>
         </member>
-        <member name="M:Afx.Data.Entity.Schema.TableSchema.GetModelType(System.Type)">
+        <member name="M:Afx.Data.Entity.Schema.TableSchema.GetModelType``1">
             <summary>
             获取所有model type
             </summary>
-            <param name="dbContextType">dbContext Type</param>
-            <returns>model type</returns>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
         </member>
         <member name="M:Afx.Data.Entity.Schema.TableSchema.GetTableName(System.Type)">
             <summary>
@@ -930,61 +879,6 @@
             <summary>
             释放资源
             </summary>
-        </member>
-        <member name="T:System.ComponentModel.DataAnnotations.DecimalAttribute">
-            <summary>
-            Decimal Attribute
-            </summary>
-        </member>
-        <member name="P:System.ComponentModel.DataAnnotations.DecimalAttribute.Precision">
-            <summary>
-            总长度
-            </summary>
-        </member>
-        <member name="P:System.ComponentModel.DataAnnotations.DecimalAttribute.Scale">
-            <summary>
-            小数位数
-            </summary>
-        </member>
-        <member name="M:System.ComponentModel.DataAnnotations.DecimalAttribute.#ctor(System.Int32,System.Int32)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="precision">总长度</param>
-            <param name="scale">小数位数</param>
-        </member>
-        <member name="T:System.ComponentModel.DataAnnotations.IndexAttribute">
-            <summary>
-            索引 Attribute
-            </summary>
-        </member>
-        <member name="P:System.ComponentModel.DataAnnotations.IndexAttribute.Name">
-            <summary>
-            索引名称
-            </summary>
-        </member>
-        <member name="P:System.ComponentModel.DataAnnotations.IndexAttribute.IsUnique">
-            <summary>
-            是否唯一索引
-            </summary>
-        </member>
-        <member name="M:System.ComponentModel.DataAnnotations.IndexAttribute.#ctor">
-            <summary>
-            构造函数
-            </summary>
-        </member>
-        <member name="M:System.ComponentModel.DataAnnotations.IndexAttribute.#ctor(System.String)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="name">索引名称</param>
-        </member>
-        <member name="M:System.ComponentModel.DataAnnotations.IndexAttribute.#ctor(System.String,System.Boolean)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="name">索引名称</param>
-            <param name="isUnique">是否唯一索引</param>
         </member>
     </members>
 </doc>

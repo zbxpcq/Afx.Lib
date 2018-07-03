@@ -7,10 +7,10 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Afx.Tcp.Host/6.2.2": {
+      "Afx.Tcp.Host/6.2.4.0": {
         "dependencies": {
-          "Afx.Sockets": "6.2.2",
-          "Afx.Tcp.Protocols": "6.2.2",
+          "Afx.Sockets": "6.2.4",
+          "Afx.Tcp.Protocols": "6.2.4",
           "NETStandard.Library": "2.0.3"
         },
         "runtime": {
@@ -367,14 +367,14 @@
           }
         }
       },
-      "Afx.Sockets/6.2.2": {
+      "Afx.Sockets/6.2.4": {
         "runtime": {
           "Afx.Sockets.dll": {}
         }
       },
-      "Afx.Tcp.Protocols/6.2.2": {
+      "Afx.Tcp.Protocols/6.2.4": {
         "dependencies": {
-          "Afx.Sockets": "6.2.2",
+          "Afx.Sockets": "6.2.4",
           "protobuf-net": "2.3.13"
         },
         "runtime": {
@@ -384,7 +384,7 @@
     }
   },
   "libraries": {
-    "Afx.Tcp.Host/6.2.2": {
+    "Afx.Tcp.Host/6.2.4.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -620,12 +620,12 @@
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
-    "Afx.Sockets/6.2.2": {
+    "Afx.Sockets/6.2.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Afx.Tcp.Protocols/6.2.2": {
+    "Afx.Tcp.Protocols/6.2.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

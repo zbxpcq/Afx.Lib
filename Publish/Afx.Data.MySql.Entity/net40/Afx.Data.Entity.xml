@@ -603,8 +603,8 @@
             <summary>
             获取所有model type
             </summary>
-            <param name="dbContextType">dbContext Type</param>
-            <returns>model type</returns>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
         </member>
         <member name="M:Afx.Data.Entity.Schema.ITableSchema.GetTableName(System.Type)">
             <summary>
@@ -786,8 +786,8 @@
             <summary>
             获取所有model type
             </summary>
-            <param name="dbContextType">dbContext Type</param>
-            <returns>model type</returns>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
         </member>
         <member name="M:Afx.Data.Entity.Schema.TableSchema.GetTableName(System.Type)">
             <summary>

@@ -89,8 +89,8 @@ namespace Afx.Data.Entity.Schema
         /// <summary>
         /// 获取所有model type
         /// </summary>
-        /// <param name="dbContextType">dbContext Type</param>
-        /// <returns>model type</returns>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         List<Type> GetModelType<T>() where T: EntityContext;
         
         /// <summary>
