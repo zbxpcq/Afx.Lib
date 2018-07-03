@@ -599,7 +599,7 @@
             <param name="index">索引名称</param>
             <returns></returns>
         </member>
-        <member name="M:Afx.Data.Entity.Schema.ITableSchema.GetModelType(System.Type)">
+        <member name="M:Afx.Data.Entity.Schema.ITableSchema.GetModelType``1">
             <summary>
             获取所有model type
             </summary>
@@ -782,7 +782,7 @@
             <param name="table">表名</param>
             <returns>列信息</returns>
         </member>
-        <member name="M:Afx.Data.Entity.Schema.TableSchema.GetModelType(System.Type)">
+        <member name="M:Afx.Data.Entity.Schema.TableSchema.GetModelType``1">
             <summary>
             获取所有model type
             </summary>

@@ -98,10 +98,9 @@ namespace Afx.Data.Entity.Schema
         /// </summary>
         /// <param name="dbContextType">dbContext Type</param>
         /// <returns>model type</returns>
-        public virtual List<Type> GetModelType(Type dbContextType)
+        public virtual List<Type> GetModelType<T>() where T : EntityContext
         {
-            if (dbContextType == null) throw new ArgumentNullException("dbContextType");
-            if(typeof(DbContext).IsAssignableFrom(dbContextType)) throw new ArgumentException("dbContextType is not DbContext type!");
+            var dbContextType = typeof(T);
             var arr = dbContextType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             List<Type> list = new List<Type>(arr != null ? arr.Length : 0);

@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 using System.Threading;
 #if NETCOREAPP || NETSTANDARD
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Afx.Data.Entity.EntityLog;
 #else
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -321,34 +319,6 @@ namespace Afx.Data.Entity
             return count;
         }
 
-        /// <summary>
-        /// sql logs action.
-        /// </summary>
-        public Action<string> Log;
-        private bool isAddLoggerFactory = false;
-        /// <summary>
-        /// Override this method to configure the database (and other options) to be used
-        /// for this context. This method is called for each instance of the context that
-        /// is created. The base implementation does nothing.
-        /// In situations where an instance of Microsoft.EntityFrameworkCore.DbContextOptions
-        /// may or may not have been passed to the constructor, you can use Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.IsConfigured
-        /// to determine if the options have already been set, and skip some or all of the
-        /// logic in Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder).
-        /// </summary>
-        /// <param name="optionsBuilder">A builder used to create or modify options for this context. Databases (and other extensions) typically define extension methods on this object that allow you to configure the context.</param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!this.isAddLoggerFactory)
-            {
-                this.isAddLoggerFactory = true;
-                var loggerFactory = new EntityLoggerFactory();
-                loggerFactory.AddProvider(new EntityLoggerProvider(this));
-                optionsBuilder.UseLoggerFactory(loggerFactory);
-            }
-
-            base.OnConfiguring(optionsBuilder);
-        }
-        
         /// <summary>
         /// 释放，并回滚未提交事务
         /// </summary>

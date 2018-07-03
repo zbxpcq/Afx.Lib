@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if NETCOREAPP || NETSTANDARD
+using Microsoft.EntityFrameworkCore;
+#else
+using System.Data.Entity;
+#endif
 
 namespace Afx.Data.Entity.Schema
 {
@@ -32,13 +37,12 @@ namespace Afx.Data.Entity.Schema
         /// <typeparam name="T">EntityContext</typeparam>
         public virtual void Build<T>() where T : EntityContext
         {
-            Type dbContextType = typeof(T);
             bool count = databaseSchema.Exist();
             if (count == false)
                 databaseSchema.CreateDatabase();
 
             List<string> tables = tableSchema.GetTables();
-            List<Type> modelTypes = tableSchema.GetModelType(dbContextType);
+            List<Type> modelTypes = tableSchema.GetModelType<T>();
             foreach (var t in modelTypes)
             {
                 string tb = tableSchema.GetTableName(t);
