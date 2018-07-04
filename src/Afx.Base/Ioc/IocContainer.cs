@@ -35,9 +35,9 @@ namespace Afx.Ioc
         /// <summary>
         /// IocContainer
         /// </summary>
-        /// <param name="isEnabledAop">true:Enabled Aop, false: disabled Aop</param>
-        public IocContainer(bool isEnabledAop)
-            : this(null, isEnabledAop)
+        /// <param name="enabledAop">true:Enabled Aop, false: disabled Aop</param>
+        public IocContainer(bool enabledAop)
+            : this(null, enabledAop)
         {
 
         }
@@ -55,8 +55,8 @@ namespace Afx.Ioc
         /// 构造函数
         /// </summary>
         /// <param name="configFile">配置文件</param>
-        /// <param name="isEnabledAop">是否使用Aop</param>
-        public IocContainer(string configFile, bool isEnabledAop)
+        /// <param name="enabledAop">是否使用Aop</param>
+        public IocContainer(string configFile, bool enabledAop)
         {
             if (!string.IsNullOrEmpty(configFile))
             {
@@ -68,7 +68,7 @@ namespace Afx.Ioc
             this.m_rwLock = new ReadWriteLock();
             this.m_dicType = new Dictionary<Type, List<Type>>();
 
-            if (isEnabledAop) this.m_aopProxy = new AopProxy();
+            if (enabledAop) this.m_aopProxy = new AopProxy();
 
             if (!string.IsNullOrEmpty(configFile)) this.Load(configFile);
         }
@@ -269,8 +269,8 @@ namespace Afx.Ioc
             {
                 if (classElement.Name == "Class")
                 {
-                    var name = classElement.GetAttribute("name");
-                    if (string.IsNullOrEmpty(name)) continue;
+                    var interfaceName = classElement.GetAttribute("interface");
+                    if (string.IsNullOrEmpty(interfaceName)) continue;
                     var s = classElement.GetAttribute("type");
                     if (string.IsNullOrEmpty(s)) continue;
                     var arr = s.Split(',');
@@ -290,7 +290,7 @@ namespace Afx.Ioc
                     var type = assembly.GetType(t, false);
                     if (type != null && type.IsClass && !type.IsAbstract)
                     {
-                        var intefaces = type.GetInterface(name);
+                        var intefaces = type.GetInterface(interfaceName);
                         if (intefaces == null) continue;
                         using (this.m_rwLock.GetWriteLock())
                         {
