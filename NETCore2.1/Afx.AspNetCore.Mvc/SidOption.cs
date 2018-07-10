@@ -32,7 +32,12 @@ namespace Afx.AspNetCore.Mvc
         public EndRequestCallback EndRequestCallback;
 
         /// <summary>
-        /// sid 是否存在header
+        /// sid 是否存在 IsQueryString (level 1)
+        /// </summary>
+        public bool IsQueryString { get; set; } = false;
+
+        /// <summary>
+        /// sid 是否存在header  (level 2)
         /// </summary>
         public bool IsHeader { get; set; } = false;
         /// <summary>
@@ -60,7 +65,7 @@ namespace Afx.AspNetCore.Mvc
 
         private CookieOptions cookieOptions = new CookieOptions() { HttpOnly=true, Path="/" };
         /// <summary>
-        /// CookieOptions
+        /// CookieOptions (level 3)
         /// </summary>
         public CookieOptions Cookie { get { return this.cookieOptions; } }
     }

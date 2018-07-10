@@ -90,9 +90,14 @@
             请求结束回调
             </summary>
         </member>
+        <member name="P:Afx.AspNetCore.Mvc.SidOption.IsQueryString">
+            <summary>
+            sid 是否存在 IsQueryString (level 1)
+            </summary>
+        </member>
         <member name="P:Afx.AspNetCore.Mvc.SidOption.IsHeader">
             <summary>
-            sid 是否存在header
+            sid 是否存在header  (level 2)
             </summary>
         </member>
         <member name="F:Afx.AspNetCore.Mvc.SidOption.EncryptSid">
@@ -112,7 +117,7 @@
         </member>
         <member name="P:Afx.AspNetCore.Mvc.SidOption.Cookie">
             <summary>
-            CookieOptions
+            CookieOptions (level 3)
             </summary>
         </member>
         <member name="T:Microsoft.Extensions.DependencyInjection.NamespaceRouteExtensions">

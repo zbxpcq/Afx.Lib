@@ -103,8 +103,6 @@ namespace Afx.HttpClient
                 }
 
                 this._baseAddress = value;
-                if (!this._baseAddress.EndsWith("/"))
-                    this._baseAddress = this._baseAddress + "/";
             }
         }
 
@@ -211,10 +209,12 @@ namespace Afx.HttpClient
             if (string.IsNullOrEmpty(this.BaseAddress))
                 throw new ArgumentException("Request BaseAddress is empty!");
 
-            if (url == null) url = "";
+            if (string.IsNullOrEmpty(url)) return this.BaseAddress;
             
-            if (url.StartsWith("/"))
+            if (url.StartsWith("/") && this.BaseAddress.EndsWith("/"))
                 url = this.BaseAddress + url.TrimStart('/');
+            else if (!url.StartsWith("/") && !this.BaseAddress.EndsWith("/"))
+                url = this.BaseAddress + "/" + url;
             else
                 url = this.BaseAddress + url;
             
@@ -250,9 +250,9 @@ namespace Afx.HttpClient
                 }
             }
 
-
-            request.Credentials = CredentialCache.DefaultCredentials;
             if (this.UseDefaultCredentials.HasValue) request.UseDefaultCredentials = this.UseDefaultCredentials.Value;
+            request.Credentials = CredentialCache.DefaultCredentials;
+
 #if !NET40 &&  !NET20
             if (this.ServerCertificateValidationCallback != null) request.ServerCertificateValidationCallback = this.ServerCertificateValidationCallback;
 #endif

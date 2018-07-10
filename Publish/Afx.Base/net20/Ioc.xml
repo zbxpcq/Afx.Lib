@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Ioc>
-    <Global defaultAssembly="MyTest.dll">
-        <Aop type="ConsoleAppTest.GlobalAop,ConsoleAppTest"></Aop>
+    <Global defaultAssembly="">
+        <Aop type=""></Aop>
     </Global>
     <Object>
-        <Class name="ITestAdd" type="MyTest.TestAdd">
-            <Aop type="ConsoleAppTest.ClassAop,ConsoleAppTest"></Aop>
+        <Class interface="" type="">
+            <Aop type=""></Aop>
         </Class>
     </Object>
 </Ioc>

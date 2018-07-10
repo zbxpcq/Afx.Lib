@@ -1018,7 +1018,7 @@
             <summary>
             IocContainer
             </summary>
-            <param name="isEnabledAop">true:Enabled Aop, false: disabled Aop</param>
+            <param name="enabledAop">true:Enabled Aop, false: disabled Aop</param>
         </member>
         <member name="M:Afx.Ioc.IocContainer.#ctor(System.String)">
             <summary>
@@ -1031,7 +1031,7 @@
             构造函数
             </summary>
             <param name="configFile">配置文件</param>
-            <param name="isEnabledAop">是否使用Aop</param>
+            <param name="enabledAop">是否使用Aop</param>
         </member>
         <member name="M:Afx.Ioc.IocContainer.Load(System.String)">
             <summary>

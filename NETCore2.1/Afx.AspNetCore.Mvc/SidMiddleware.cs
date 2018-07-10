@@ -57,32 +57,45 @@ namespace Afx.AspNetCore.Mvc
         {
             this.option.BeginRequestCallback?.Invoke(context);
 
-            string oldSid = null;
-            string s = null;
-            if (context.Request.Cookies.TryGetValue(this.option.Name, out s))
-            {
-                oldSid = this.OnDecryptSid(s);
-            }
-
-            if (this.option.IsHeader && string.IsNullOrEmpty(oldSid))
+            string sid = null;
+            if (this.option.IsQueryString)
             {
                 Microsoft.Extensions.Primitives.StringValues v;
                 if (context.Request.Headers.TryGetValue(this.option.Name, out v) && v.Count > 0)
                 {
-                    oldSid = this.OnDecryptSid(v.FirstOrDefault());
+                    sid = this.OnDecryptSid(v.FirstOrDefault());
                 }
             }
 
-            this.option.RequestSidCallback?.Invoke(oldSid);
+            if (string.IsNullOrEmpty(sid) && this.option.IsHeader)
+            {
+                Microsoft.Extensions.Primitives.StringValues v;
+                if (context.Request.Headers.TryGetValue(this.option.Name, out v) && v.Count > 0)
+                {
+                    sid = this.OnDecryptSid(v.FirstOrDefault());
+                }
+            }
+
+            if (string.IsNullOrEmpty(sid))
+            {
+                string s = null;
+                if (context.Request.Cookies.TryGetValue(this.option.Name, out s))
+                {
+                    sid = this.OnDecryptSid(s);
+                }
+            }
+
+            this.option.RequestSidCallback?.Invoke(sid);
 
             context.Response.OnStarting((o) =>
             {
-                var newSid = o as string;
-                if (this.option.ResponseSidCallback != null) newSid = this.option.ResponseSidCallback(oldSid);
+                var oldsid = o as string;
+                var newsid = oldsid;
+                if (this.option.ResponseSidCallback != null) newsid = this.option.ResponseSidCallback(oldsid);
 
-                if (oldSid != newSid && !string.IsNullOrEmpty(newSid))
+                if (oldsid != newsid && !string.IsNullOrEmpty(newsid))
                 {
-                    s = this.OnEncryptSid(newSid);
+                    var s = this.OnEncryptSid(newsid);
                     context.Response.Cookies.Append(this.option.Name, s, this.option.Cookie);
 
                     if (this.option.IsHeader)
@@ -94,7 +107,7 @@ namespace Afx.AspNetCore.Mvc
                 this.option.EndRequestCallback?.Invoke(context);
 
                 return Task.CompletedTask;
-            }, oldSid);
+            }, sid);
 
             await this.next.Invoke(context);
         }
