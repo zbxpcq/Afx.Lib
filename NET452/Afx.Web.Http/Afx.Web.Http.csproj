@@ -67,9 +67,6 @@
     <Compile Include="..\..\src\Assembly.cs">
       <Link>Properties\Assembly.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Afx.Web.Http\BaseApiController.cs">
-      <Link>Controller\BaseApiController.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\Afx.Web.Http\ModelInfo.cs">
       <Link>ModelInfo.cs</Link>
     </Compile>
@@ -88,6 +85,7 @@
     <Compile Include="..\..\src\Afx.Web.Http\SidMessageHandler.cs">
       <Link>SidMessageHandler.cs</Link>
     </Compile>
+    <Compile Include="Controller\AfxController.cs" />
     <Compile Include="Extensions\SidExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

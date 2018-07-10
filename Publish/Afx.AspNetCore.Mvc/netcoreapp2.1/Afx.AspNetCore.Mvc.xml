@@ -100,6 +100,11 @@
             sid 是否存在header  (level 2)
             </summary>
         </member>
+        <member name="P:Afx.AspNetCore.Mvc.SidOption.IsCookie">
+            <summary>
+            sid 是否存在IsCookie  (level 3)
+            </summary>
+        </member>
         <member name="F:Afx.AspNetCore.Mvc.SidOption.EncryptSid">
             <summary>
             sid 加密回调
@@ -117,7 +122,7 @@
         </member>
         <member name="P:Afx.AspNetCore.Mvc.SidOption.Cookie">
             <summary>
-            CookieOptions (level 3)
+            CookieOptions
             </summary>
         </member>
         <member name="T:Microsoft.Extensions.DependencyInjection.NamespaceRouteExtensions">

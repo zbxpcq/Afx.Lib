@@ -7,9 +7,9 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Afx.Data.Extensions/6.2.6.0": {
+      "Afx.Data.Extensions/6.2.7.0": {
         "dependencies": {
-          "Afx.Data": "6.2.6",
+          "Afx.Data": "6.2.7",
           "NETStandard.Library": "2.0.3",
           "System.Reflection.Emit": "4.3.0"
         },
@@ -97,7 +97,7 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "Afx.Data/6.2.6": {
+      "Afx.Data/6.2.7": {
         "runtime": {
           "Afx.Data.dll": {}
         }
@@ -105,7 +105,7 @@
     }
   },
   "libraries": {
-    "Afx.Data.Extensions/6.2.6.0": {
+    "Afx.Data.Extensions/6.2.7.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -187,7 +187,7 @@
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
     },
-    "Afx.Data/6.2.6": {
+    "Afx.Data/6.2.7": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -124,9 +124,19 @@
             
             </summary>
         </member>
+        <member name="P:Afx.Web.Http.SidMessageHandler.IsQueryString">
+            <summary>
+            sid 是否存放 IsQueryString (level 1)
+            </summary>
+        </member>
         <member name="P:Afx.Web.Http.SidMessageHandler.IsHeader">
             <summary>
-            
+            sid 是否存放 header  (level 2)
+            </summary>
+        </member>
+        <member name="P:Afx.Web.Http.SidMessageHandler.IsCookie">
+            <summary>
+            sid 是否存放 Cookie  (level 3) 默认true
             </summary>
         </member>
         <member name="F:Afx.Web.Http.SidMessageHandler.EncryptSid">
@@ -222,50 +232,50 @@
             <param name="namespaces"></param>
             <returns></returns>
         </member>
-        <member name="T:System.Web.Http.BaseApiController">
+        <member name="T:System.Web.Http.AfxController">
             <summary>
-            BaseApiController
+            AfxController
             </summary>
         </member>
-        <member name="P:System.Web.Http.BaseApiController.Form">
+        <member name="P:System.Web.Http.AfxController.Form">
             <summary>
             Form
             </summary>
         </member>
-        <member name="P:System.Web.Http.BaseApiController.Files">
+        <member name="P:System.Web.Http.AfxController.Files">
             <summary>
             Files
             </summary>
         </member>
-        <member name="P:System.Web.Http.BaseApiController.IsJson">
+        <member name="P:System.Web.Http.AfxController.IsJson">
             <summary>
             IsJson
             </summary>
         </member>
-        <member name="P:System.Web.Http.BaseApiController.RequestBody">
+        <member name="P:System.Web.Http.AfxController.RequestBody">
             <summary>
             RequestBody
             </summary>
         </member>
-        <member name="M:System.Web.Http.BaseApiController.GetRequestBytes">
+        <member name="M:System.Web.Http.AfxController.GetRequestBytes">
             <summary>
             GetRequestBytes
             </summary>
             <returns></returns>
         </member>
-        <member name="P:System.Web.Http.BaseApiController.QueryString">
+        <member name="P:System.Web.Http.AfxController.QueryString">
             <summary>
             QueryString
             </summary>
         </member>
-        <member name="M:System.Web.Http.BaseApiController.GetModel``1">
+        <member name="M:System.Web.Http.AfxController.GetModel``1">
             <summary>
             GetModel
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:System.Web.Http.BaseApiController.ValidModel``1(``0)">
+        <member name="M:System.Web.Http.AfxController.ValidModel``1(``0)">
             <summary>
             ValidModel
             </summary>
@@ -273,7 +283,7 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:System.Web.Http.BaseApiController.Dispose(System.Boolean)">
+        <member name="M:System.Web.Http.AfxController.Dispose(System.Boolean)">
             <summary>
             Dispose
             </summary>

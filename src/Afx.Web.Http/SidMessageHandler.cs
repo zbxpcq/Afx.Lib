@@ -59,80 +59,46 @@ namespace Afx.Web.Http
             }
         }
 
-        private string cookieDomain = null;
         /// <summary>
         /// 
         /// </summary>
-        public string CookieDomain
-        {
-            get { return cookieDomain; }
-            set
-            {
-                cookieDomain = value;
-            }
-        }
+        public string CookieDomain { get; set; }
 
-        private bool cookieHttpOnly = true;
         /// <summary>
         /// 
         /// </summary>
-        public bool CookieHttpOnly
-        {
-            get { return cookieHttpOnly; }
-            set
-            {
-                cookieHttpOnly = value;
-            }
-        }
+        public bool CookieHttpOnly { get; set; } = true;
 
-        private bool cookieSecure = false;
         /// <summary>
         /// 
         /// </summary>
-        public bool CookieSecure
-        {
-            get { return cookieSecure; }
-            set
-            {
-                cookieSecure = value;
-            }
-        }
+        public bool CookieSecure { get; set; } = false;
 
-        private TimeSpan? cookieMaxAge = null;
         /// <summary>
         /// 
         /// </summary>
-        public TimeSpan? CookieMaxAge
-        {
-            get { return cookieMaxAge; }
-            set
-            {
-                cookieMaxAge = value;
-            }
-        }
+        public TimeSpan? CookieMaxAge { get; set; }
 
-        private DateTimeOffset? cookieExpires = null;
         /// <summary>
         /// 
         /// </summary>
-        public DateTimeOffset? CookieExpires
-        {
-            get { return cookieExpires; }
-            set
-            {
-                cookieExpires = value;
-            }
-        }
+        public DateTimeOffset? CookieExpires { get; set; }
 
-        private bool isHeader = false;
         /// <summary>
-        /// 
+        /// sid 是否存放 IsQueryString (level 1)
         /// </summary>
-        public bool IsHeader
-        {
-            get { return this.isHeader; }
-            set { this.isHeader = value; }
-        }
+        public bool IsQueryString { get; set; } = false;
+
+        /// <summary>
+        /// sid 是否存放 header  (level 2)
+        /// </summary>
+        public bool IsHeader { get; set; } = false;
+
+        /// <summary>
+        /// sid 是否存放 Cookie  (level 3) 默认true
+        /// </summary>
+        public bool IsCookie { get; set; } = true;
+
         /// <summary>
         /// 
         /// </summary>
@@ -198,34 +164,45 @@ namespace Afx.Web.Http
         {
             this.BeginRequestCallback?.Invoke(request);
 
-            string oldSid = null;
-            var cookie = request.Headers.GetCookies(Name).FirstOrDefault();
-            if (cookie != null)
+            string sid = null;
+            if(this.IsQueryString)
             {
-                oldSid = this.OnDecryptSid(cookie[this.Name].Value);
+               var queryString = request.RequestUri.ParseQueryString();
+                sid = this.OnDecryptSid(queryString?.GetValues(this.Name)?.FirstOrDefault());
             }
 
-            if(this.IsHeader && string.IsNullOrEmpty(oldSid))
+            if(this.IsHeader && string.IsNullOrEmpty(sid))
             {
                 IEnumerable<string> v = null;
                 if(request.Headers.TryGetValues(this.Name, out v))
                 {
-                    oldSid = this.OnDecryptSid(v?.FirstOrDefault());
+                    sid = this.OnDecryptSid(v?.FirstOrDefault());
+                }
+            }
+
+            if(this.IsCookie && string.IsNullOrEmpty(sid))
+            {
+                var cookie = request.Headers.GetCookies(Name).FirstOrDefault();
+                if (cookie != null)
+                {
+                    sid = this.OnDecryptSid(cookie[this.Name].Value);
                 }
             }
             
-            this.RequestSidCallback?.Invoke(oldSid);
+            this.RequestSidCallback?.Invoke(sid);
 
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
-            var newSid = oldSid;
-            if (this.ResponseSidCallback != null) newSid = this.ResponseSidCallback(oldSid);
+            var newSid = sid;
+            if (this.ResponseSidCallback != null) newSid = this.ResponseSidCallback(sid);
 
-            if (oldSid != newSid && !string.IsNullOrEmpty(newSid))
+            if (sid != newSid && !string.IsNullOrEmpty(newSid))
             {
                 var s = this.OnEncryptSid(newSid);
-                response.Headers.AddCookies(new CookieHeaderValue[]
+                if (this.IsCookie)
                 {
+                    response.Headers.AddCookies(new CookieHeaderValue[]
+                    {
                     new CookieHeaderValue(this.Name, s)
                     {
                         HttpOnly = this.CookieHttpOnly,
@@ -235,7 +212,8 @@ namespace Afx.Web.Http
                         MaxAge = this.CookieMaxAge,
                         Expires = this.CookieExpires
                     }
-                });
+                    });
+                }
 
                 if(this.IsHeader)
                 {

@@ -19,9 +19,9 @@ namespace Afx.Web.Http
     {
         private static ConcurrentDictionary<string, ModelInfo> ModelInfoDic = new ConcurrentDictionary<string, ModelInfo>();
 
-        protected BaseApiController m_controller;
+        protected AfxController m_controller;
 
-        internal ModelStateBinder(BaseApiController controller)
+        internal ModelStateBinder(AfxController controller)
         {
             this.m_controller = controller;
         }

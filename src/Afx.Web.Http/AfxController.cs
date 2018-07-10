@@ -164,12 +164,7 @@ namespace System.Web.Http
             {
                 if (this.m_queryString == null)
                 {
-                    var query = this.Request.GetQueryNameValuePairs();
-                    this.m_queryString = new NameValueCollection(query.Count());
-                    foreach(KeyValuePair<string, string> kv in query)
-                    {
-                        this.m_queryString.Set(kv.Key, kv.Value);
-                    }
+                    m_queryString = this.Request.RequestUri.ParseQueryString();
                 }
 
                 return this.m_queryString;
