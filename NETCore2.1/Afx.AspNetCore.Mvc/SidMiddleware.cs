@@ -76,7 +76,7 @@ namespace Afx.AspNetCore.Mvc
                 }
             }
 
-            if (string.IsNullOrEmpty(sid))
+            if (string.IsNullOrEmpty(sid) && this.option.IsCookie)
             {
                 string s = null;
                 if (context.Request.Cookies.TryGetValue(this.option.Name, out s))
@@ -96,7 +96,10 @@ namespace Afx.AspNetCore.Mvc
                 if (oldsid != newsid && !string.IsNullOrEmpty(newsid))
                 {
                     var s = this.OnEncryptSid(newsid);
-                    context.Response.Cookies.Append(this.option.Name, s, this.option.Cookie);
+                    if (this.option.IsCookie)
+                    {
+                        context.Response.Cookies.Append(this.option.Name, s, this.option.Cookie);
+                    }
 
                     if (this.option.IsHeader)
                     {

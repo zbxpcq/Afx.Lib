@@ -40,6 +40,12 @@ namespace Afx.AspNetCore.Mvc
         /// sid 是否存在header  (level 2)
         /// </summary>
         public bool IsHeader { get; set; } = false;
+
+        /// <summary>
+        /// sid 是否存在IsCookie  (level 3)
+        /// </summary>
+        public bool IsCookie { get; set; } = true;
+
         /// <summary>
         /// sid 加密回调
         /// </summary>
@@ -65,7 +71,7 @@ namespace Afx.AspNetCore.Mvc
 
         private CookieOptions cookieOptions = new CookieOptions() { HttpOnly=true, Path="/" };
         /// <summary>
-        /// CookieOptions (level 3)
+        /// CookieOptions
         /// </summary>
         public CookieOptions Cookie { get { return this.cookieOptions; } }
     }
