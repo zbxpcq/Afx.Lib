@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>6.2.7.0</Version>
+    <Version>6.2.8.0</Version>
     <Company>mycsv.cn</Company>
     <PackageTags>
     </PackageTags>

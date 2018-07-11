@@ -4,6 +4,43 @@
         <name>Afx.Base</name>
     </assembly>
     <members>
+        <member name="T:Afx.Utils.EnumUtils">
+            <summary>
+            EnumUtils
+            </summary>
+        </member>
+        <member name="M:Afx.Utils.EnumUtils.GetValue(System.Enum)">
+            <summary>
+            GetValue
+            </summary>
+            <param name="enum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.EnumUtils.GetName(System.Enum)">
+            <summary>
+            GetName
+            </summary>
+            <param name="enum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.EnumUtils.GetDisplayName(System.Enum,System.String,System.String)">
+            <summary>
+            GetDisplayName
+            </summary>
+            <param name="enum"></param>
+            <param name="langue"></param>
+            <param name="directory"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Utils.EnumUtils.GetDescription(System.Enum,System.String,System.String)">
+            <summary>
+            GetDescription
+            </summary>
+            <param name="enum"></param>
+            <param name="langue"></param>
+            <param name="directory"></param>
+            <returns></returns>
+        </member>
         <member name="T:Afx.Utils.DiskFreeSpaceModel">
             <summary>
             磁盘信息

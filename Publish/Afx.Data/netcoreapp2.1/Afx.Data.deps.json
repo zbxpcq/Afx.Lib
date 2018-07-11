@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Afx.Data/6.2.7.0": {
+      "Afx.Data/6.2.8.0": {
         "runtime": {
           "Afx.Data.dll": {}
         }
@@ -14,7 +14,7 @@
     }
   },
   "libraries": {
-    "Afx.Data/6.2.7.0": {
+    "Afx.Data/6.2.8.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

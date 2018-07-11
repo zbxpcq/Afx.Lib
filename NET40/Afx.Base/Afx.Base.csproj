@@ -47,6 +47,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\Afx.Base\Utils\EnumUtils.cs">
+      <Link>Utils\EnumUtils.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\Models\DiskFreeSpaceModel.cs">
       <Link>Utils\Models\DiskFreeSpaceModel.cs</Link>
     </Compile>
