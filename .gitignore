@@ -4,7 +4,7 @@
 
 *.user
 /.vs
-/nuget/nupkg
+/nupkg
 /NET452/packages
 /NET40/packages
 /NET20/packages
