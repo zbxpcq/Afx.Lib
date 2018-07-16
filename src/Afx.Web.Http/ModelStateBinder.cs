@@ -32,15 +32,15 @@ namespace Afx.Web.Http
             var t = typeof(TModel);
             if(t.IsClass && t.IsPublic && !t.IsAbstract)
             {
-                model = Activator.CreateInstance<TModel>();
+                var upmodel = Activator.CreateInstance<TModel>();
                 ModelInfo info = GetModelInfo(t);
                 if (info.PropertyDic != null && info.PropertyDic.Count > 0)
                 {
-                    bool isUp = UpdateModel(model, info.PropertyDic, null);
+                    bool isUp = UpdateModel(upmodel, info.PropertyDic, null);
                     //if (isUp)
-                    //{
-
-                    //}
+                    {
+                        model = upmodel;
+                    }
                 }
             }
 

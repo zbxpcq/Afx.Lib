@@ -101,10 +101,11 @@ namespace System.Web.Http
                     if (!Directory.Exists(tempPath)) Directory.CreateDirectory(tempPath);
                     MultipartFormDataStreamProvider provider = new MultipartFormDataStreamProvider(tempPath);
                     var task = this.Request.Content.ReadAsMultipartAsync(provider);
-                    if(!task.Wait(5 * 1000))
-                    {
+                    //if(!task.Wait(10 * 1000))
+                    //{
 
-                    }
+                    //}
+                    task.Wait();
                     this.m_form = provider.FormData;
                     this.m_files = provider.FileData;
                 }
@@ -210,6 +211,21 @@ namespace System.Web.Http
 
             return this.m_modelState.IsValid(model);
         }
+
+        /// <summary>
+        /// ValidModel
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        protected virtual bool ValidModel<T>(T model, out string error)
+        {
+            if (this.m_modelState == null) this.m_modelState = new ModelStateBinder(this);
+
+            return this.m_modelState.IsValid(model, out error);
+        }
+
         /// <summary>
         /// Dispose
         /// </summary>
