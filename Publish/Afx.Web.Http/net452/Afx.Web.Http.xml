@@ -283,6 +283,15 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:System.Web.Http.AfxController.ValidModel``1(``0,System.String@)">
+            <summary>
+            ValidModel
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="model"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
         <member name="M:System.Web.Http.AfxController.Dispose(System.Boolean)">
             <summary>
             Dispose

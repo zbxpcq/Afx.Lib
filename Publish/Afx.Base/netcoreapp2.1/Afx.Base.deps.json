@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Afx.Base/6.2.8.0": {
+      "Afx.Base/6.2.9.0": {
         "runtime": {
           "Afx.Base.dll": {}
         }
@@ -14,7 +14,7 @@
     }
   },
   "libraries": {
-    "Afx.Base/6.2.8.0": {
+    "Afx.Base/6.2.9.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
