@@ -30,6 +30,6 @@
     <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NETStandard2.0\Afx.Data\Afx.Data.csproj" />
+    <ProjectReference Include="..\Afx.Data\Afx.Data.csproj" />
   </ItemGroup>
 </Project>

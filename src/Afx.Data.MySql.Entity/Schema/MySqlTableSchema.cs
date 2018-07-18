@@ -73,7 +73,7 @@ namespace Afx.Data.MySql.Entity.Schema
         public override void AddIndex(string table, List<ColumnInfoModel> columns)
         {
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
-            if (columns == null || columns.Count == 0) throw new ArgumentNullException("columns");
+            if (columns == null) throw new ArgumentNullException("columns");
             var list = columns.FindAll(q => !q.IsKey && !string.IsNullOrEmpty(q.IndexName));
             if (list.Count > 0)
             {

@@ -469,7 +469,7 @@ namespace Afx.Data
         /// 创建全新 DbConnection
         /// </summary>
         /// <returns>DbConnection</returns>
-        public DbConnection CreateConnection()
+        public virtual DbConnection CreateConnection()
         {
             return this.ProviderFactory.CreateConnection();
         }
@@ -478,7 +478,7 @@ namespace Afx.Data
         /// 创建全新 DbCommand
         /// </summary>
         /// <returns>DbCommand</returns>
-        public DbCommand CreateCommand()
+        public virtual DbCommand CreateCommand()
         {
             return this.ProviderFactory.CreateCommand();
         }
@@ -487,7 +487,7 @@ namespace Afx.Data
         /// 创建全新 DbParameter
         /// </summary>
         /// <returns>DbParameter</returns>
-        public DbParameter CreateParameter()
+        public virtual DbParameter CreateParameter()
         {
             return this.ProviderFactory.CreateParameter();
         }
@@ -498,7 +498,7 @@ namespace Afx.Data
         /// <param name="name">ParameterName</param>
         /// <param name="value">Value</param>
         /// <returns>DbParameter</returns>
-        public DbParameter CreateParameter(string name, object value)
+        public virtual DbParameter CreateParameter(string name, object value)
         {
             var parameter = this.ProviderFactory.CreateParameter();
             parameter.ParameterName = name;
@@ -510,7 +510,7 @@ namespace Afx.Data
         /// 创建全新 DbDataAdapter
         /// </summary>
         /// <returns>DbDataAdapter</returns>
-        public DbDataAdapter CreateDataAdapter()
+        public virtual DbDataAdapter CreateDataAdapter()
         {
             return this.ProviderFactory.CreateDataAdapter();
         }

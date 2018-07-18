@@ -28,8 +28,8 @@
     <Compile Include="..\..\src\Afx.Data.MySql.Entity\Schema\MySqlTableSchema.cs" Link="Schema\MySqlTableSchema.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="6.10.7" />
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.7" />
+    <PackageReference Include="MySqlConnector" Version="0.42.3" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Schema\" />

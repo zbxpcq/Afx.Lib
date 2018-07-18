@@ -26,14 +26,14 @@
     <Compile Include="..\..\src\Afx.Data\MsSqlDatabase.cs" Link="MsSqlDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Afx.Data.Entity\Afx.Data.Entity.csproj" />
-    <ProjectReference Include="..\Afx.Data\Afx.Data.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Schema\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Afx.Data.Entity\Afx.Data.Entity.csproj" />
+    <ProjectReference Include="..\Afx.Data\Afx.Data.csproj" />
   </ItemGroup>
 </Project>

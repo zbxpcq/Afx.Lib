@@ -9,7 +9,7 @@
     <PackageReleaseNotes>Afx.Tcp.Protocols for .NETCore2.1</PackageReleaseNotes>
     <PackageTags>mycsv.cn</PackageTags>
     <Copyright>Copyright © mycsv 2018</Copyright>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>

@@ -78,6 +78,8 @@ namespace Afx.Data.SQLite.Entity.Schema
         /// <param name="columns">索引列信息</param>
         public override void AddIndex(string table, List<ColumnInfoModel> columns)
         {
+            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (columns == null) throw new ArgumentNullException("columns");
             var list = columns.FindAll(q => !q.IsKey && !string.IsNullOrEmpty(q.IndexName));
             if (list.Count > 0)
             {

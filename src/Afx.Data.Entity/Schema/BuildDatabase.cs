@@ -93,7 +93,8 @@ namespace Afx.Data.Entity.Schema
                     {
                         tableSchema.DeleteIndex(tb, indexs);
                     }
-                    tableSchema.AddIndex(tb, addIndexs);
+
+                    if(addIndexs.Count > 0) tableSchema.AddIndex(tb, addIndexs);
                 }
             }
         }
