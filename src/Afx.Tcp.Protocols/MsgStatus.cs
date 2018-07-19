@@ -17,26 +17,30 @@ namespace Afx.Tcp.Protocols
         /// <summary>
         /// 成功
         /// </summary>
-        Succeed = 1,
+        Succeed = 100,
         /// <summary>
-        /// 失败
+        /// 失败！
         /// </summary>
-        Error = 2,
+        Failure = 200,
+        /// <summary>
+        /// 参数错误
+        /// </summary>
+        Error = 201,
         /// <summary>
         /// 服务器错误
         /// </summary>
-        ServerError = 3,
+        ServerError = 203,
         /// <summary>
         /// 未登录
         /// </summary>
-        NeedLogin = 4,
+        NeedLogin = 300,
         /// <summary>
         /// 需要权限
         /// </summary>
-        NeedAuth = 5,
+        NeedAuth = 301,
         /// <summary>
         /// 未知请求
         /// </summary>
-        Unknown = 6
+        Unknown = 10000
     }
 }

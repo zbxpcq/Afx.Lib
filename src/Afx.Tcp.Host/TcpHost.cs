@@ -212,7 +212,7 @@ namespace  Afx.Tcp.Host
                     else
                     {
                         msg.Rest();
-                        msg.Status = MsgStatus.Unknown;
+                        msg.Status = (int)MsgStatus.Unknown;
                         this.SendMsg(msg, client.UserState as Session);
                         return;
                     }

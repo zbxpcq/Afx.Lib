@@ -392,9 +392,14 @@
             成功
             </summary>
         </member>
+        <member name="F:Afx.Tcp.Protocols.MsgStatus.Failure">
+            <summary>
+            失败！
+            </summary>
+        </member>
         <member name="F:Afx.Tcp.Protocols.MsgStatus.Error">
             <summary>
-            失败
+            参数错误
             </summary>
         </member>
         <member name="F:Afx.Tcp.Protocols.MsgStatus.ServerError">

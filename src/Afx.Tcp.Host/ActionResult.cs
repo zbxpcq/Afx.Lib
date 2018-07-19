@@ -31,7 +31,7 @@ namespace  Afx.Tcp.Host
         /// <param name="status"></param>
         /// <param name="data"></param>
         /// <param name="msg"></param>
-        public virtual void SetMsg<T>(MsgStatus status, T data, string msg)
+        public virtual void SetMsg<T>(int status, string msg, T data)
         {
             this.Result.Rest();
             this.Result.Status = status;
@@ -39,26 +39,45 @@ namespace  Afx.Tcp.Host
             this.Result.Msg = msg;
         }
 
+
         /// <summary>
-        /// SetMsg
+        /// Set send msg data
         /// </summary>
-        /// <param name="status">MsgStatus</param>
+        /// <typeparam name="T">protobuf model</typeparam>
+        /// <param name="status"></param>
+        /// <param name="data"></param>
         /// <param name="msg"></param>
-        public virtual void SetMsg(MsgStatus status, string msg)
+        public virtual void SetMsg<T>(MsgStatus status, string msg, T data)
+        {
+            this.Result.Rest();
+            this.Result.Status = (int)status;
+            this.Result.SetData(data);
+            this.Result.Msg = msg;
+        }
+
+        /// <summary>
+        /// Set send msg data
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="msg"></param>
+        public virtual void SetMsg(int status, string msg)
         {
             this.Result.Rest();
             this.Result.Status = status;
             this.Result.Msg = msg;
         }
 
+
         /// <summary>
-        /// SetMsg
+        /// Set send msg data
         /// </summary>
-        /// <param name="status">MsgStatus</param>
-        public virtual void SetMsg(MsgStatus status)
+        /// <param name="status"></param>
+        /// <param name="msg"></param>
+        public virtual void SetMsg(MsgStatus status, string msg)
         {
             this.Result.Rest();
-            this.Result.Status = status;
+            this.Result.Status = (int)status;
+            this.Result.Msg = msg;
         }
 
         /// <summary>

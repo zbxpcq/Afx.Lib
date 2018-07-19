@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Description>Afx.Data for .NETCore2.1</Description>
     <PackageReleaseNotes>Afx.Data for .NETCore2.1</PackageReleaseNotes>
-    <Version>6.2.9.0</Version>
+    <Version>6.2.10.0</Version>
     <Authors>jerrylai@aliyun.com</Authors>
     <Company>mycsv.cn</Company>
     <PackageTags>

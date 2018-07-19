@@ -48,10 +48,54 @@ namespace  Afx.Tcp.Host
         /// <param name="data"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        protected virtual ActionResult Result<T>(MsgStatus status, T data, string msg)
+        protected virtual ActionResult Result<T>(MsgStatus status, string msg, T data)
         {
             ActionResult result = new ActionResult();
-            result.SetMsg(MsgStatus.Succeed, data, null);
+            result.SetMsg(status, msg, data);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Result
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        protected virtual ActionResult Result(MsgStatus status, string msg)
+        {
+            ActionResult result = new ActionResult();
+            result.SetMsg(status, msg);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Result
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="status"></param>
+        /// <param name="data"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        protected virtual ActionResult Result<T>(int status, string msg, T data)
+        {
+            ActionResult result = new ActionResult();
+            result.SetMsg(status, msg, data);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Result
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        protected virtual ActionResult Result(int status, string msg)
+        {
+            ActionResult result = new ActionResult();
+            result.SetMsg(status, msg);
 
             return result;
         }
@@ -65,10 +109,7 @@ namespace  Afx.Tcp.Host
         /// <returns></returns>
         protected virtual ActionResult Success<T>(T data, string msg)
         {
-            ActionResult result = new ActionResult();
-            result.SetMsg(MsgStatus.Succeed, data, msg);
-
-            return result;
+            return this.Result(MsgStatus.Succeed, msg, data);
         }
 
         /// <summary>
@@ -79,10 +120,7 @@ namespace  Afx.Tcp.Host
         /// <returns></returns>
         protected virtual ActionResult Success<T>(T data)
         {
-            ActionResult result = new ActionResult();
-            result.SetMsg(MsgStatus.Succeed, data, null);
-
-            return result;
+            return this.Result(MsgStatus.Succeed, null, data);
         }
 
         /// <summary>
@@ -91,35 +129,45 @@ namespace  Afx.Tcp.Host
         /// <returns></returns>
         protected virtual ActionResult Success()
         {
-            ActionResult result = new ActionResult();
-            result.SetMsg(MsgStatus.Succeed);
-
-            return result;
+            return this.Result(MsgStatus.Succeed, null);
         }
 
         /// <summary>
-        /// Error
+        /// Failure
         /// </summary>
         /// <param name="error"></param>
         /// <returns></returns>
-        protected virtual ActionResult Error(string error)
+        protected virtual ActionResult Failure(string error)
         {
-            ActionResult result = new ActionResult();
-            result.SetMsg(MsgStatus.Error, error);
-
-            return result;
+            return this.Result(MsgStatus.Failure, error);
         }
 
         /// <summary>
-        /// Error
+        /// Failure
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult Error()
+        protected virtual ActionResult Failure()
         {
-            ActionResult result = new ActionResult();
-            result.SetMsg(MsgStatus.Error);
+            return this.Result(MsgStatus.Failure, null);
+        }
 
-            return result;
+        /// <summary>
+        /// ParamError
+        /// </summary>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        protected virtual ActionResult ParamError(string error)
+        {
+            return this.Result(MsgStatus.Error, error);
+        }
+
+        /// <summary>
+        /// ParamError
+        /// </summary>
+        /// <returns></returns>
+        protected virtual ActionResult ParamError()
+        {
+            return this.Result(MsgStatus.Error, null);
         }
 
         /// <summary>

@@ -19,7 +19,7 @@
             ActionResult
             </summary>
         </member>
-        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg``1(Afx.Tcp.Protocols.MsgStatus,``0,System.String)">
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg``1(System.Int32,System.String,``0)">
             <summary>
             Set send msg data
             </summary>
@@ -28,18 +28,28 @@
             <param name="data"></param>
             <param name="msg"></param>
         </member>
-        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg(Afx.Tcp.Protocols.MsgStatus,System.String)">
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg``1(Afx.Tcp.Protocols.MsgStatus,System.String,``0)">
             <summary>
-            SetMsg
+            Set send msg data
             </summary>
-            <param name="status">MsgStatus</param>
+            <typeparam name="T">protobuf model</typeparam>
+            <param name="status"></param>
+            <param name="data"></param>
             <param name="msg"></param>
         </member>
-        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg(Afx.Tcp.Protocols.MsgStatus)">
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg(System.Int32,System.String)">
             <summary>
-            SetMsg
+            Set send msg data
             </summary>
-            <param name="status">MsgStatus</param>
+            <param name="status"></param>
+            <param name="msg"></param>
+        </member>
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg(Afx.Tcp.Protocols.MsgStatus,System.String)">
+            <summary>
+            Set send msg data
+            </summary>
+            <param name="status"></param>
+            <param name="msg"></param>
         </member>
         <member name="M:Afx.Tcp.Host.ActionResult.Dispose">
             <summary>
@@ -116,13 +126,39 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:Afx.Tcp.Host.Controller.Result``1(Afx.Tcp.Protocols.MsgStatus,``0,System.String)">
+        <member name="M:Afx.Tcp.Host.Controller.Result``1(Afx.Tcp.Protocols.MsgStatus,System.String,``0)">
             <summary>
             Result
             </summary>
             <typeparam name="T"></typeparam>
             <param name="status"></param>
             <param name="data"></param>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Result(Afx.Tcp.Protocols.MsgStatus,System.String)">
+            <summary>
+            Result
+            </summary>
+            <param name="status"></param>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Result``1(System.Int32,System.String,``0)">
+            <summary>
+            Result
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="status"></param>
+            <param name="data"></param>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.Result(System.Int32,System.String)">
+            <summary>
+            Result
+            </summary>
+            <param name="status"></param>
             <param name="msg"></param>
             <returns></returns>
         </member>
@@ -149,16 +185,29 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Afx.Tcp.Host.Controller.Error(System.String)">
+        <member name="M:Afx.Tcp.Host.Controller.Failure(System.String)">
             <summary>
-            Error
+            Failure
             </summary>
             <param name="error"></param>
             <returns></returns>
         </member>
-        <member name="M:Afx.Tcp.Host.Controller.Error">
+        <member name="M:Afx.Tcp.Host.Controller.Failure">
             <summary>
-            Error
+            Failure
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.ParamError(System.String)">
+            <summary>
+            ParamError
+            </summary>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.ParamError">
+            <summary>
+            ParamError
             </summary>
             <returns></returns>
         </member>

@@ -47,10 +47,10 @@ namespace Afx.Tcp.Protocols
         /// <summary>
         /// 请求状态
         /// </summary>
-        public MsgStatus Status
+        public int Status
         {
-            get { return (MsgStatus)this.status; }
-            set { this.status = (int)value; }
+            get { return this.status; }
+            set { this.status = value; }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Afx.Tcp.Protocols
         /// </summary>
         public void Rest()
         {
-            this.Status = MsgStatus.None;
+            this.Status = (int)MsgStatus.None;
             this.Msg = null;
             //this.Data = null;
         }
