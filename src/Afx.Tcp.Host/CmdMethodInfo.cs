@@ -13,6 +13,8 @@ namespace  Afx.Tcp.Host
 
         public MethodInfo Method { get; set; }
 
+        public Type ParameterType { get; set; }
+
         public List<Type> AuthTypeList { get; set; }
 
         public bool NoAuth { get; set; }

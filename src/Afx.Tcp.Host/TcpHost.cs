@@ -280,7 +280,53 @@ namespace  Afx.Tcp.Host
                         if (this.OnAuth(cmdMethodInfo, session, msg, out result))
                         {
                             controller.OnExecuting();
-                            result = cmdMethodInfo.Method.Invoke(controller, null) as ActionResult;
+                            object[] parameters = null;
+                            if(cmdMethodInfo.ParameterType != null)
+                            {
+                                var o = msg.GetData(cmdMethodInfo.ParameterType);
+                                parameters = new object[] { o };
+                            }
+                            var obj = cmdMethodInfo.Method.Invoke(controller, parameters);
+                            if(obj != null && obj is ActionResult)
+                            {
+                                result = obj as ActionResult;
+                            }
+                            else if(obj != null && obj is MsgData)
+                            {
+                                result = new ActionResult(obj as MsgData);
+                            }
+                            else
+                            {
+                                result = new ActionResult();
+                                result.SetMsg(MsgStatus.Succeed, null);
+                                if (obj != null)
+                                {
+#if NET20
+                                    result.Result.SetData(obj);
+#else
+                                    var t = cmdMethodInfo.Method.ReturnType;
+                                    if (t == typeof(System.Threading.Tasks.Task)
+                                        || (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(System.Threading.Tasks.Task<>)))
+                                    {
+                                        var task = obj as System.Threading.Tasks.Task;
+                                        if (task.Status == System.Threading.Tasks.TaskStatus.Created) task.Start();
+                                        if (!task.IsCompleted || !task.IsCanceled) task.Wait();
+                                        if (task.IsFaulted && task.Exception != null) throw task.Exception;
+                                        if(t.IsGenericType)
+                                        {
+                                            var o = t.GetProperty("Result").GetValue(obj, null);
+                                            result.Result.SetData(o);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        result.Result.SetData(obj);
+                                    }
+#endif
+                                }
+                            }
+                            result.Result.Cmd = msg.Cmd;
+                            result.Result.Id = msg.Id;
                             controller.OnResult(result);
                             this.OnCmdExecutedEvent(session, msg, result.Result);
                         }
@@ -595,43 +641,36 @@ namespace  Afx.Tcp.Host
         /// <param name="configFile"></param>
         public virtual void LoadCmdMethod(string configFile)
         {
-            try
+            if (string.IsNullOrEmpty(configFile)) throw new ArgumentNullException("configFile");
+            string fullpath = this.GetFileFullPath(configFile);
+
+            if (!File.Exists(fullpath)) throw new FileNotFoundException(configFile + " not found!", configFile);
+
+            XmlDocument xmlDoc = new XmlDocument();
+            XmlReaderSettings xmlStting = new XmlReaderSettings();
+            xmlStting.IgnoreComments = true;
+            xmlStting.CloseInput = true;
+            using (var xmlRead = XmlReader.Create(fullpath, xmlStting))
             {
-                if (string.IsNullOrEmpty(configFile)) throw new ArgumentNullException("configFile");
-                string fullpath = this.GetFileFullPath(configFile);
-
-                if (!File.Exists(fullpath)) throw new FileNotFoundException(configFile +" not found!", configFile); 
-
-                XmlDocument xmlDoc = new XmlDocument();
-                XmlReaderSettings xmlStting = new XmlReaderSettings();
-                xmlStting.IgnoreComments = true;
-                xmlStting.CloseInput = true;
-                using (var xmlRead = XmlReader.Create(fullpath, xmlStting))
+                xmlDoc.Load(xmlRead);
+                xmlRead.Close();
+            }
+            if (xmlDoc.ChildNodes.Count > 0)
+            {
+                var rootElement = xmlDoc.DocumentElement;
+                if (rootElement != null)
                 {
-                    xmlDoc.Load(xmlRead);
-                    xmlRead.Close();
-                }
-                if (xmlDoc.ChildNodes.Count > 0)
-                {
-                    var rootElement = xmlDoc.DocumentElement;
-                    if (rootElement != null)
+                    XmlElement nodeElement = rootElement["Global"];
+                    if (nodeElement != null)
                     {
-                        XmlElement nodeElement = rootElement["Global"];
-                        if (nodeElement != null)
-                        {
-                            this.LoadGlobal(nodeElement);
-                        }
-                        nodeElement = rootElement["Controller"];
-                        if (nodeElement != null)
-                        {
-                            this.LoadController(nodeElement);
-                        }
+                        this.LoadGlobal(nodeElement);
+                    }
+                    nodeElement = rootElement["Controller"];
+                    if (nodeElement != null)
+                    {
+                        this.LoadController(nodeElement);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                this.OnMvcHostServerErrorEvent(ex);
             }
         }
 
@@ -697,7 +736,6 @@ namespace  Afx.Tcp.Host
         private void LoadController(XmlElement nodeElement)
         {
             Type baseControllerType = typeof(Controller);
-            Type actionResultType = typeof(ActionResult);
             foreach (XmlElement classElement in nodeElement)
             {
                 if (classElement.Name == "Action")
@@ -725,46 +763,51 @@ namespace  Afx.Tcp.Host
                     if (assembly == null) continue;
 
                     var type = assembly.GetType(t, false);
-                    if (type != null && type.IsClass && !type.IsAbstract && type.IsSubclassOf(baseControllerType))
+                    if (type == null) throw new TypeLoadException(t + " not found!");
+                    if (!type.IsClass) throw new TypeLoadException(t + " is not class!");
+                    if(!type.IsSubclassOf(baseControllerType)) throw new TypeLoadException(t + " is not Controller!");
+                    if (type.IsAbstract) throw new TypeLoadException(t + " is abstract!");
+                    var methodInfo = type.GetMethod(method, BindingFlags.Instance | BindingFlags.Public);
+                    if (methodInfo == null) throw new MethodAccessException(t + ", Method: " + method + " not found!");
+                    var parameterinfos = methodInfo.GetParameters();
+                    if (!(parameterinfos.Length == 0 || (parameterinfos.Length == 1 && !parameterinfos[0].IsOut)))
                     {
-                        var methodInfo = type.GetMethod(method, BindingFlags.Instance | BindingFlags.Public);
-                        if (methodInfo != null && methodInfo.ReturnType == actionResultType && methodInfo.GetParameters().Length == 0)
-                        {
-                            CmdMethodInfo m = new CmdMethodInfo()
-                            {
-                                Type = type,
-                                Method = methodInfo,
-                                Cmd = cmd,
-                                NoAuth = false
-                            };
-                            var attrs = type.GetCustomAttributes(typeof(AllowAnonymousAttribute), false);
-                            if (attrs == null || attrs.Length == 0)
-                            {
-                                attrs = methodInfo.GetCustomAttributes(typeof(AllowAnonymousAttribute), false);
-                            }
-                            m.NoAuth = attrs != null && attrs.Length > 0;
-                            this.cmdCallbackDic.Add(cmd, m);
+                        throw new MethodAccessException(t + ", Method: " + method + " parameter is error!");
+                    }
+                    CmdMethodInfo m = new CmdMethodInfo()
+                    {
+                        Type = type,
+                        Method = methodInfo,
+                        ParameterType = parameterinfos.Length > 0 ? parameterinfos[0].ParameterType : null,
+                        Cmd = cmd,
+                        NoAuth = false
+                    };
+                    var attrs = type.GetCustomAttributes(typeof(AllowAnonymousAttribute), false);
+                    if (attrs == null || attrs.Length == 0)
+                    {
+                        attrs = methodInfo.GetCustomAttributes(typeof(AllowAnonymousAttribute), false);
+                    }
+                    m.NoAuth = attrs != null && attrs.Length > 0;
+                    this.cmdCallbackDic[cmd] = m;
 
-                            if (m.NoAuth)
+                    if (m.NoAuth)
+                    {
+                        m.AuthTypeList = new List<Type>(0);
+                    }
+                    else
+                    {
+                        var tlist = new List<Type>();
+                        foreach (XmlElement authElement in classElement)
+                        {
+                            if (authElement.Name == "Authorize")
                             {
-                                m.AuthTypeList = new List<Type>(0);
-                            }
-                            else
-                            {
-                                var tlist = new List<Type>();
-                                foreach (XmlElement authElement in classElement)
-                                {
-                                    if (authElement.Name == "Authorize")
-                                    {
-                                        var authtype = GetAuth(authElement);
-                                        if (authtype != null && authtype.IsClass && !authtype.IsAbstract)
-                                            tlist.Add(authtype);
-                                    }
-                                }
-                                m.AuthTypeList = new List<Type>(tlist.Count);
-                                m.AuthTypeList.AddRange(tlist);
+                                var authtype = GetAuth(authElement);
+                                if (authtype != null && authtype.IsClass && !authtype.IsAbstract)
+                                    tlist.Add(authtype);
                             }
                         }
+                        m.AuthTypeList = new List<Type>(tlist.Count);
+                        m.AuthTypeList.AddRange(tlist);
                     }
                 }
             }

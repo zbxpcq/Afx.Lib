@@ -41,6 +41,16 @@ namespace  Afx.Tcp.Host
         }
 
         /// <summary>
+        ///  获取接收到model
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        protected virtual object GetData(Type type)
+        {
+            return this.msg != null ? this.msg.GetData(type) : null;
+        }
+
+        /// <summary>
         /// Result
         /// </summary>
         /// <typeparam name="T"></typeparam>

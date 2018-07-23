@@ -87,11 +87,10 @@ namespace Afx.Tcp.Protocols
         /// <summary>
         /// 设置消息数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="model">消息model</param>
-        public void SetData<T>(T model)
+        public void SetData(object model)
         {
-            this.Data = Serialize(model);
+            this.Data = SerializerUtils.Serialize(model);
         }
 
         /// <summary>
@@ -101,7 +100,16 @@ namespace Afx.Tcp.Protocols
         /// <returns></returns>
         public T GetData<T>()
         {
-            return Deserialize<T>(this.Data);
+            return SerializerUtils.Deserialize<T>(this.Data);
+        }
+        /// <summary>
+        /// 获取消息数据
+        /// </summary>
+        /// <param name="type">消息model type</param>
+        /// <returns>消息model</returns>
+        public object GetData(Type type)
+        {
+            return SerializerUtils.Deserialize(type, this.Data);
         }
 
         /// <summary>
@@ -121,7 +129,7 @@ namespace Afx.Tcp.Protocols
         /// <returns></returns>
         public static MsgData Deserialize(byte[] buffer)
         {
-            return Deserialize<MsgData>(buffer);
+            return SerializerUtils.Deserialize<MsgData>(buffer);
         }
 
         /// <summary>
@@ -130,78 +138,9 @@ namespace Afx.Tcp.Protocols
         /// <returns></returns>
         public byte[] Serialize()
         {
-            return Serialize(this);
+            return SerializerUtils.Serialize(this);
         }
 
-        private static T Deserialize<T>(byte[] buffer)
-        {
-            T model = default(T);
-            if (typeof(T) == typeof(byte[]))
-            {
-                model = (T)((object)buffer);
-            }
-            else
-            {
-                if (buffer != null && buffer.Length > 0)
-                {
-                    try
-                    {
-                        using (var ms = new MemoryStream(buffer))
-                        {
-                           var att = Attribute.GetCustomAttribute(typeof(T), typeof(ProtoContractAttribute), false);
-                            if (att != null)
-                            {
-                                model = Serializer.Deserialize<T>(ms);
-                            }
-                            else
-                            {
-                               var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                                model = (T)formatter.Deserialize(ms);
-                            }
-                        }
-                    }
-                    catch { }
-                }
-            }
-
-            return model;
-        }
-
-        private static byte[] Serialize<T>(T model)
-        {
-            byte[] buffer = null;
-            if (model != null)
-            {
-                if (typeof(T) == typeof(byte[]))
-                {
-                    buffer = (byte[])((object)model);
-                }
-                else
-                {
-                    try
-                    {
-                        using (var ms = new MemoryStream())
-                        {
-                            var att = Attribute.GetCustomAttribute(typeof(T), typeof(ProtoContractAttribute), false);
-                            if (att != null)
-                            {
-                                Serializer.Serialize(ms, model);
-                            }
-                            else
-                            {
-                                var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                                formatter.Serialize(ms, model);
-                            }
-                            
-                            buffer = ms.ToArray();
-                        }
-                    }
-                    catch { }
-                }
-            }
-
-            return buffer;
-        }
         /// <summary>
         /// 释放资源
         /// </summary>

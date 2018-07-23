@@ -65,6 +65,77 @@
             服务端port
             </summary>
         </member>
+        <member name="P:Afx.Tcp.Protocols.IMsgClient.Encrypt">
+            <summary>
+            加密回调
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Protocols.IMsgClient.Decrypt">
+            <summary>
+            解密回调
+            </summary>
+        </member>
+        <member name="P:Afx.Tcp.Protocols.IMsgClient.ClosedCall">
+            <summary>
+            断线回调
+            </summary>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.Connect(System.String,System.Int32)">
+            <summary>
+            连接服务端
+            </summary>
+            <param name="hostAndPort"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.ConnectAsync(System.String,System.Int32,Afx.Tcp.Protocols.MsgClientConnectedCall,System.Object)">
+            <summary>
+            异步连接服务端
+            </summary>
+            <param name="host"></param>
+            <param name="port"></param>
+            <param name="call"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.SendAsync(System.Int32)">
+            <summary>
+            SendAsync
+            </summary>
+            <param name="cmd"></param>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.SendAsync``1(System.Int32,``0)">
+            <summary>
+            SendAsync
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cmd"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.SendAsync``1(System.Int32,``0,Afx.Tcp.Protocols.MsgDataCall,System.Object)">
+            <summary>
+            异步发送消息
+            </summary>
+            <param name="cmd">需要发送的消息</param>
+            <param name="data"></param>
+            <param name="call">回调函数</param>
+            <param name="state">传入数据</param>
+            <returns>msgId</returns>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.Send(System.Int32)">
+            <summary>
+            发送消息
+            </summary>
+            <param name="cmd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.Send(System.Int32,System.Int32)">
+            <summary>
+            Send
+            </summary>
+            <param name="cmd"></param>
+            <param name="millisecondsTimeout"></param>
+            <returns></returns>
+        </member>
         <member name="M:Afx.Tcp.Protocols.IMsgClient.Send``1(System.Int32,``0)">
             <summary>
             发送消息
@@ -74,20 +145,47 @@
             <param name="data"></param>
             <returns></returns>
         </member>
-        <member name="M:Afx.Tcp.Protocols.IMsgClient.Send(System.Int32)">
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.Send``1(System.Int32,``0,System.Int32)">
             <summary>
-            发送消息
+            同步发送数据
             </summary>
             <param name="cmd"></param>
+            <param name="data">消息内容</param>
+            <param name="millisecondsTimeout"></param>
             <returns></returns>
         </member>
-        <member name="M:Afx.Tcp.Protocols.IMsgClient.Connect(System.String,System.Int32)">
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.AddMsgIdCall(System.Int32,Afx.Tcp.Protocols.MsgDataCall,System.Object)">
             <summary>
-            连接服务端
+            AddMsgIdCall
             </summary>
-            <param name="hostAndPort"></param>
-            <param name="timeout"></param>
-            <returns></returns>
+            <param name="msgId"></param>
+            <param name="call"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.RemoveMsgIdCall(System.Int32)">
+            <summary>
+            RemoveMsgIdCall
+            </summary>
+            <param name="msgId"></param>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.AddCmdCall(System.Int32,Afx.Tcp.Protocols.MsgDataCall,System.Object)">
+            <summary>
+            添加 cmd call
+            </summary>
+            <param name="cmd"></param>
+            <param name="call"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.RemoveCmdCall(System.Int32)">
+            <summary>
+            移除 cmd call
+            </summary>
+            <param name="cmd"></param>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.IMsgClient.Reset">
+            <summary>
+            关闭连接，重置所有状态
+            </summary>
         </member>
         <member name="M:Afx.Tcp.Protocols.IMsgClient.Close">
             <summary>
@@ -109,7 +207,7 @@
             服务端port
             </summary>
         </member>
-        <member name="F:Afx.Tcp.Protocols.MsgClient.Encrypt">
+        <member name="P:Afx.Tcp.Protocols.MsgClient.Encrypt">
             <summary>
             加密回调
             </summary>
@@ -121,7 +219,7 @@
             <param name="buffer"></param>
             <returns></returns>
         </member>
-        <member name="F:Afx.Tcp.Protocols.MsgClient.Decrypt">
+        <member name="P:Afx.Tcp.Protocols.MsgClient.Decrypt">
             <summary>
             解密回调
             </summary>
@@ -284,7 +382,7 @@
             <param name="millisecondsTimeout"></param>
             <returns></returns>
         </member>
-        <member name="F:Afx.Tcp.Protocols.MsgClient.ClosedCall">
+        <member name="P:Afx.Tcp.Protocols.MsgClient.ClosedCall">
             <summary>
             断线回调
             </summary>
@@ -340,11 +438,10 @@
             消息数据
             </summary>
         </member>
-        <member name="M:Afx.Tcp.Protocols.MsgData.SetData``1(``0)">
+        <member name="M:Afx.Tcp.Protocols.MsgData.SetData(System.Object)">
             <summary>
             设置消息数据
             </summary>
-            <typeparam name="T"></typeparam>
             <param name="model">消息model</param>
         </member>
         <member name="M:Afx.Tcp.Protocols.MsgData.GetData``1">
@@ -353,6 +450,13 @@
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Protocols.MsgData.GetData(System.Type)">
+            <summary>
+            获取消息数据
+            </summary>
+            <param name="type">消息model type</param>
+            <returns>消息model</returns>
         </member>
         <member name="M:Afx.Tcp.Protocols.MsgData.Rest">
             <summary>

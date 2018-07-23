@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Data.Oracle.Entity</id>
-    <version>6.2.10.0</version>
+    <version>6.2.11.0</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,8 +12,8 @@
     <tags>Afx.Data.Oracle.Entity Oracle EF EntityFramework Afx</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Afx.Data.Entity" version="6.2.10.0" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="6.2.10.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="6.2.11.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="6.2.11.0" exclude="Build,Analyzers" />
         <dependency id="Oracle.ManagedDataAccess" version="12.2.1100" exclude="Build,Analyzers" />
         <dependency id="Oracle.ManagedDataAccess.EntityFramework" version="12.2.1100" exclude="Build,Analyzers" />
       </group>

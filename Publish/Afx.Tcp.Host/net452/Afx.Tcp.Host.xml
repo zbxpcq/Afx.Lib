@@ -24,7 +24,7 @@
             ActionResult
             </summary>
         </member>
-        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg``1(System.Int32,System.String,``0)">
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg(System.Int32,System.String,System.Object)">
             <summary>
             Set send msg data
             </summary>
@@ -33,7 +33,7 @@
             <param name="data"></param>
             <param name="msg"></param>
         </member>
-        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg``1(Afx.Tcp.Protocols.MsgStatus,System.String,``0)">
+        <member name="M:Afx.Tcp.Host.ActionResult.SetMsg(Afx.Tcp.Protocols.MsgStatus,System.String,System.Object)">
             <summary>
             Set send msg data
             </summary>
@@ -124,6 +124,13 @@
             获取接收到model
             </summary>
             <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Afx.Tcp.Host.Controller.GetData(System.Type)">
+            <summary>
+             获取接收到model
+            </summary>
+            <param name="type"></param>
             <returns></returns>
         </member>
         <member name="M:Afx.Tcp.Host.Controller.Result``1(Afx.Tcp.Protocols.MsgStatus,System.String,``0)">

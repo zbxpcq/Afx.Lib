@@ -24,6 +24,12 @@ namespace  Afx.Tcp.Host
             this.Result = new MsgData();
         }
 
+        public ActionResult(MsgData msg)
+        {
+            if (msg == null) throw new ArgumentNullException("msg");
+            this.Result = msg;
+        }
+
         /// <summary>
         /// Set send msg data
         /// </summary>
@@ -31,7 +37,7 @@ namespace  Afx.Tcp.Host
         /// <param name="status"></param>
         /// <param name="data"></param>
         /// <param name="msg"></param>
-        public virtual void SetMsg<T>(int status, string msg, T data)
+        public virtual void SetMsg(int status, string msg, object data)
         {
             this.Result.Rest();
             this.Result.Status = status;
@@ -47,7 +53,7 @@ namespace  Afx.Tcp.Host
         /// <param name="status"></param>
         /// <param name="data"></param>
         /// <param name="msg"></param>
-        public virtual void SetMsg<T>(MsgStatus status, string msg, T data)
+        public virtual void SetMsg(MsgStatus status, string msg, object data)
         {
             this.Result.Rest();
             this.Result.Status = (int)status;

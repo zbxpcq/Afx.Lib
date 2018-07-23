@@ -26,7 +26,7 @@ namespace Afx.Tcp.Protocols
         /// <summary>
         /// 加密回调
         /// </summary>
-        public Func<byte[], byte[]> Encrypt;
+        public Func<byte[], byte[]> Encrypt { get; set; }
         /// <summary>
         /// 加密回调
         /// </summary>
@@ -45,7 +45,7 @@ namespace Afx.Tcp.Protocols
         /// <summary>
         /// 解密回调
         /// </summary>
-        public Func<byte[], byte[]> Decrypt;
+        public Func<byte[], byte[]> Decrypt { get; set; }
         /// <summary>
         /// 解密回调
         /// </summary>
@@ -432,7 +432,7 @@ namespace Afx.Tcp.Protocols
         /// <summary>
         /// 断线回调
         /// </summary>
-        public MsgClientClosedCall ClosedCall;
+        public MsgClientClosedCall ClosedCall { get; set; }
         /// <summary>
         /// 断线回调
         /// </summary>
@@ -453,27 +453,28 @@ namespace Afx.Tcp.Protocols
 
         private void ReceiveEvent(TcpSocketAsync client, byte[] data, int length)
         {
-            data = OnDecrypt(data);
-            MsgData msg = MsgData.Deserialize(data);
-            if (msg != null)
+            if (data == null || data.Length == 0) return;
+            ThreadPool.QueueUserWorkItem((o) =>
             {
-                ThreadPool.QueueUserWorkItem((o) =>
+                var buffer = o as byte[];
+                buffer = OnDecrypt(buffer);
+                MsgData msg = MsgData.Deserialize(buffer);
+                if (msg != null)
                 {
-                    MsgData _msg = o as MsgData;
-                    if (_msg.Id != 0)
+                    if (msg.Id != 0)
                     {
-                        var callModel = this.GetMsgIdCall(_msg.Id);
+                        var callModel = this.GetMsgIdCall(msg.Id);
                         if (callModel != null)
                         {
-                            this.OnMsgIdCall(_msg, callModel);
+                            this.OnMsgIdCall(msg, callModel);
                             return;
                         }
                     }
 
-                    var call = this.GetCmdCall(_msg.Cmd);
-                    this.OnMsgCmdCall(_msg, call);
-                }, msg);
-            }
+                    var call = this.GetCmdCall(msg.Cmd);
+                    this.OnMsgCmdCall(msg, call);
+                }
+            }, data);
         }
 
         private void OnMsgIdCall(MsgData msg, MsgIdCallModel callInfo)

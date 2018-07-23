@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\Afx.Tcp.Protocols\SerializerUtils.cs">
+      <Link>SerializerUtils.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Assembly.cs">
       <Link>Properties\Assembly.cs</Link>
     </Compile>
