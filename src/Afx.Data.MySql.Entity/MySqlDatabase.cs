@@ -77,5 +77,10 @@ namespace Afx.Data.MySql
 
             return time;
         }
+
+        public override DbDataAdapter CreateDataAdapter()
+        {
+            return new MySqlDataAdapter();
+        }
     }
 }

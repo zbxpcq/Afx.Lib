@@ -108,10 +108,13 @@ namespace Afx.Data.Entity.Schema
             attsString.AppendLine(string.Format(attrFormat, s));
             
             
-            if (!column.IsKey && !string.IsNullOrEmpty(column.IndexName))
+            if (column.Indexs != null && column.Indexs.Count > 0)
             {
-                s = string.Format("Index(\"{0}\", IsUnique = {1})", column.IndexName, column.IsUnique ? "true" : "false");
-                attsString.AppendLine(string.Format(attrFormat, s));
+                foreach (var index in column.Indexs)
+                {
+                    s = string.Format("Index(\"{0}\", IsUnique = {1})", index.Name, index.IsUnique ? "true" : "false");
+                    attsString.AppendLine(string.Format(attrFormat, s));
+                }
             }
 
             if (string.Equals("int", propertyType, StringComparison.OrdinalIgnoreCase)

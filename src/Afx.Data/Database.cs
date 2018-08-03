@@ -208,15 +208,14 @@ namespace Afx.Data
         /// <returns>DbDataReader</returns>
         public DbDataReader ExecuteReader()
         {
+            DbCommand command = null;
             try
             {
-                using (var command = this.GetCommand())
-                {
-                    this.Open();
-                    var result = command.ExecuteReader();
-                    this.OnLog("-- ExecuteReader");
-                    return new AfxDataReader(this, result);
-                }
+                command = this.GetCommand();
+                this.Open();
+                var result = command.ExecuteReader();
+                this.OnLog("-- ExecuteReader");
+                return new AfxDataReader(this, result, command);
             }
             catch (Exception ex)
             {
@@ -232,15 +231,14 @@ namespace Afx.Data
         /// <returns>DbDataReader</returns>
         public DbDataReader ExecuteReader(CommandBehavior behavior)
         {
+            DbCommand command = null;
             try
             {
-                using (var command = this.GetCommand())
-                {
-                    this.Open();
-                    var result = command.ExecuteReader(behavior);
-                    this.OnLog("-- ExecuteReader " + behavior.ToString());
-                    return new AfxDataReader(this, result);
-                }
+                command = this.GetCommand();
+                this.Open();
+                var result = command.ExecuteReader(behavior);
+                this.OnLog("-- ExecuteReader " + behavior.ToString());
+                return new AfxDataReader(this, result, command);
             }
             catch (Exception ex)
             {
@@ -471,7 +469,10 @@ namespace Afx.Data
         /// <returns>DbConnection</returns>
         public virtual DbConnection CreateConnection()
         {
-            return this.ProviderFactory.CreateConnection();
+            var result = this.ProviderFactory.CreateConnection();
+            if (result == null) throw new InvalidConstraintException("ProviderFactory.CreateConnection is null.");
+
+            return result;
         }
 
         /// <summary>
@@ -480,7 +481,10 @@ namespace Afx.Data
         /// <returns>DbCommand</returns>
         public virtual DbCommand CreateCommand()
         {
-            return this.ProviderFactory.CreateCommand();
+            var result = this.ProviderFactory.CreateCommand();
+            if (result == null) throw new InvalidConstraintException("ProviderFactory.CreateCommand is null.");
+
+            return result;
         }
 
         /// <summary>
@@ -489,7 +493,9 @@ namespace Afx.Data
         /// <returns>DbParameter</returns>
         public virtual DbParameter CreateParameter()
         {
-            return this.ProviderFactory.CreateParameter();
+            var parameter = this.ProviderFactory.CreateParameter();
+            if (parameter == null) throw new InvalidConstraintException("ProviderFactory.CreateParameter is null.");
+            return parameter;
         }
 
         /// <summary>
@@ -501,6 +507,7 @@ namespace Afx.Data
         public virtual DbParameter CreateParameter(string name, object value)
         {
             var parameter = this.ProviderFactory.CreateParameter();
+            if (parameter == null) throw new InvalidConstraintException("ProviderFactory.CreateParameter is null.");
             parameter.ParameterName = name;
             parameter.Value = value;
             return parameter;
@@ -512,7 +519,10 @@ namespace Afx.Data
         /// <returns>DbDataAdapter</returns>
         public virtual DbDataAdapter CreateDataAdapter()
         {
-            return this.ProviderFactory.CreateDataAdapter();
+            var result = this.ProviderFactory.CreateDataAdapter();
+            if (result == null) throw new InvalidConstraintException("ProviderFactory.CreateDataAdapter is null.");
+
+            return result;
         }
         #endregion
 

@@ -75,15 +75,15 @@ namespace Afx.Data.SQLite.Entity.Schema
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="columns">索引列信息</param>
-        public override void AddIndex(string table, List<ColumnInfoModel> columns)
+        /// <param name="indexs">索引列信息</param>
+        public override void AddIndex(string table, List<IndexModel> indexs)
         {
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
-            if (columns == null) throw new ArgumentNullException("columns");
-            var list = columns.FindAll(q => !q.IsKey && !string.IsNullOrEmpty(q.IndexName));
+            if (indexs == null) throw new ArgumentNullException("indexs");
+            var list = indexs.FindAll(q => !string.IsNullOrEmpty(q.Name) && !string.IsNullOrEmpty(q.ColumnName));
             if (list.Count > 0)
             {
-                var group = list.GroupBy(q => q.IndexName, StringComparer.OrdinalIgnoreCase);
+                var group = list.GroupBy(q => q.Name, StringComparer.OrdinalIgnoreCase);
                 foreach (var item in group)
                 {
                     string indexName = item.Key;
@@ -91,7 +91,7 @@ namespace Afx.Data.SQLite.Entity.Schema
                     List<string> columnList = new List<string>();
                     foreach (var m in item)
                     {
-                        columnList.Add(m.Name);
+                        columnList.Add(m.ColumnName);
                     }
                     this.AddIndex(table, indexName, isUnique, columnList);
                 }
@@ -111,10 +111,10 @@ namespace Afx.Data.SQLite.Entity.Schema
             int count = 0;
             StringBuilder createTableSql = new StringBuilder();
             List<ColumnInfoModel> keyColumns = columns.Where(q=>q.IsKey).ToList();
+            List<IndexModel> indexs = new List<IndexModel>();
             createTableSql.AppendFormat("CREATE TABLE [{0}](", table);
-            for (int i = 0; i < columns.Count; i++ )
-            {
-                var column = columns[i];
+            foreach (var column in columns)
+            { 
                 createTableSql.AppendFormat("[{0}] {1} {2} NULL", column.Name, column.DataType, column.IsNullable ? "" : "NOT");
                 if (column.IsKey && keyColumns.Count == 1)
                 {
@@ -122,6 +122,8 @@ namespace Afx.Data.SQLite.Entity.Schema
                     if (column.IsAutoIncrement) createTableSql.Append(" AUTOINCREMENT");
                 }
                 createTableSql.Append(",");
+
+                if (column.Indexs != null && column.Indexs.Count > 0) indexs.AddRange(column.Indexs);
             }
             createTableSql.Remove(createTableSql.Length - 1, 1);
 
@@ -145,7 +147,7 @@ namespace Afx.Data.SQLite.Entity.Schema
                 this.db.CommandText = createTableSql.ToString();
                count = this.db.ExecuteNonQuery();
 
-               this.AddIndex(table, columns);
+                if (indexs.Count > 0) this.AddIndex(table, indexs);
 
                 tx.Commit();
             }
@@ -205,16 +207,18 @@ namespace Afx.Data.SQLite.Entity.Schema
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="column">索引列信息</param>
+        /// <param name="index">索引列信息</param>
         /// <returns>是否成功</returns>
-        public override bool AddIndex(string table, ColumnInfoModel column)
+        public override bool AddIndex(string table, IndexModel index)
         {
+            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (index == null) throw new ArgumentNullException("index");
             int count = 0;
-            if (!column.IsKey && !string.IsNullOrEmpty(column.IndexName))
+            if (!string.IsNullOrEmpty(index.Name) && !string.IsNullOrEmpty(index.ColumnName))
             {
                 this.db.ClearParameters();
                 this.db.CommandText = string.Format("CREATE {0} INDEX [{1}] ON [{2}] ([{3}])",
-                    column.IsUnique ? "UNIQUE" : "", column.IndexName, table, column.Name);
+                    index.IsUnique ? "UNIQUE" : "", index.Name, table, index.ColumnName);
                 count = this.db.ExecuteNonQuery();
             }
 
@@ -303,7 +307,7 @@ namespace Afx.Data.SQLite.Entity.Schema
         private void GetIndexName(string table, List<ColumnInfoModel> columns)
         {
             this.db.ClearParameters();
-            this.db.CommandText = @"SELECT [name],[sql] FROM [sqlite_master] WHERE [type]='index' AND [tbl_name]=@tb";
+            this.db.CommandText = @"SELECT [name],[sql] FROM [sqlite_master] WHERE [type]='index' AND [tbl_name]=@tb AND [sql] is not null";
             this.db.AddParameter("@tb", table);
             using (var dt = new DataTable())
             {
@@ -312,6 +316,7 @@ namespace Afx.Data.SQLite.Entity.Schema
                 {
                     string indexName = row["name"].ToString();
                     string sql = row["sql"].ToString();
+                    if (string.IsNullOrEmpty(sql)) continue;
                     bool isUnique = sql.IndexOf("CREATE UNIQUE ", StringComparison.OrdinalIgnoreCase) > 0;
                     int begin = sql.IndexOf("(");
                     if (begin > 0)
@@ -333,10 +338,14 @@ namespace Afx.Data.SQLite.Entity.Schema
                                     {
                                         var m = columns.Find(q => string.Compare(q.Name, col,
                                             StringComparison.OrdinalIgnoreCase) == 0);
-                                        if (m != null && !m.IsKey)
+                                        if (m != null)
                                         {
-                                            m.IndexName = indexName;
-                                            m.IsUnique = isUnique;
+                                            if (m.Indexs == null) m.Indexs = new List<IndexModel>();
+                                            var index = new IndexModel();
+                                            m.Indexs.Add(index);
+                                            index.ColumnName = m.Name;
+                                            index.Name = indexName;
+                                            index.IsUnique = isUnique;
                                         }
                                     }
                                 }
@@ -382,8 +391,6 @@ namespace Afx.Data.SQLite.Entity.Schema
                             m.MinLength = len;
                     }
                     m.Order = Convert.ToInt32(row["cid"]);
-                    m.IsUnique = false;
-                    m.IndexName = null;
                 }
                 if (list.Count(q => q.IsKey) == 1)
                 {

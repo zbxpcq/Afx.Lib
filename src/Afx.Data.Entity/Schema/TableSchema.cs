@@ -51,16 +51,16 @@ namespace Afx.Data.Entity.Schema
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="columns">索引列信息</param>
-        public abstract void AddIndex(string table, List<ColumnInfoModel> columns);
+        /// <param name="indexs">索引列信息</param>
+        public abstract void AddIndex(string table, List<IndexModel> indexs);
 
         /// <summary>
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="column">索引列信息</param>
+        /// <param name="index">索引列信息</param>
         /// <returns>是否成功</returns>
-        public abstract bool AddIndex(string table, ColumnInfoModel column);
+        public abstract bool AddIndex(string table, IndexModel index);
 
         /// <summary>
         /// 添加索引
@@ -244,13 +244,11 @@ namespace Afx.Data.Entity.Schema
             }
 
             m.IsKey = false;
-            m.IsUnique = false;
             m.IsNullable = true;
             atts = property.GetCustomAttributes(typeof(KeyAttribute), false);
             if (atts != null && atts.Length > 0)
             {
                 m.IsKey = true;
-                m.IsUnique = true;
                 m.IsNullable = false;
             }
             else
@@ -260,16 +258,22 @@ namespace Afx.Data.Entity.Schema
                 {
                     m.IsNullable = false;
                 }
+            }
 
-                atts = property.GetCustomAttributes(typeof(IndexAttribute), false);
-                if (atts != null && atts.Length > 0)
+            atts = property.GetCustomAttributes(typeof(IndexAttribute), false);
+            if (atts != null && atts.Length > 0)
+            {
+                m.Indexs = new List<IndexModel>(atts.Length);
+                foreach (var o in atts)
                 {
-                    var att = atts[0] as IndexAttribute;
-                    m.IsUnique = att.IsUnique;
+                    var att = o as IndexAttribute;
+                    var index = new IndexModel();
+                    index.ColumnName = m.Name;
+                    index.IsUnique = att.IsUnique;
                     if (!string.IsNullOrEmpty(att.Name))
-                        m.IndexName = att.Name;
+                        index.Name = att.Name;
                     else
-                        m.IndexName = string.Format("IX_{0}_{1}", table, m.Name);
+                        m.Name = string.Format("IX_{0}_{1}", table, m.Name);
                 }
             }
 

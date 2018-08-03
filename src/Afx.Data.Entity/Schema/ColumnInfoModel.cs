@@ -52,13 +52,26 @@ namespace Afx.Data.Entity.Schema
         public bool IsAutoIncrement { get; set; }
 
         /// <summary>
+        /// 索引
+        /// </summary>
+        public List<IndexModel> Indexs { get; set; }
+    }
+
+    public class IndexModel
+    {
+        /// <summary>
         /// 索引名称
         /// </summary>
-        public string IndexName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 是否唯一索引
         /// </summary>
         public bool IsUnique { get; set; }
+
+        /// <summary>
+        /// 列名
+        /// </summary>
+        public string ColumnName { get; set; }
     }
 }

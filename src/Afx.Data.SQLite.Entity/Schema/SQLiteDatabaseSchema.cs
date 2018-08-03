@@ -106,7 +106,6 @@ namespace Afx.Data.SQLite.Entity.Schema
         public override void Dispose()
         {
             base.Dispose();
-            this.Log = null;
         }
     }
 }

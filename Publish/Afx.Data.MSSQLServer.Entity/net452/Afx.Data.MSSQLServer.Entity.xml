@@ -83,12 +83,12 @@
             </summary>
             <returns>数据库所有表名</returns>
         </member>
-        <member name="M:Afx.Data.MSSQLServer.Entity.Schema.MsSqlTableSchema.AddIndex(System.String,System.Collections.Generic.List{Afx.Data.Entity.Schema.ColumnInfoModel})">
+        <member name="M:Afx.Data.MSSQLServer.Entity.Schema.MsSqlTableSchema.AddIndex(System.String,System.Collections.Generic.List{Afx.Data.Entity.Schema.IndexModel})">
             <summary>
             添加索引
             </summary>
             <param name="table">表名</param>
-            <param name="columns">索引列信息</param>
+            <param name="indexs">索引列信息</param>
         </member>
         <member name="M:Afx.Data.MSSQLServer.Entity.Schema.MsSqlTableSchema.CreateTable(System.String,System.Collections.Generic.List{Afx.Data.Entity.Schema.ColumnInfoModel})">
             <summary>
@@ -116,12 +116,12 @@
             <param name="columns">列名</param>
             <returns>是否成功</returns>
         </member>
-        <member name="M:Afx.Data.MSSQLServer.Entity.Schema.MsSqlTableSchema.AddIndex(System.String,Afx.Data.Entity.Schema.ColumnInfoModel)">
+        <member name="M:Afx.Data.MSSQLServer.Entity.Schema.MsSqlTableSchema.AddIndex(System.String,Afx.Data.Entity.Schema.IndexModel)">
             <summary>
             添加索引
             </summary>
             <param name="table">表名</param>
-            <param name="column">索引列信息</param>
+            <param name="index">索引列信息</param>
             <returns>是否成功</returns>
         </member>
         <member name="M:Afx.Data.MSSQLServer.Entity.Schema.MsSqlTableSchema.DeleteIndex(System.String,System.String)">

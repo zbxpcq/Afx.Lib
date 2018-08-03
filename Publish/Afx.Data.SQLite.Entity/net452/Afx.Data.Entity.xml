@@ -309,14 +309,24 @@
             是否自增
             </summary>
         </member>
-        <member name="P:Afx.Data.Entity.Schema.ColumnInfoModel.IndexName">
+        <member name="P:Afx.Data.Entity.Schema.ColumnInfoModel.Indexs">
+            <summary>
+            索引
+            </summary>
+        </member>
+        <member name="P:Afx.Data.Entity.Schema.IndexModel.Name">
             <summary>
             索引名称
             </summary>
         </member>
-        <member name="P:Afx.Data.Entity.Schema.ColumnInfoModel.IsUnique">
+        <member name="P:Afx.Data.Entity.Schema.IndexModel.IsUnique">
             <summary>
             是否唯一索引
+            </summary>
+        </member>
+        <member name="P:Afx.Data.Entity.Schema.IndexModel.ColumnName">
+            <summary>
+            列名
             </summary>
         </member>
         <member name="T:Afx.Data.Entity.Schema.DatabaseSchema">
@@ -596,19 +606,19 @@
             <param name="column">列信息</param>
             <returns>是否添加成功</returns>
         </member>
-        <member name="M:Afx.Data.Entity.Schema.ITableSchema.AddIndex(System.String,System.Collections.Generic.List{Afx.Data.Entity.Schema.ColumnInfoModel})">
+        <member name="M:Afx.Data.Entity.Schema.ITableSchema.AddIndex(System.String,System.Collections.Generic.List{Afx.Data.Entity.Schema.IndexModel})">
             <summary>
             添加索引
             </summary>
             <param name="table">表名</param>
-            <param name="columns">索引列</param>
+            <param name="indexs">索引列</param>
         </member>
-        <member name="M:Afx.Data.Entity.Schema.ITableSchema.AddIndex(System.String,Afx.Data.Entity.Schema.ColumnInfoModel)">
+        <member name="M:Afx.Data.Entity.Schema.ITableSchema.AddIndex(System.String,Afx.Data.Entity.Schema.IndexModel)">
             <summary>
             添加索引
             </summary>
             <param name="table">表名</param>
-            <param name="column">索引列</param>
+            <param name="index">索引列</param>
             <returns>是否添加成功</returns>
         </member>
         <member name="M:Afx.Data.Entity.Schema.ITableSchema.AddIndex(System.String,System.String,System.Boolean,System.Collections.Generic.List{System.String})">
@@ -772,19 +782,19 @@
             <param name="column">列信息</param>
             <returns>是否成功</returns>
         </member>
-        <member name="M:Afx.Data.Entity.Schema.TableSchema.AddIndex(System.String,System.Collections.Generic.List{Afx.Data.Entity.Schema.ColumnInfoModel})">
+        <member name="M:Afx.Data.Entity.Schema.TableSchema.AddIndex(System.String,System.Collections.Generic.List{Afx.Data.Entity.Schema.IndexModel})">
             <summary>
             添加索引
             </summary>
             <param name="table">表名</param>
-            <param name="columns">索引列信息</param>
+            <param name="indexs">索引列信息</param>
         </member>
-        <member name="M:Afx.Data.Entity.Schema.TableSchema.AddIndex(System.String,Afx.Data.Entity.Schema.ColumnInfoModel)">
+        <member name="M:Afx.Data.Entity.Schema.TableSchema.AddIndex(System.String,Afx.Data.Entity.Schema.IndexModel)">
             <summary>
             添加索引
             </summary>
             <param name="table">表名</param>
-            <param name="column">索引列信息</param>
+            <param name="index">索引列信息</param>
             <returns>是否成功</returns>
         </member>
         <member name="M:Afx.Data.Entity.Schema.TableSchema.AddIndex(System.String,System.String,System.Boolean,System.Collections.Generic.List{System.String})">

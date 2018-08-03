@@ -18,11 +18,13 @@ namespace Afx.Data
     {
         private DbDataReader reader;
         private Database db;
+        private DbCommand dbCommand;
 
-        internal AfxDataReader(Database db, DbDataReader reader)
+        internal AfxDataReader(Database db, DbDataReader reader, DbCommand dbCommand)
         {
             this.db = db;
             this.reader = reader;
+            this.dbCommand = dbCommand;
         }
 
         /// <summary>
@@ -30,6 +32,7 @@ namespace Afx.Data
         /// </summary>
         public override void Close()
         {
+            if (this.dbCommand != null) this.dbCommand.Dispose();
             if (this.reader != null) this.reader.Close();
             if(this.db != null) this.db.Close();
             this.db = null;

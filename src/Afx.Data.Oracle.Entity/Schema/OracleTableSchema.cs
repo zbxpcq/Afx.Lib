@@ -62,15 +62,15 @@ namespace Afx.Data.Oracle.Entity.Schema
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="columns">索引列信息</param>
-        public override void AddIndex(string table, List<ColumnInfoModel> columns)
+        /// <param name="indexs">索引列信息</param>
+        public override void AddIndex(string table, List<IndexModel> indexs)
         {
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
-            if (columns == null || columns.Count == 0) throw new ArgumentNullException("columns");
-            var list = columns.FindAll(q => !q.IsKey && !string.IsNullOrEmpty(q.IndexName));
+            if (indexs == null) throw new ArgumentNullException("columns");
+            var list = indexs.FindAll(q => !string.IsNullOrEmpty(q.Name) && !string.IsNullOrEmpty(q.ColumnName));
             if (list.Count > 0)
             {
-                var group = list.GroupBy(q => q.IndexName, StringComparer.OrdinalIgnoreCase);
+                var group = list.GroupBy(q => q.Name, StringComparer.OrdinalIgnoreCase);
                 foreach (var item in group)
                 {
                     string indexName = item.Key;
@@ -78,7 +78,7 @@ namespace Afx.Data.Oracle.Entity.Schema
                     List<string> columnList = new List<string>();
                     foreach (var m in item)
                     {
-                        columnList.Add(m.Name);
+                        columnList.Add(m.ColumnName);
                     }
                     this.AddIndex(table, indexName, isUnique, columnList);
                 }
@@ -94,7 +94,10 @@ namespace Afx.Data.Oracle.Entity.Schema
         /// <returns>是否成功</returns>
         public override bool AddIndex(string table, string indexName, bool isUnique, List<string> columns)
         {
-            if (columns == null && columns.Count == 0)
+            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (string.IsNullOrEmpty(indexName)) throw new ArgumentNullException("indexName");
+            if (columns == null) throw new ArgumentNullException("columns");
+            if (columns.Count == 0)
                 return false;
 
             int count = 0;
@@ -125,24 +128,26 @@ namespace Afx.Data.Oracle.Entity.Schema
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="column">索引列信息</param>
+        /// <param name="index">索引列信息</param>
         /// <returns>是否成功</returns>
-        public override bool AddIndex(string table, ColumnInfoModel column)
+        public override bool AddIndex(string table, IndexModel index)
         {
+            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (index == null) throw new ArgumentNullException("index");
             int count = 0;
-            if (!column.IsKey && !string.IsNullOrEmpty(column.IndexName))
+            if (!string.IsNullOrEmpty(index.Name) && !string.IsNullOrEmpty(index.ColumnName))
             {
                 this.db.ClearParameters();
                 this.db.CommandText = "SELECT COUNT(1) FROM ALL_INDEXES WHERE OWNER = :p_db AND TABLE_NAME = :p_tb AND TABLE_TYPE = 'TABLE' AND INDEX_NAME = :index_name";
                 this.db.AddParameter("p_db", this.database);
                 this.db.AddParameter("p_tb", table);
-                this.db.AddParameter("index_name", column.IndexName);
+                this.db.AddParameter("index_name", index.Name);
                 object obj = db.ExecuteScalar();
                 if (Convert.ToInt32(obj) == 0)
                 {
                     this.db.ClearParameters();
-                    this.db.CommandText = string.Format("CREATE {0} INDEX \"{2}\" ON \"{3}\" (\"{4}\");",
-                        column.IsUnique ? "UNIQUE" : "", column.IndexName, table, column.Name);
+                    this.db.CommandText = string.Format("CREATE {0} INDEX \"{1}\" ON \"{2}\" (\"{3}\");",
+                        index.IsUnique ? "UNIQUE" : "", index.Name, table, index.ColumnName);
                     count = this.db.ExecuteNonQuery();
                 }
             }
@@ -185,15 +190,18 @@ namespace Afx.Data.Oracle.Entity.Schema
         public override bool CreateTable(string table, List<ColumnInfoModel> columns)
         {
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
-            if (columns == null || columns.Count == 0) throw new ArgumentNullException("columns");
+            if (columns == null) throw new ArgumentNullException("columns");
+            if (columns.Count == 0) return false;
             int count = 0;
             StringBuilder createTableSql = new StringBuilder();
-            List<ColumnInfoModel> keyColumns = new List<ColumnInfoModel>();
+            List<ColumnInfoModel> keyColumns = columns.Where(q => q.IsKey).ToList();
+            List<IndexModel> indexs = new List<IndexModel>();
             createTableSql.AppendFormat("CREATE TABLE \"{0}\"(", table);
             foreach (var column in columns)
             {
                 createTableSql.AppendFormat("\"{0}\" {1} {2} NULL, ", column.Name, column.DataType, column.IsNullable ? "" : "NOT");
-                if (column.IsKey) keyColumns.Add(column);
+
+                if (column.Indexs != null && column.Indexs.Count > 0) indexs.AddRange(column.Indexs);
             }
             createTableSql.Remove(createTableSql.Length - 2, 2);
 
@@ -220,7 +228,7 @@ namespace Afx.Data.Oracle.Entity.Schema
                 {
                     this.AddAutoIncrement(table, column);
                 }
-                this.AddIndex(table, columns);
+                if(indexs.Count > 0) this.AddIndex(table, indexs);
 
                 tx.Commit();
             }
@@ -289,6 +297,8 @@ namespace Afx.Data.Oracle.Entity.Schema
         /// <returns>是否成功</returns>
         public override bool AddColumn(string table, ColumnInfoModel column)
         {
+            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (column == null) throw new ArgumentNullException("column");
             int count = 0;
             using (this.db.BeginTransaction())
             {
@@ -300,7 +310,7 @@ namespace Afx.Data.Oracle.Entity.Schema
                 {
                     count += this.AddAutoIncrement(table, column);
                 }
-                this.AddIndex(table, column);
+                
                 this.db.Commit();
             }
 
@@ -432,7 +442,7 @@ namespace Afx.Data.Oracle.Entity.Schema
                     {
                         this.db.Fill(key_dt);
                         // index
-                        this.db.CommandText = "SELECT a.INDEX_NAME, a.COLUMN_NAME, b.UNIQUENESS FROM ALL_IND_COLUMNS a INNER JOIN ALL_INDEXES b ON a.TABLE_OWNER = b.TABLE_OWNER AND a.TABLE_NAME = b.TABLE_NAME AND a.INDEX_NAME = b.INDEX_NAME WHERE a.TABLE_OWNER = :p_db AND a.TABLE_NAME = :p_tb AND  b.TABLE_TYPE = 'TABLE' ORDER BY a.INDEX_NAME, a.COLUMN_POSITION";
+                        this.db.CommandText = "SELECT a.INDEX_NAME, a.COLUMN_NAME, b.UNIQUENESS FROM ALL_IND_COLUMNS a INNER JOIN ALL_INDEXES b ON a.TABLE_OWNER = b.TABLE_OWNER AND a.TABLE_NAME = b.TABLE_NAME AND a.INDEX_NAME = b.INDEX_NAME WHERE a.TABLE_OWNER = :p_db AND a.TABLE_NAME = :p_tb AND  b.TABLE_TYPE = 'TABLE' AND b.GENERATED = 'N' ORDER BY a.INDEX_NAME, a.COLUMN_POSITION";
                         using (DataTable in_dt = new DataTable())
                         {
                             this.db.Fill(in_dt);
@@ -480,17 +490,17 @@ namespace Afx.Data.Oracle.Entity.Schema
                                         }
                                     }
 
-                                    m.IsUnique = false;
-                                    if (!m.IsKey)
+                                    var index_row = in_dt.Select("COLUMN_NAME = '" + m.Name + "'");
+                                    if (index_row != null && index_row.Length > 0)
                                     {
+                                        m.Indexs = new List<IndexModel>(index_row.Length);
                                         foreach (DataRow r in in_dt.Rows)
                                         {
-                                            if (string.Compare(r["COLUMN_NAME"].ToString(), m.Name, true) == 0)
-                                            {
-                                                m.IndexName = r["INDEX_NAME"].ToString();
-                                                m.IsUnique = string.Compare(r["INDEX_NAME"].ToString(), "UNIQUE", true) == 0;
-                                                break;
-                                            }
+                                            IndexModel index = new IndexModel();
+                                            m.Indexs.Add(index);
+                                            index.ColumnName = m.Name;
+                                            index.Name = r["INDEX_NAME"].ToString();
+                                            index.IsUnique = string.Compare(r["UNIQUENESS"].ToString(), "UNIQUE", true) == 0;
                                         }
                                     }
 

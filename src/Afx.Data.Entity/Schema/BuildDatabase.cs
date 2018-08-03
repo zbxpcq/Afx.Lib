@@ -55,36 +55,66 @@ namespace Afx.Data.Entity.Schema
                 {
                     var tableColumns = tableSchema.GetTableColumns(tb);
                     var modelColumns = tableSchema.GetModelColumns(t, tb);
-                    List<ColumnInfoModel> addIndexs = new List<ColumnInfoModel>();
+                    List<IndexModel> addIndexs = new List<IndexModel>();
                     List<string> delIndexs = new List<string>();
                     foreach (var mColumn in modelColumns)
                     {
-                        var tColumn = tableColumns.Find(q => string.Compare(q.Name, mColumn.Name, true) == 0);
+                        var tColumn = tableColumns.Find(q => q.Name.Equals(mColumn.Name, StringComparison.OrdinalIgnoreCase));
                         if (tColumn == null)
                         {
                             tableSchema.AddColumn(tb, mColumn);
-                        }
-
-                        if (!mColumn.IsKey)
-                        {
-                            if(tColumn != null && tColumn.IndexName == null) tColumn.IndexName = string.Empty;
-                            if(mColumn.IndexName == null) mColumn.IndexName = string.Empty;
-
-                            if (!string.IsNullOrEmpty(mColumn.IndexName)
-                                && (tColumn == null || tColumn != null
-                                && (!string.Equals(mColumn.IndexName, tColumn.IndexName,
-                                StringComparison.OrdinalIgnoreCase)
-                                || mColumn.IsUnique != tColumn.IsUnique)))
+                            if(mColumn.Indexs != null && mColumn.Indexs.Count > 0)
                             {
-                                addIndexs.Add(mColumn);
+                                foreach(var index in mColumn.Indexs)
+                                {
+                                    if (string.IsNullOrEmpty(index.Name)) continue;
+                                    if (string.IsNullOrEmpty(index.ColumnName)) index.ColumnName = mColumn.Name;
+                                    addIndexs.Add(index);
+                                }
+                            }
+                        }
+                        else if (mColumn.Indexs != null && mColumn.Indexs.Count > 0)
+                        {
+                            // 添加数据库不存在索引
+                            foreach(var index in mColumn.Indexs)
+                            {
+                                if (string.IsNullOrEmpty(index.Name)) continue;
+                                if (string.IsNullOrEmpty(index.ColumnName)) index.ColumnName = mColumn.Name;
+
+                                if(tColumn.Indexs == null || tColumn.Indexs.Count == 0)
+                                {
+                                    addIndexs.Add(index);
+                                }
+                                else
+                                {
+                                    var tindex = tColumn.Indexs.Find(q => index.Name.Equals(q.Name, StringComparison.OrdinalIgnoreCase));
+                                    if(tindex == null || tindex.IsUnique != index.IsUnique)
+                                    {
+                                        addIndexs.Add(index);
+                                    }
+                                }
                             }
 
-                            if (tColumn != null && !string.IsNullOrEmpty(tColumn.IndexName)
-                                && (!string.Equals(tColumn.IndexName, mColumn.IndexName, StringComparison.OrdinalIgnoreCase)
-                                || mColumn.IsUnique != tColumn.IsUnique))
+                            // 删除数据库多余索引
+                            if (tColumn.Indexs != null && tColumn.Indexs.Count > 0)
                             {
-                                if (!delIndexs.Contains(tColumn.IndexName, StringComparer.OrdinalIgnoreCase))
-                                    delIndexs.Add(tColumn.IndexName);
+                                foreach (var tindex in tColumn.Indexs)
+                                {
+                                    if (mColumn.Indexs == null || mColumn.Indexs.Count == 0)
+                                    {
+                                        if (!delIndexs.Contains(tindex.Name, StringComparer.OrdinalIgnoreCase))
+                                            delIndexs.Add(tindex.Name);
+                                    }
+                                    else
+                                    {
+                                        var index = mColumn.Indexs.Find(q => tindex.Name.Equals(q.Name, StringComparison.OrdinalIgnoreCase));
+                                        if (index == null || tindex.IsUnique != index.IsUnique)
+                                        {
+                                            if (!delIndexs.Contains(tindex.Name, StringComparer.OrdinalIgnoreCase))
+                                                delIndexs.Add(tindex.Name);
+                                        }
+                                    }
+                                }
                             }
                         }
 

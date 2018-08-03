@@ -69,15 +69,15 @@ namespace Afx.Data.MySql.Entity.Schema
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="columns">索引列信息</param>
-        public override void AddIndex(string table, List<ColumnInfoModel> columns)
+        /// <param name="indexs">索引列信息</param>
+        public override void AddIndex(string table, List<IndexModel> indexs)
         {
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
-            if (columns == null) throw new ArgumentNullException("columns");
-            var list = columns.FindAll(q => !q.IsKey && !string.IsNullOrEmpty(q.IndexName));
+            if (indexs == null) throw new ArgumentNullException("columns");
+            var list = indexs.FindAll(q => !string.IsNullOrEmpty(q.Name) && !string.IsNullOrEmpty(q.ColumnName));
             if (list.Count > 0)
             {
-                var group = list.GroupBy(q => q.IndexName, StringComparer.OrdinalIgnoreCase);
+                var group = list.GroupBy(q => q.Name, StringComparer.OrdinalIgnoreCase);
                 foreach (var item in group)
                 {
                     string indexName = item.Key;
@@ -85,7 +85,7 @@ namespace Afx.Data.MySql.Entity.Schema
                     List<string> columnList = new List<string>();
                     foreach (var m in item)
                     {
-                        columnList.Add(m.Name);
+                        columnList.Add(m.ColumnName);
                     }
                     this.AddIndex(table, indexName, isUnique, columnList);
                 }
@@ -100,10 +100,12 @@ namespace Afx.Data.MySql.Entity.Schema
         public override bool CreateTable(string table, List<ColumnInfoModel> columns)
         {
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
-            if (columns == null || columns.Count == 0) throw new ArgumentNullException("columns");
+            if (columns == null) throw new ArgumentNullException("columns");
+            if (columns.Count == 0) return false;
             int count = 0;
             StringBuilder createTableSql = new StringBuilder();
-            List<ColumnInfoModel> keyColumns = new List<ColumnInfoModel>();
+            List<ColumnInfoModel> keyColumns = columns.Where(q => q.IsKey).ToList();
+            List<IndexModel> indexs = new List<IndexModel>();
             createTableSql.AppendFormat("CREATE TABLE `{0}`(", table);
             foreach (var column in columns)
             {
@@ -111,7 +113,7 @@ namespace Afx.Data.MySql.Entity.Schema
                 if (column.IsAutoIncrement) createTableSql.Append(" AUTO_INCREMENT");
                 createTableSql.Append(",");
 
-                if (column.IsKey) keyColumns.Add(column);
+                if (column.Indexs != null && column.Indexs.Count > 0) indexs.AddRange(column.Indexs);
             }
             createTableSql.Remove(createTableSql.Length - 1, 1);
 
@@ -135,7 +137,7 @@ namespace Afx.Data.MySql.Entity.Schema
                 this.db.CommandText = createTableSql.ToString();
                 count = this.db.ExecuteNonQuery();
 
-                this.AddIndex(table, columns);
+                if (indexs.Count > 0) this.AddIndex(table, indexs);
 
                 tx.Commit();
             }
@@ -158,6 +160,8 @@ namespace Afx.Data.MySql.Entity.Schema
         /// <returns>是否成功</returns>
         public override bool AddColumn(string table, ColumnInfoModel column)
         {
+            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (column == null) throw new ArgumentNullException("column");
             this.db.ClearParameters();
             this.db.CommandText = string.Format("ALTER TABLE `{0}` ADD COLUMN `{1}` {2} {3} NULL;",
                 table, column.Name, column.DataType, column.IsNullable ? "" : "NOT");
@@ -175,7 +179,10 @@ namespace Afx.Data.MySql.Entity.Schema
         /// <returns>是否成功</returns>
         public override bool AddIndex(string table, string indexName, bool isUnique, List<string> columns)
         {
-            if (columns == null && columns.Count == 0)
+            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (string.IsNullOrEmpty(indexName)) throw new ArgumentNullException("indexName");
+            if (columns == null) throw new ArgumentNullException("columns");
+            if (columns.Count == 0)
                 return false;
 
             StringBuilder strColumns = new StringBuilder();
@@ -196,16 +203,16 @@ namespace Afx.Data.MySql.Entity.Schema
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="column">索引列信息</param>
+        /// <param name="index">索引列信息</param>
         /// <returns>是否成功</returns>
-        public override bool AddIndex(string table, ColumnInfoModel column)
+        public override bool AddIndex(string table, IndexModel index)
         {
             int count = 0;
-            if (!column.IsKey && !string.IsNullOrEmpty(column.IndexName))
+            if (!string.IsNullOrEmpty(index.Name) && !string.IsNullOrEmpty(index.ColumnName))
             {
                 this.db.ClearParameters();
                 this.db.CommandText = string.Format("ALTER TABLE `{0}` ADD {1} INDEX `{2}` (`{3}`);",
-                    table, column.IsUnique ? "UNIQUE" : "", column.IndexName, column.Name);
+                    table, index.IsUnique ? "UNIQUE" : "", index.Name, index.ColumnName);
                 count = this.db.ExecuteNonQuery();
             }
 
@@ -304,27 +311,43 @@ namespace Afx.Data.MySql.Entity.Schema
             using (DataTable dt = new DataTable())
             {
                 db.Fill(dt);
-                foreach (DataRow row in dt.Rows)
-                {
-                    ColumnInfoModel m = new ColumnInfoModel();
-                    list.Add(m);
 
-                    int len = 0;
-                    if (int.TryParse(row["MaxLength"].ToString(), out len))
-                        m.MaxLength = len;
-                    if (int.TryParse(row["MinLength"].ToString(), out len))
-                        m.MinLength = len;
-                    m.Name = row["Name"].ToString();
-                    m.DataType = row["DataType"].ToString();
-                    m.IsAutoIncrement = Convert.ToBoolean(row["IsAutoIncrement"]);
-                    m.IsKey = Convert.ToBoolean(row["IsKey"]);
-                    m.IsNullable = Convert.ToBoolean(row["IsNullable"]);
-                    m.Order = Convert.ToInt32(row["Order"]);
-                    m.IsUnique = false;
-                    if (!m.IsKey)
+                this.db.ClearParameters();
+                this.db.CommandText = SelectTableIndexSql;
+                this.db.AddParameter("?database", this.database);
+                this.db.AddParameter("?table", table);
+                using (var index_dt = new DataTable())
+                {
+                    db.Fill(index_dt);
+                    foreach (DataRow row in dt.Rows)
                     {
-                        m.IndexName = row["IndexName"].ToString();
-                        m.IsUnique = Convert.ToBoolean(row["IsUnique"]);
+                        ColumnInfoModel m = new ColumnInfoModel();
+                        list.Add(m);
+
+                        int len = 0;
+                        if (int.TryParse(row["MaxLength"].ToString(), out len))
+                            m.MaxLength = len;
+                        if (int.TryParse(row["MinLength"].ToString(), out len))
+                            m.MinLength = len;
+                        m.Name = row["Name"].ToString();
+                        m.DataType = row["DataType"].ToString();
+                        m.IsAutoIncrement = Convert.ToBoolean(row["IsAutoIncrement"]);
+                        m.IsKey = Convert.ToBoolean(row["IsKey"]);
+                        m.IsNullable = Convert.ToBoolean(row["IsNullable"]);
+                        m.Order = Convert.ToInt32(row["Order"]);
+                        var index_row = index_dt.Select("Order = " + m.Order);
+                        if (index_row != null && index_row.Length > 0)
+                        {
+                            m.Indexs = new List<IndexModel>(index_row.Length);
+                            foreach (var r in index_row)
+                            {
+                                IndexModel index = new IndexModel();
+                                m.Indexs.Add(index);
+                                index.ColumnName = m.Name;
+                                index.Name = row["IndexName"].ToString();
+                                index.IsUnique = Convert.ToBoolean(row["IsUnique"]);
+                            }
+                        }
                     }
                 }
             }
@@ -439,11 +462,16 @@ IFNULL((CASE WHEN col.`DATA_TYPE` IN('decimal', 'double', 'float', 'numeric', 'r
 IFNULL(col.`NUMERIC_SCALE`, 0) `MinLength`,
 IF(col.`IS_NULLABLE`='YES', 1, 0) `IsNullable`,
 IF(col.`COLUMN_KEY`='PRI', 1, 0) `IsKey`,
-IF(col.`EXTRA`='auto_increment', 1,0) `IsAutoIncrement`,
+IF(col.`EXTRA`='auto_increment', 1,0) `IsAutoIncrement`
+FROM information_schema.columns col
+WHERE col.table_schema=?database AND col.table_name=?table;";
+
+        private const string SelectTableIndexSql = @"
+SELECT col.`ORDINAL_POSITION` `Order`, 
 IFNULL(statis.`INDEX_NAME`, '') `IndexName`,
 IF(statis.`NON_UNIQUE`=0, 1, 0) `IsUnique`
 FROM information_schema.columns col
-LEFT JOIN information_schema.statistics statis ON col.`TABLE_SCHEMA`=statis.`TABLE_SCHEMA` AND col.`TABLE_NAME`=statis.`TABLE_NAME` AND col.`COLUMN_NAME`=statis.`COLUMN_NAME`
-WHERE col.table_schema=?database AND col.table_name=?table;";
+INNER JOIN information_schema.statistics statis ON col.`TABLE_SCHEMA`=statis.`TABLE_SCHEMA` AND col.`TABLE_NAME`=statis.`TABLE_NAME` AND col.`COLUMN_NAME`=statis.`COLUMN_NAME`
+WHERE col.table_schema=?database AND col.table_name=?table AND statis.`INDEX_NAME` <> 'PRIMARY';";
     }
 }

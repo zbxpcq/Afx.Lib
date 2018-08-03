@@ -38,7 +38,6 @@ namespace Afx.Data.MySql.Entity.Schema
         {
             if (string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException("connectionString");
             //Server=127.0.0.1;Port=3306;Database=FileSystem;User Id=root;Password=mycsv.cn;CharacterSet=UTF8;Pooling=True;MinPoolSize=1;MaxPoolSize=100;ConnectionLifeTime=30;Keepalive=30
-            var _connectionStringBuilder = new MySqlConnectionStringBuilder(connectionString);
             var connectionStringBuilder = new MySqlConnectionStringBuilder(connectionString);
             this.database = connectionStringBuilder.Database;
             connectionStringBuilder.Database = "mysql";

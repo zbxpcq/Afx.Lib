@@ -51,16 +51,16 @@ namespace Afx.Data.Entity.Schema
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="columns">索引列</param>
-        void AddIndex(string table, List<ColumnInfoModel> columns);
+        /// <param name="indexs">索引列</param>
+        void AddIndex(string table, List<IndexModel> indexs);
 
         /// <summary>
         /// 添加索引
         /// </summary>
         /// <param name="table">表名</param>
-        /// <param name="column">索引列</param>
+        /// <param name="index">索引列</param>
         /// <returns>是否添加成功</returns>
-        bool AddIndex(string table, ColumnInfoModel column);
+        bool AddIndex(string table, IndexModel index);
 
         /// <summary>
         /// 添加索引

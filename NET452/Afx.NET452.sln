@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afx.ActiveDirectory", "Afx.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afx.Forms.Controls", "Afx.Forms.Controls\Afx.Forms.Controls.csproj", "{B0D8F905-471A-4DC8-A29C-F3DFC98DF458}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{29BD69EA-56CB-437A-885A-4DB5A1D767F0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afx.Web.Http", "Afx.Web.Http\Afx.Web.Http.csproj", "{D2EDC77C-9D5E-4102-B2FC-2311DD8598F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{07A06CBA-9FBD-4EE3-B015-39DCAC7A9B63}"
