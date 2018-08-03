@@ -52,7 +52,7 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
         {
             List<string> list = new List<string>();
             this.db.ClearParameters();
-            this.db.CommandText = @"SELECT table_name FROM information_schema.tables WHERE table_catalog=@database";
+            this.db.CommandText = @"SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_CATALOG=@database AND TABLE_TYPE='BASE TABLE'";
             this.db.AddParameter("@database", this.database);
             using (DataTable dt = new DataTable())
             {

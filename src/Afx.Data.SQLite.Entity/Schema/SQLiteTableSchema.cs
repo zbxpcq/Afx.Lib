@@ -59,7 +59,7 @@ namespace Afx.Data.SQLite.Entity.Schema
         {
             List<string> list = new List<string>();
             this.db.ClearParameters();
-            this.db.CommandText = @"SELECT [name] FROM [sqlite_master] WHERE [type]='table' AND [tbl_name]!='sqlite_sequence'";
+            this.db.CommandText = @"SELECT [name] FROM [sqlite_master] WHERE [type]='table' AND [tbl_name] <> 'sqlite_sequence'";
             using (var dt = new DataTable())
             {
                 this.db.Fill(dt);

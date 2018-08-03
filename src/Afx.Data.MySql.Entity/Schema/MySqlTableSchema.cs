@@ -50,7 +50,7 @@ namespace Afx.Data.MySql.Entity.Schema
         {
             List<string> list = new List<string>();
             this.db.ClearParameters();
-            this.db.CommandText = "SELECT table_name FROM information_schema.tables tb WHERE tb.table_schema=?database;";
+            this.db.CommandText = "SELECT table_name FROM information_schema.tables tb WHERE tb.table_schema=?database  AND table_type = 'BASE TABLE';";
             this.db.AddParameter("?database", this.database);
             using (DataTable dt = new DataTable())
             {
