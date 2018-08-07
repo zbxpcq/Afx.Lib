@@ -24,8 +24,8 @@ namespace Afx.Data.Extensions
                 var parr = t.GetProperties(BindingFlags.Instance | BindingFlags.Public);
                 foreach (var p in parr)
                 {
-                    string paramname = "$" + p.Name+ "$";
-                    if(!_sql.Contains(paramname)) paramname = "@" + p.Name;
+                    string paramname = "@" + p.Name;// "$" + p.Name+ "$";
+                    //if(!_sql.Contains(paramname)) paramname = "@" + p.Name;
                     if (_sql.Contains(paramname))
                     {
                         var pname = db.EncodeParameterName(p.Name);

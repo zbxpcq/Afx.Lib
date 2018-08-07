@@ -26,6 +26,14 @@ namespace Afx.Data
         private static ConcurrentDictionary<Type, Type> cacheDic = new ConcurrentDictionary<Type, Type>();
         private static ConcurrentDictionary<Type, Type> setParamDic = new ConcurrentDictionary<Type, Type>();
 #endif
+        static object setlockparamobj = new object();
+
+        private static void Check(this IDatabase db, string sql)
+        {
+            if (db == null) throw new ArgumentNullException("db");
+            if (string.IsNullOrEmpty(sql)) throw new ArgumentNullException("sql");
+        }
+
         /// <summary>
         /// 查询数据
         /// </summary>
@@ -36,13 +44,11 @@ namespace Afx.Data
         /// <returns>实体 list</returns>
         public static List<T> Query<T>(this IDatabase db, string sql, object obj = null)
         {
-            var list = new List<T>();
+            db.Check(sql);
             var t = typeof(T);
-            if (t.IsArray || t.IsAbstract)
-            {
-                return list;
-            }
-
+            if (t.IsArray || t.IsAbstract || !(t.IsClass || t.IsValueType)) throw new ArgumentException("T is error!");
+            var list = new List<T>();
+            
             IReaderToModel ic = null;
             bool isvalue = false;
             if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -87,7 +93,7 @@ namespace Afx.Data
         {
             if (o != null && o != DBNull.Value)
             {
-                if (o.GetType() == t)
+                if (o.GetType() == t || t == typeof(object))
                 {
                     return o;
                 }
@@ -108,6 +114,10 @@ namespace Afx.Data
                     {
                         return Convert.ChangeType(o, gt);
                     }
+                    else
+                    {
+                        throw new InvalidCastException("ChangeType " + o.GetType().FullName + " to " + t.FullName + " error!");
+                    }
                 }
             }
 
@@ -123,6 +133,7 @@ namespace Afx.Data
         /// <returns>数据</returns>
         public static T ExecuteScalar<T>(this IDatabase db, string sql, object obj = null)
         {
+            db.Check(sql);
             T m = default(T);
             var rt = typeof(T);
             Type t = rt;
@@ -131,6 +142,7 @@ namespace Afx.Data
                 var ot = obj.GetType();
                 if (IsArray(ot))
                 {
+                    if (obj == null || !(obj is IEnumerable)) throw new ArgumentException("T or obj is error!");
                     IEnumerable ie = obj as IEnumerable;
                     var tor = ie.GetEnumerator();
                     IList il = null;
@@ -201,6 +213,7 @@ namespace Afx.Data
         /// <returns>受影响的行数。</returns>
         public static int ExecuteNonQuery(this IDatabase db, string sql, object obj = null)
         {
+            db.Check(sql);
             int count = 0;
             if (obj != null)
             {
@@ -265,11 +278,11 @@ namespace Afx.Data
                         }
                     }
                 }
-                else if (t.IsClass && !t.Name.StartsWith("<>"))
-                {
-                    IModelToParam toparam = GetModelToParam(t);
-                    _sql = toparam.To(db, _sql, obj);
-                }
+                //else if (t.IsClass && !t.Name.StartsWith("<>"))
+                //{
+                //    IModelToParam toparam = GetModelToParam(t);
+                //    _sql = toparam.To(db, _sql, obj);
+                //}
                 else
                 {
                     IModelToParam toparam = new ModelToParam();
@@ -495,13 +508,13 @@ namespace Afx.Data
             Type setParamType = null;
             if (!setParamDic.TryGetValue(t, out setParamType))
             {
-                    if (setParamType == null)
+                if (setParamType == null)
+                {
+                    setParamType = CreateModelToParamType(t);
+                    if (setParamType != null && !setParamDic.ContainsKey(t))
                     {
-                        setParamType = CreateModelToParamType(t);
-                        if (setParamType != null && !setParamDic.ContainsKey(t))
-                        {
-                            setParamDic[t] = setParamType;
-                        }
+                        setParamDic[t] = setParamType;
+                    }
                 }
             }
 
