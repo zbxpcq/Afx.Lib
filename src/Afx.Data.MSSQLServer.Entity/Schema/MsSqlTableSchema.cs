@@ -353,8 +353,8 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
                                 IndexModel index = new IndexModel();
                                 m.Indexs.Add(index);
                                 index.ColumnName = m.Name;
-                                index.Name = row["IndexName"].ToString();
-                                index.IsUnique = Convert.ToBoolean(row["IsUnique"]);
+                                index.Name = r["IndexName"].ToString();
+                                index.IsUnique = Convert.ToBoolean(r["IsUnique"]);
                             }
                         }
                     }

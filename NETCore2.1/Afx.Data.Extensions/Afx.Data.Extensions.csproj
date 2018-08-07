@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>6.2.12.0</Version>
+    <Version>6.2.13.0</Version>
     <Description>Afx.Data.Extensions for .NETCore2.1</Description>
     <PackageReleaseNotes>Afx.Data.Extensions for .NETCore2.1</PackageReleaseNotes>
     <PackageTags>

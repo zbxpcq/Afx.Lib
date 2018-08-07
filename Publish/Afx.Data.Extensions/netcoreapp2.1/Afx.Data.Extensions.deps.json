@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Afx.Data.Extensions/6.2.12.0": {
+      "Afx.Data.Extensions/6.2.13.0": {
         "dependencies": {
-          "Afx.Data": "6.2.12"
+          "Afx.Data": "6.2.13"
         },
         "runtime": {
           "Afx.Data.Extensions.dll": {}
         }
       },
-      "Afx.Data/6.2.12": {
+      "Afx.Data/6.2.13": {
         "runtime": {
           "Afx.Data.dll": {}
         }
@@ -22,12 +22,12 @@
     }
   },
   "libraries": {
-    "Afx.Data.Extensions/6.2.12.0": {
+    "Afx.Data.Extensions/6.2.13.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Afx.Data/6.2.12": {
+    "Afx.Data/6.2.13": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
