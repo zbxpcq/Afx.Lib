@@ -406,12 +406,24 @@ namespace Afx.Aop
             return proxy;
         }
 
+        private void CheckAop(List<Type> aopTypeList)
+        {
+            if (aopTypeList == null) throw new ArgumentNullException("aopTypeList");
+            foreach (var t in aopTypeList)
+            {
+                if(t == null) throw new ArgumentNullException("aopTypeList item");
+                if (t.IsAbstract || !t.IsClass || !typeof(IAop).IsAssignableFrom(t))
+                    throw new ArgumentException(t.FullName + " is not IAop!");
+            }
+        }
+
         /// <summary>
         /// 添加全局IAop实现类型
         /// </summary>
         /// <param name="aopTypeList">IAop实现类型 list</param>
         public void AddOfGlobal(List<Type> aopTypeList)
         {
+            this.CheckAop(aopTypeList);
             AopUtils.AddOfGlobal(this.m_classId, aopTypeList);
         }
 
@@ -421,10 +433,10 @@ namespace Afx.Aop
         /// <param name="aopType">IAop实现类型</param>
         public void AddOfGlobal(Type aopType)
         {
-            if (aopType != null)
-            {
-                AopUtils.AddOfGlobal(this.m_classId, new List<Type> { aopType });
-            }
+            if (aopType == null) throw new ArgumentNullException("aopType");
+            if (aopType.IsAbstract || !aopType.IsClass || !typeof(IAop).IsAssignableFrom(aopType))
+                throw new ArgumentException(aopType.FullName + " is not IAop!");
+            AopUtils.AddOfGlobal(this.m_classId, new List<Type> { aopType });
         }
 
         /// <summary>
@@ -434,6 +446,8 @@ namespace Afx.Aop
         /// <param name="aopTypeList">IAop实现类型 list</param>
         public void AddOfType(Type tagetType, List<Type> aopTypeList)
         {
+            if(tagetType == null) throw new ArgumentNullException("tagetType");
+            this.CheckAop(aopTypeList);
             AopUtils.AddOfType(this.m_classId, tagetType, aopTypeList);
         }
 
@@ -444,11 +458,12 @@ namespace Afx.Aop
         /// <param name="aopType">IAop实现类型</param>
         public void AddOfType(Type tagetType, Type aopType)
         {
-            if (aopType != null)
-            {
-                var list = new List<Type> { aopType } ;
-                AopUtils.AddOfType(this.m_classId, tagetType, list);
-            }
+            if (tagetType == null) throw new ArgumentNullException("tagetType");
+            if (aopType == null) throw new ArgumentNullException("aopType");
+            if (aopType.IsAbstract || !aopType.IsClass || !typeof(IAop).IsAssignableFrom(aopType))
+                throw new ArgumentException(aopType.FullName + " is not IAop!");
+            var list = new List<Type> { aopType };
+            AopUtils.AddOfType(this.m_classId, tagetType, list);
         }
         
     }

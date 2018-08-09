@@ -14,7 +14,7 @@ using Afx.Utils;
 namespace Afx.Ioc
 {
     /// <summary>
-    /// ioc工厂
+    /// ioc容器
     /// </summary>
     public class IocContainer
     {
@@ -601,17 +601,20 @@ namespace Afx.Ioc
         /// </summary>
         public AopProxy CurrentAopProxy
         {
-            get { return this.m_aopProxy; }
+            get
+            {
+                if (this.m_aopProxy == null) throw new InvalidOperationException("not enabled Aop!");
+                return this.m_aopProxy;
+            }
         }
-
+        
         /// <summary>
         /// 添加全局IAop实现类型
         /// </summary>
         /// <param name="aopTypeList">IAop实现类型 list</param>
         public void AddGlobalAop(List<Type> aopTypeList)
         {
-            if(this.m_aopProxy != null)
-                this.m_aopProxy.AddOfGlobal(aopTypeList);
+            this.CurrentAopProxy.AddOfGlobal(aopTypeList);
         }
 
         /// <summary>
@@ -620,7 +623,7 @@ namespace Afx.Ioc
         /// <typeparam name="TAop"></typeparam>
         public void AddGlobalAop<TAop>() where TAop : class, IAop
         {
-            this.AddGlobalAop(typeof(TAop));
+            this.CurrentAopProxy.AddOfGlobal(typeof(TAop));
         }
 
         /// <summary>
@@ -629,61 +632,62 @@ namespace Afx.Ioc
         /// <param name="aopType">IAop实现类型</param>
         public void AddGlobalAop(Type aopType)
         {
-            if (this.m_aopProxy != null)
-                this.m_aopProxy.AddOfGlobal(aopType);
+            this.CurrentAopProxy.AddOfGlobal(aopType);
         }
 
         /// <summary>
         /// 添加指定实现类的IAop
         /// </summary>
-        /// <typeparam name="TClass"></typeparam>
+        /// <typeparam name="TInterface"></typeparam>
         /// <param name="aopTypeList"></param>
-        public void AddClassAop<TClass>(List<Type> aopTypeList)
+        public void AddAop<TInterface>(List<Type> aopTypeList)
         {
-            this.AddClassAop(typeof(TClass), aopTypeList);
+            List<Type> list;
+            var interfaceType = typeof(TInterface);
+            using (this.m_rwLock.GetReadLock())
+            {
+                this.m_dicType.TryGetValue(interfaceType, out list);
+            }
+            if (list == null) throw new ArgumentException("not found " + interfaceType.FullName);
+            foreach (var t in list)
+            {
+                this.CurrentAopProxy.AddOfType(t, aopTypeList);
+            }
         }
-
-        /// <summary>
-        /// 添加指定类型的IAop实现类型
-        /// </summary>
-        /// <param name="classType">需要aop的类型</param>
-        /// <param name="aopTypeList">IAop实现类型 list</param>
-        public void AddClassAop(Type classType, List<Type> aopTypeList)
-        {
-            if (this.m_aopProxy != null)
-                this.m_aopProxy.AddOfType(classType, aopTypeList);
-        }
-
+        
         /// <summary>
         /// 添加指定实现类的IAop
         /// </summary>
-        /// <typeparam name="TClass"></typeparam>
+        /// <typeparam name="TInterface"></typeparam>
         /// <typeparam name="TAop"></typeparam>
-        public void AddClassAop<TClass, TAop>() where TAop : class, IAop
+        public void AddAop<TInterface, TAop>() where TAop : class, IAop
         {
-            this.AddClassAop(typeof(TClass), typeof(TAop));
+            var aopType = typeof(TAop);
+            this.AddAop<TInterface>(aopType);
         }
 
         /// <summary>
         /// 添加指定实现类的IAop
         /// </summary>
-        /// <typeparam name="TClass"></typeparam>
+        /// <typeparam name="TInterface"></typeparam>
         /// <param name="aopType"></param>
-        public void AddClassAop<TClass>(Type aopType)
+        public void AddAop<TInterface>(Type aopType)
         {
-            this.AddClassAop(typeof(TClass), aopType);
+            if (aopType == null) throw new ArgumentNullException("aopType");
+            if (aopType.IsAbstract) throw new ArgumentException("aopType is abstract.");
+            List<Type> list;
+            var interfaceType = typeof(TInterface);
+            using (this.m_rwLock.GetReadLock())
+            {
+                this.m_dicType.TryGetValue(interfaceType, out list);
+            }
+            if (list == null) throw new ArgumentException("not found " + interfaceType.FullName);
+            foreach (var t in list)
+            {
+                this.CurrentAopProxy.AddOfType(t, aopType);
+            }
         }
 
-        /// <summary>
-        /// 添加指定类型的IAop实现类型
-        /// </summary>
-        /// <param name="classType">需要aop的类型</param>
-        /// <param name="aopType">IAop实现类型</param>
-        public void AddClassAop(Type classType, Type aopType)
-        {
-            if (this.m_aopProxy != null)
-                this.m_aopProxy.AddOfType(classType, aopType);
-        }
 
     }
 }

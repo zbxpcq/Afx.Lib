@@ -14,9 +14,9 @@ namespace Afx.ActiveDirectory
     /// </summary>
     public class ADDomain
     {
-        private string _domain;
-        private string _account;
-        private string _password;
+        public string Domain { get; private set; }
+        public string Account { get; set; }
+        public string Password { get; set; }
 
         /// <summary>
         /// 异常回调
@@ -37,7 +37,8 @@ namespace Afx.ActiveDirectory
         /// <param name="domain">域名</param>
         public ADDomain(string domain)
         {
-            this._domain = domain;
+            if (string.IsNullOrEmpty(domain)) throw new ArgumentNullException("domain");
+            this.Domain = domain;
         }
 
         /// <summary>
@@ -46,9 +47,8 @@ namespace Afx.ActiveDirectory
         /// <param name="domain">域名</param>
         /// <param name="account">域账号</param>
         /// <param name="password">域密码</param>
-        public ADDomain(string domain, string account, string password)
+        public ADDomain(string domain, string account, string password): this(domain)
         {
-            this._domain = domain;
             this.Set(account, password);
         }
 
@@ -59,8 +59,8 @@ namespace Afx.ActiveDirectory
         /// <param name="password">域密码</param>
         public void Set(string account, string password)
         {
-            this._account = account;
-            this._password = password;
+            this.Account = account;
+            this.Password = password;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Afx.ActiveDirectory
         /// <returns>true：登录成功，false：登录失败</returns>
         public bool Login()
         {
-            return this.Login(this._account, this._password, -1);
+            return this.Login(this.Account, this.Password, -1);
         }
 
         /// <summary>
@@ -79,7 +79,9 @@ namespace Afx.ActiveDirectory
         /// <returns>true：登录成功，false：登录失败</returns>
         public bool Login(int millisecondsTimeout)
         {
-            return this.Login(this._account, this._password, millisecondsTimeout);
+            if (string.IsNullOrEmpty(this.Account)) throw new ArgumentNullException("ADDomain.Account");
+            if (string.IsNullOrEmpty(this.Password)) throw new ArgumentNullException("ADDomain.Password");
+            return this.Login(this.Account, this.Password, millisecondsTimeout);
         }
         
         /// <summary>
@@ -99,14 +101,10 @@ namespace Afx.ActiveDirectory
             string account = arr[0] as string;
             string password = arr[1] as string;
             bool result = false;
-            if (string.IsNullOrEmpty(this._domain) || string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password))
-            {
-                return result;
-            }
             try
             {
-                string path = string.Format("LDAP://{0}", this._domain);
-                string domainaccount = string.Format("{0}\\{1}", this._domain, account);
+                string path = string.Format("LDAP://{0}", this.Domain);
+                string domainaccount = string.Format("{0}\\{1}", this.Domain, account);
                 using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, password))
                 {
                     entry.RefreshCache();
@@ -130,12 +128,13 @@ namespace Afx.ActiveDirectory
         /// <returns>true：登录成功，false：登录失败</returns>
         public bool Login(string account, string password, int millisecondsTimeout)
         {
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account");
+            if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
             bool result = false;
             var task = Task.Factory.StartNew(new Func<object, bool>(this.LoginTask),
                 new object[]{account, password});
 
-            task.Wait(millisecondsTimeout);
-            if(task.IsCompleted)
+            if(task.Wait(millisecondsTimeout) || task.IsCompleted)
             {
                 result = task.Result;
             }
@@ -146,17 +145,11 @@ namespace Afx.ActiveDirectory
         {
             string account = obj as string;
             bool result = false;
-            if (string.IsNullOrEmpty(this._domain) || string.IsNullOrEmpty(this._account)
-                || string.IsNullOrEmpty(this._password) || string.IsNullOrEmpty(account))
-            {
-                return result;
-            }
-
             try
             {
-                string path = string.Format("LDAP://{0}", this._domain);
-                string domainaccount = string.Format("{0}\\{1}", this._domain, this._account);
-                using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, this._password))
+                string path = string.Format("LDAP://{0}", this.Domain);
+                string domainaccount = string.Format("{0}\\{1}", this.Domain, this.Account);
+                using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, this.Password))
                 {
                     using (DirectorySearcher search = new DirectorySearcher(entry))
                     {
@@ -192,12 +185,14 @@ namespace Afx.ActiveDirectory
         /// <returns>true：存在，false：不存在</returns>
         public bool Exists(string account, int millisecondsTimeout)
         {
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account");
+            if (string.IsNullOrEmpty(this.Account)) throw new ArgumentNullException("ADDomain.Account");
+            if (string.IsNullOrEmpty(this.Password)) throw new ArgumentNullException("ADDomain.Password");
             bool result = false;
             
             var task = Task.Factory.StartNew(new Func<object, bool>(this.ExistsTask), account);
 
-            task.Wait(millisecondsTimeout);
-            if (task.IsCompleted)
+            if (task.Wait(millisecondsTimeout) || task.IsCompleted)
             {
                 result = task.Result;
             }
@@ -209,16 +204,11 @@ namespace Afx.ActiveDirectory
         {
             int searchUserCount = (int)obj;
             List<string> list = null;
-            if (string.IsNullOrEmpty(this._domain) || string.IsNullOrEmpty(this._account)
-                || string.IsNullOrEmpty(this._password))
-            {
-                return list;
-            }
             try
             {
-                string path = string.Format("LDAP://{0}", this._domain);
-                string domainaccount = string.Format("{0}\\{1}", this._domain, this._account);
-                using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, this._password))
+                string path = string.Format("LDAP://{0}", this.Domain);
+                string domainaccount = string.Format("{0}\\{1}", this.Domain, this.Account);
+                using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, this.Password))
                 {
                     using (DirectorySearcher search = new DirectorySearcher(entry))
                     {
@@ -283,12 +273,13 @@ namespace Afx.ActiveDirectory
         /// <returns>所有属性名称</returns>
         public List<string> GetUserFields(int millisecondsTimeout, int searchUserCount)
         {
+            if (string.IsNullOrEmpty(this.Account)) throw new ArgumentNullException("ADDomain.Account");
+            if (string.IsNullOrEmpty(this.Password)) throw new ArgumentNullException("ADDomain.Password");
             List<string> list = null;
 
             var task = Task.Factory.StartNew(new Func<object, List<string>>(this.GetUserFieldsTask), searchUserCount);
 
-            task.Wait(millisecondsTimeout);
-            if(task.IsCompleted)
+            if(task.Wait(millisecondsTimeout) || task.IsCompleted)
             {
                 list = task.Result;
             }
@@ -353,17 +344,11 @@ namespace Afx.ActiveDirectory
         {
             string account = obj as string;
             ADInfoModel result = null;
-            if (string.IsNullOrEmpty(this._domain) || string.IsNullOrEmpty(this._account)
-                || string.IsNullOrEmpty(this._password) || string.IsNullOrEmpty(account))
-            {
-                return result;
-            }
-            
             try
             {
-                string path = string.Format("LDAP://{0}", this._domain);
-                string domainaccount = string.Format("{0}\\{1}", this._domain, this._account);
-                using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, this._password))
+                string path = string.Format("LDAP://{0}", this.Domain);
+                string domainaccount = string.Format("{0}\\{1}", this.Domain, this.Account);
+                using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, this.Password))
                 {
                     using (DirectorySearcher search = new DirectorySearcher(entry))
                     {
@@ -403,12 +388,13 @@ namespace Afx.ActiveDirectory
         /// <returns>域账号信息</returns>
         public ADInfoModel GetUserInfo(string account, int millisecondsTimeout)
         {
+            if (string.IsNullOrEmpty(this.Account)) throw new ArgumentNullException("ADDomain.Account");
+            if (string.IsNullOrEmpty(this.Password)) throw new ArgumentNullException("ADDomain.Password");
             ADInfoModel model = null;
 
             var task = Task.Factory.StartNew(new Func<object, ADInfoModel>(this.GetUserInfoTask), account);
 
-            task.Wait(millisecondsTimeout);
-            if(task.IsCompleted)
+            if(task.Wait(millisecondsTimeout) || task.IsCompleted)
             {
                 model = task.Result;
             }
@@ -427,21 +413,15 @@ namespace Afx.ActiveDirectory
             SearchScope searchScope = (SearchScope)arr[5];
 
             List<ADInfoModel> list = null;
-            if (string.IsNullOrEmpty(this._domain) || string.IsNullOrEmpty(this._account)
-                || string.IsNullOrEmpty(this._password))
-            {
-                return list;
-            }
-
             try
             {
                 string path = searchPath;
                 if (string.IsNullOrEmpty(path))
                 {
-                    path = string.Format("LDAP://{0}", this._domain);
+                    path = string.Format("LDAP://{0}", this.Domain);
                 }
-                string domainaccount = string.Format("{0}\\{1}", this._domain, this._account);
-                using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, this._password))
+                string domainaccount = string.Format("{0}\\{1}", this.Domain, this.Account);
+                using (DirectoryEntry entry = new DirectoryEntry(path, domainaccount, this.Password))
                 {
                     using (DirectorySearcher search = new DirectorySearcher(entry))
                     {
@@ -578,6 +558,8 @@ namespace Afx.ActiveDirectory
             List<string> propertiesToLoad, string filter,
              int searchScope, int millisecondsTimeout)
         {
+            if (string.IsNullOrEmpty(this.Account)) throw new ArgumentNullException("ADDomain.Account");
+            if (string.IsNullOrEmpty(this.Password)) throw new ArgumentNullException("ADDomain.Password");
             List<ADInfoModel> list = null;
 
             SearchScope temp = SearchScope.OneLevel;
@@ -585,8 +567,7 @@ namespace Afx.ActiveDirectory
             var task = Task.Factory.StartNew(new Func<object, List<ADInfoModel>>(this.SearchTask),
                 new object[] { searchPath, noSchemaClassName, noName, propertiesToLoad, filter, temp });
 
-            task.Wait(millisecondsTimeout);
-            if(task.IsCompleted)
+            if(task.Wait(millisecondsTimeout) || task.IsCompleted)
             {
                 list = task.Result;
             }

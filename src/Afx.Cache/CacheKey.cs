@@ -27,7 +27,8 @@ namespace Afx.Cache
             {
                 xmlDoc.Load(fs);
             }
-            rootElement = xmlDoc.DocumentElement;
+            this.rootElement = xmlDoc.DocumentElement;
+            if (this.rootElement == null) throw new ArgumentException(xmlFile + " is error!");
         }
 
         /// <summary>
@@ -38,19 +39,13 @@ namespace Afx.Cache
         /// <returns></returns>
         public string GetKey(string node, string name)
         {
-            string key = null;
-            if (rootElement != null)
-            {
-                XmlElement nodeElement = rootElement[node];
-                if (nodeElement != null)
-                {
-                    XmlElement keyElement = nodeElement[name];
-                    if (keyElement != null)
-                    {
-                        key = keyElement.GetAttribute("key");
-                    }
-                }
-            }
+            if (string.IsNullOrEmpty(node)) throw new ArgumentNullException(node);
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(name);
+            XmlElement nodeElement = rootElement[node];
+            if (nodeElement == null) throw new ArgumentException("node (" + node + ") is not found!");
+            XmlElement keyElement = nodeElement[name];
+            if (keyElement == null) throw new ArgumentException("name (" + name + ") is not found!");
+            string key = keyElement.GetAttribute("key");
 
             return key;
         }
@@ -63,60 +58,75 @@ namespace Afx.Cache
         /// <returns></returns>
         public TimeSpan? GetExpire(string node, string name)
         {
+            if (string.IsNullOrEmpty(node)) throw new ArgumentNullException(node);
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(name);
             TimeSpan? expire = null;
-            if (rootElement != null)
-            {
-                XmlElement nodeElement = rootElement[node];
-                if (nodeElement != null)
-                {
-                    XmlElement keyElement = nodeElement[name];
-                    if (keyElement != null)
-                    {
-                        string s = keyElement.GetAttribute("expire");
-                        if (string.IsNullOrEmpty(s))
-                        {
-                            s = nodeElement.GetAttribute("expire");
-                        }
+            XmlElement nodeElement = rootElement[node];
+            if (nodeElement == null) throw new ArgumentException("node (" + node + ") is not found!");
 
-                        if (!string.IsNullOrEmpty(s))
+            XmlElement keyElement = nodeElement[name];
+            if (keyElement == null) throw new ArgumentException("name (" + name + ") is not found!");
+
+            string s = keyElement.GetAttribute("expire");
+            if (string.IsNullOrEmpty(s))
+            {
+                s = nodeElement.GetAttribute("expire");
+            }
+
+            if (!string.IsNullOrEmpty(s))
+            {
+                var arr = s.Split(':').Reverse().ToArray();
+                int seconds = 0, minutes = 0, hours = 0, days = 0;
+                switch (arr.Length)
+                {
+                    case 1:
+                        if (int.TryParse(arr[0], out seconds) && seconds > 0)
                         {
-                            var arr = s.Split(':').Reverse().ToArray();
-                            int seconds = 0, minutes = 0, hours = 0, days = 0;
-                            switch (arr.Length)
-                            {
-                                case 1:
-                                    if (int.TryParse(arr[0], out seconds) && seconds > 0)
-                                    {
-                                        expire = new TimeSpan(0, 0, seconds);
-                                    }
-                                    break;
-                                case 2:
-                                    if (int.TryParse(arr[0], out seconds) && seconds >= 0
-                                        && int.TryParse(arr[1], out minutes) && minutes >= 0)
-                                    {
-                                        expire = new TimeSpan(0, minutes, seconds);
-                                    }
-                                    break;
-                                case 3:
-                                    if (int.TryParse(arr[0], out seconds) && seconds >= 0
-                                        && int.TryParse(arr[1], out minutes) && minutes >= 0
-                                        && int.TryParse(arr[2], out hours) && hours >= 0)
-                                    {
-                                        expire = new TimeSpan(hours, minutes, seconds);
-                                    }
-                                    break;
-                                case 4:
-                                    if (int.TryParse(arr[0], out seconds) && seconds >= 0
-                                        && int.TryParse(arr[1], out minutes) && minutes >= 0
-                                        && int.TryParse(arr[2], out hours) && hours >= 0
-                                        && int.TryParse(arr[3], out days) && days >= 0)
-                                    {
-                                        expire = new TimeSpan(days, hours, minutes, seconds);
-                                    }
-                                    break;
-                            }
+                            expire = new TimeSpan(0, 0, seconds);
                         }
-                    }
+                        else
+                        {
+                            throw new ArgumentException("(node=" + node + ", name=" + name + ") expire(" + s + ") is error!");
+                        }
+                        break;
+                    case 2:
+                        if (int.TryParse(arr[0], out seconds) && seconds >= 0
+                            && int.TryParse(arr[1], out minutes) && minutes >= 0)
+                        {
+                            expire = new TimeSpan(0, minutes, seconds);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("(node=" + node + ", name=" + name + ") expire(" + s + ") is error!");
+                        }
+                        break;
+                    case 3:
+                        if (int.TryParse(arr[0], out seconds) && seconds >= 0
+                            && int.TryParse(arr[1], out minutes) && minutes >= 0
+                            && int.TryParse(arr[2], out hours) && hours >= 0)
+                        {
+                            expire = new TimeSpan(hours, minutes, seconds);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("(node=" + node + ", name=" + name + ") expire(" + s + ") is error!");
+                        }
+                        break;
+                    case 4:
+                        if (int.TryParse(arr[0], out seconds) && seconds >= 0
+                            && int.TryParse(arr[1], out minutes) && minutes >= 0
+                            && int.TryParse(arr[2], out hours) && hours >= 0
+                            && int.TryParse(arr[3], out days) && days >= 0)
+                        {
+                            expire = new TimeSpan(days, hours, minutes, seconds);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("(node=" + node + ", name=" + name + ") expire(" + s + ") is error!");
+                        }
+                        break;
+                    default:
+                        throw new ArgumentException("(node="+ node + ", name="+name+") expire is error!");
                 }
             }
 
@@ -131,57 +141,50 @@ namespace Afx.Cache
         /// <returns></returns>
         public List<int> GetDb(string node, string name)
         {
-            List<int> list = new List<int>();
-            if (rootElement != null)
+            if (string.IsNullOrEmpty(node)) throw new ArgumentNullException(node);
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(name);
+            List<int> list = new List<int>(0);
+            XmlElement nodeElement = rootElement[node];
+            if (nodeElement == null) throw new ArgumentException("node (" + node + ") is not found!");
+            XmlElement keyElement = nodeElement[name];
+            if (keyElement == null) throw new ArgumentException("name (" + name + ") is not found!");
+            string s = keyElement.GetAttribute("db");
+            if (string.IsNullOrEmpty(s))
             {
-                XmlElement nodeElement = rootElement[node];
-                if (nodeElement != null)
+                s = nodeElement.GetAttribute("db");
+            }
+
+            if (!string.IsNullOrEmpty(s))
+            {
+                string[] arr = s.Split(',');
+                foreach (var ts in arr)
                 {
-                    string s = null;
-                    XmlElement keyElement = nodeElement[name];
-                    if (keyElement != null)
+                    var ss = ts.Trim();
+                    if (!string.IsNullOrEmpty(ss))
                     {
-                        s = keyElement.GetAttribute("db");
-                    }
-
-                    if (string.IsNullOrEmpty(s))
-                    {
-                        s = nodeElement.GetAttribute("db");
-                    }
-
-                    if (!string.IsNullOrEmpty(s))
-                    {
-                        string[] arr = s.Split(',');
-                        foreach(var ts in arr)
+                        if (ss.Contains("-"))
                         {
-                            var ss = ts.Trim();
-                            if (!string.IsNullOrEmpty(ss))
+                            var ssarr = ss.Split('-');
+                            if (ssarr.Length == 2)
                             {
-                                if (ss.Contains("-"))
+                                var bs = ssarr[0].Trim();
+                                var es = ssarr[1].Trim();
+                                int bv = 0;
+                                int ev = 0;
+                                if (int.TryParse(bs, out bv) && int.TryParse(es, out ev) && bv <= ev)
                                 {
-                                    var ssarr = ss.Split('-');
-                                    if(ssarr.Length == 2)
+                                    while (bv < ev)
                                     {
-                                        var bs = ssarr[0].Trim();
-                                        var es = ssarr[1].Trim();
-                                        int bv = 0;
-                                        int ev = 0;
-                                        if(int.TryParse(bs, out bv) && int.TryParse(es, out ev) && bv <= ev)
-                                        {
-                                            while(bv < ev)
-                                            {
-                                                list.Add(bv++);
-                                            }
-                                            list.Add(ev);
-                                        }
+                                        list.Add(bv++);
                                     }
-                                }
-                                else
-                                {
-                                    int v = 0;
-                                    if (int.TryParse(ss, out v)) list.Add(v);
+                                    list.Add(ev);
                                 }
                             }
+                        }
+                        else
+                        {
+                            int v = 0;
+                            if (int.TryParse(ss, out v)) list.Add(v);
                         }
                     }
                 }
