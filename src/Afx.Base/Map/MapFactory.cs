@@ -17,7 +17,7 @@ namespace Afx.Map
     }
 
     /// <summary>
-    /// model map  Factory
+    /// model map
     /// </summary>
     public class MapFactory
     {

@@ -16,7 +16,7 @@ namespace Afx.Ioc
     /// <summary>
     /// ioc容器
     /// </summary>
-    public class IocContainer
+    public class IocContainer : IContainer
     {
         private Assembly m_defaultAssembly;
 
@@ -24,6 +24,20 @@ namespace Afx.Ioc
         private Dictionary<Type, List<Type>> m_dicType;
 
         private AopProxy m_aopProxy;
+
+        /// <summary>
+        /// 当前AOP代理工厂
+        /// </summary>
+        public AopProxy CurrentAopProxy
+        {
+            get
+            {
+                return this.m_aopProxy;
+            }
+        }
+
+        public bool IsEnabledAop { get; set; }
+
         /// <summary>
         /// IocContainer
         /// </summary>
@@ -67,8 +81,8 @@ namespace Afx.Ioc
             this.m_defaultAssembly = null;
             this.m_rwLock = new ReadWriteLock();
             this.m_dicType = new Dictionary<Type, List<Type>>();
-
-            if (enabledAop) this.m_aopProxy = new AopProxy();
+            this.IsEnabledAop = enabledAop;
+            this.m_aopProxy = new AopProxy();
 
             if (!string.IsNullOrEmpty(configFile)) this.Load(configFile);
         }
@@ -325,7 +339,7 @@ namespace Afx.Ioc
         private Type GetProxyType(Type t)
         {
             Type tagetType = t;
-            if (t != null && this.m_aopProxy != null)
+            if (t != null && this.m_aopProxy != null && this.IsEnabledAop)
             {
                 tagetType = this.m_aopProxy.GetProxyType(t);
             }
@@ -410,6 +424,7 @@ namespace Afx.Ioc
 
             return tagetType;
         }
+
         /// <summary>
         /// 注册 ioc
         /// </summary>
@@ -448,7 +463,7 @@ namespace Afx.Ioc
         /// </summary>
         /// <typeparam name="TInterface">接口</typeparam>
         /// <typeparam name="TClass">实现类</typeparam>
-        public void Register<TInterface, TClass>()
+        public void Register<TInterface, TClass>() where TInterface : TClass
         {
             this.Register(typeof(TInterface), typeof(TClass));
         }
@@ -594,20 +609,7 @@ namespace Afx.Ioc
         {
             return this.Get<TInterface>(null, null);
         }
-
-
-        /// <summary>
-        /// 当前AOP代理工厂，未启用aop 返回null
-        /// </summary>
-        public AopProxy CurrentAopProxy
-        {
-            get
-            {
-                if (this.m_aopProxy == null) throw new InvalidOperationException("not enabled Aop!");
-                return this.m_aopProxy;
-            }
-        }
-        
+                
         /// <summary>
         /// 添加全局IAop实现类型
         /// </summary>

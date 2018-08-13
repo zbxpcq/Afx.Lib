@@ -9,7 +9,7 @@
     <Authors>jerrylai@aliyun.com</Authors>
     <Product>Afx.Tcp.Host .NETCore2.1</Product>
     <PackageReleaseNotes>Afx.Tcp.Host .NETCore2.1</PackageReleaseNotes>
-    <Version>6.2.13.0</Version>
+    <Version>6.3.0.0</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

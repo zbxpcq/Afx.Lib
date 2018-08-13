@@ -809,7 +809,7 @@
             This class acts as an internal wrapper allowing us to do a dynamic
             methodinfo invoke; an't put into Serializer as don't want on public
             API; can't put into Serializer&lt;T&gt; since we need to invoke
-            accross classes, which isn't allowed in Silverlight)
+            across classes
             </summary>
         </member>
         <member name="M:ProtoBuf.ExtensibleUtil.GetExtendedValues``1(ProtoBuf.IExtensible,System.Int32,ProtoBuf.DataFormat,System.Boolean,System.Boolean)">
@@ -2753,6 +2753,15 @@
             of objects when an inheritance relationship is discovered later than usual during deserilazation.
             </summary>
         </member>
+        <member name="M:ProtoBuf.ProtoReader.Create(System.IO.Stream,ProtoBuf.Meta.TypeModel,ProtoBuf.SerializationContext,System.Int64)">
+            <summary>
+            Creates a new reader against a stream
+            </summary>
+            <param name="source">The source stream</param>
+            <param name="model">The model to use for serialization; this can be null, but this will impair the ability to deserialize sub-objects</param>
+            <param name="context">Additional context about this serialization operation</param>
+            <param name="length">The number of bytes to read, or -1 to read until the end of the stream</param>
+        </member>
         <member name="T:ProtoBuf.ProtoWriter">
             <summary>
             Represents an output stream for writing protobuf data.
@@ -2808,6 +2817,14 @@
             </summary>
             <param name="token">The token obtained from StartubItem.</param>
             <param name="writer">The destination.</param>
+        </member>
+        <member name="M:ProtoBuf.ProtoWriter.Create(System.IO.Stream,ProtoBuf.Meta.TypeModel,ProtoBuf.SerializationContext)">
+            <summary>
+            Creates a new writer against a stream
+            </summary>
+            <param name="dest">The destination stream</param>
+            <param name="model">The model to use for serialization; this can be null, but this will impair the ability to serialize sub-objects</param>
+            <param name="context">Additional context about this serialization operation</param>
         </member>
         <member name="M:ProtoBuf.ProtoWriter.#ctor(System.IO.Stream,ProtoBuf.Meta.TypeModel,ProtoBuf.SerializationContext)">
             <summary>

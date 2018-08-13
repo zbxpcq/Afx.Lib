@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{364A9DF9-EEE1-40C3-82E9-35B7606E0714}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afx.AspNetCore.Mvc", "Afx.AspNetCore.Mvc\Afx.AspNetCore.Mvc.csproj", "{0C635E21-7E1C-4226-9F2A-B95830676FA0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afx.Cache", "Afx.Cache\Afx.Cache.csproj", "{CEF3C7E8-D5BF-4284-A3D1-10732BEA0BCE}"

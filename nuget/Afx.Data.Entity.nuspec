@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Data.Entity</id>
-    <version>6.2.13.0</version>
+    <version>6.3.0.0</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -33,10 +33,10 @@
     <file src="..\Publish\Afx.Data.Entity\net452\template\**" target="lib\net452\template" />
     <file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.dll" target="lib\net452\Afx.Data.Entity.dll" />
     <file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.xml" target="lib\net452\Afx.Data.Entity.xml" />
-    <file src="..\Publish\Afx.Data.Entity\net452\Afx.Data.Entity.dll.config" target="lib\net452\Afx.Data.Entity.dll.config" />
+    <file src="..\Publish\Afx.Data.Entity\net452\App.config" target="lib\net452\App.config" />
     <file src="..\Publish\Afx.Data.Entity\net40\template\**" target="lib\net40\template" />
     <file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.dll" target="lib\net40\Afx.Data.Entity.dll" />
     <file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.xml" target="lib\net40\Afx.Data.Entity.xml" />
-    <file src="..\Publish\Afx.Data.Entity\net40\Afx.Data.Entity.dll.config" target="lib\net40\Afx.Data.Entity.dll.config" />
+    <file src="..\Publish\Afx.Data.Entity\net40\App.config" target="lib\net40\App.config" />
   </files>
 </package>

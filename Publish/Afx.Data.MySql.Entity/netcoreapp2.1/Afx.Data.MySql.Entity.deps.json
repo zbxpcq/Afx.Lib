@@ -1,16 +1,16 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "ec3273eb6fe5c5a5d4b105cc0044a5b07f22a056"
+    "signature": "d99fafe7f47fab1669ad0b891da138402e7a0775"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Afx.Data.MySql.Entity/6.2.13.0": {
+      "Afx.Data.MySql.Entity/6.3.0.0": {
         "dependencies": {
-          "Afx.Data": "6.2.13",
-          "Afx.Data.Entity": "6.2.13",
-          "MySqlConnector": "0.42.3",
+          "Afx.Data": "6.3.0",
+          "Afx.Data.Entity": "6.3.0",
+          "MySqlConnector": "0.43.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.1.1"
         },
         "runtime": {
@@ -231,11 +231,11 @@
           }
         }
       },
-      "MySqlConnector/0.42.3": {
+      "MySqlConnector/0.43.0": {
         "runtime": {
           "lib/netcoreapp2.1/MySqlConnector.dll": {
-            "assemblyVersion": "0.42.3.0",
-            "fileVersion": "0.42.3.0"
+            "assemblyVersion": "0.43.0.0",
+            "fileVersion": "0.43.0.0"
           }
         }
       },
@@ -276,7 +276,7 @@
           "Microsoft.EntityFrameworkCore.Design": "2.1.1",
           "Microsoft.EntityFrameworkCore.Relational": "2.1.1",
           "Microsoft.Extensions.Logging.Console": "2.1.1",
-          "MySqlConnector": "0.42.3",
+          "MySqlConnector": "0.43.0",
           "Pomelo.JsonObject": "1.1.1"
         },
         "runtime": {
@@ -604,12 +604,12 @@
           "System.Xml.ReaderWriter": "4.0.11"
         }
       },
-      "Afx.Data/6.2.13": {
+      "Afx.Data/6.3.0": {
         "runtime": {
           "Afx.Data.dll": {}
         }
       },
-      "Afx.Data.Entity/6.2.13": {
+      "Afx.Data.Entity/6.3.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "2.1.1",
           "Microsoft.EntityFrameworkCore.Relational": "2.1.1"
@@ -621,7 +621,7 @@
     }
   },
   "libraries": {
-    "Afx.Data.MySql.Entity/6.2.13.0": {
+    "Afx.Data.MySql.Entity/6.3.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -766,12 +766,12 @@
       "path": "microsoft.extensions.primitives/2.1.1",
       "hashPath": "microsoft.extensions.primitives.2.1.1.nupkg.sha512"
     },
-    "MySqlConnector/0.42.3": {
+    "MySqlConnector/0.43.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-j7MnAqFO+ICryQ8ldPndC4Ndr9LB1iB7bgQkdvSd2th/Ci5uQZQtdSnh+vqQO+dJUVEnELz9ER5BtZjN5TD9fw==",
-      "path": "mysqlconnector/0.42.3",
-      "hashPath": "mysqlconnector.0.42.3.nupkg.sha512"
+      "sha512": "sha512-2y4q0pdFrkaKaQDZm9N1X4/6+0TKjs7SxtNdZ7/HKdARpLbf5TgIXNuTufiR6Q1hVWpx7idGJyvedE+er81OBA==",
+      "path": "mysqlconnector/0.43.0",
+      "hashPath": "mysqlconnector.0.43.0.nupkg.sha512"
     },
     "Newtonsoft.Json/9.0.1": {
       "type": "package",
@@ -1074,12 +1074,12 @@
       "path": "system.xml.xdocument/4.0.11",
       "hashPath": "system.xml.xdocument.4.0.11.nupkg.sha512"
     },
-    "Afx.Data/6.2.13": {
+    "Afx.Data/6.3.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Afx.Data.Entity/6.2.13": {
+    "Afx.Data.Entity/6.3.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

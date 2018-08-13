@@ -40,12 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\Afx.Base\Ioc.xml">
-      <Link>Ioc.xml</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Base\Ioc\IContainer.cs">
+      <Link>Ioc\IContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\IocUtils.cs">
+      <Link>Ioc\IocUtils.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\EnumUtils.cs">
       <Link>Utils\EnumUtils.cs</Link>
     </Compile>
@@ -161,6 +161,15 @@
       <Link>Utils\SystemUtils.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\..\src\Afx.Base\DefaultContainer.xml">
+      <Link>DefaultContainer.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\src\Afx.Base\IocConfig.xml">
+      <Link>IocConfig.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

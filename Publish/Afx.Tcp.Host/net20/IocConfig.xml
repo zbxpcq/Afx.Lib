@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Ioc>
+    <Global defaultAssembly="">
+        <Aop type=""></Aop>
+    </Global>
+    <Object>
+        <Class interface="" type="">
+            <Aop type=""></Aop>
+        </Class>
+    </Object>
+</Ioc>
