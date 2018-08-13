@@ -164,9 +164,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\Afx.Base\DefaultContainer.xml">
-      <Link>DefaultContainer.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="..\..\src\Afx.Base\DefaultImplement.xml">
+      <Link>DefaultImplement.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

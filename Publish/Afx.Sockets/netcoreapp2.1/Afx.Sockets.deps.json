@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Afx.Sockets/6.3.0.0": {
+      "Afx.Sockets/6.3.1.0": {
         "runtime": {
           "Afx.Sockets.dll": {}
         }
@@ -14,7 +14,7 @@
     }
   },
   "libraries": {
-    "Afx.Sockets/6.3.0.0": {
+    "Afx.Sockets/6.3.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

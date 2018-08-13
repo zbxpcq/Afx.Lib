@@ -21,11 +21,11 @@ namespace Afx.Ioc
 
         private static Dictionary<string, string> IocConfigDic => _iocConfigDic;
 
-        public static void LoadConfig(string configFile)
+        public static void LoadDefaultImplement(string defaultImplementFile)
         {
-            if (string.IsNullOrEmpty(configFile)) throw new ArgumentNullException("configFile");
-            string filepath = PathUtils.GetFileFullPath(configFile);
-            if (!File.Exists(filepath)) throw new FileNotFoundException(configFile + " not found!");
+            if (string.IsNullOrEmpty(defaultImplementFile)) throw new ArgumentNullException(nameof(defaultImplementFile));
+            string filepath = PathUtils.GetFileFullPath(defaultImplementFile);
+            if (!File.Exists(filepath)) throw new FileNotFoundException("file(" + defaultImplementFile + ") not found!");
 
             XmlDocument doc = new XmlDocument();
             using (var fs = File.Open(filepath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
