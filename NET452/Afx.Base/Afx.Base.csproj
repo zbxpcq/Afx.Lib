@@ -43,9 +43,6 @@
     <Compile Include="..\..\src\Afx.Base\Ioc\IContainer.cs">
       <Link>Ioc\IContainer.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Afx.Base\Ioc\IocUtils.cs">
-      <Link>Ioc\IocUtils.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\EnumUtils.cs">
       <Link>Utils\EnumUtils.cs</Link>
     </Compile>
@@ -164,12 +161,6 @@
   <ItemGroup>
     <None Include="..\..\src\Afx.Base\IocConfig.xml">
       <Link>IocConfig.xml</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\src\Afx.Base\DefaultImplement.xml">
-      <Link>DefaultImplement.xml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

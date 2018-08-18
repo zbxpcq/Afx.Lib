@@ -124,7 +124,7 @@ namespace Afx.Aop
 
             if (filterInfo.TypeList == null)
             {
-                var talist = GetOfType(filterInfo.ClassId, context.TagetType);
+                var talist = GetOfType(filterInfo.ClassId, context.TargetType);
                 filterInfo.TypeList = new List<IAop>(talist.Count);
                 foreach (var t in talist) filterInfo.TypeList.Add(Activator.CreateInstance(t) as IAop);
             }
@@ -135,7 +135,7 @@ namespace Afx.Aop
 
             if (filterInfo.TypeAttributes == null)
             {
-                var arr = context.TagetType.GetCustomAttributes(typeof(AopAttribute), true);
+                var arr = context.TargetType.GetCustomAttributes(typeof(AopAttribute), true);
                 filterInfo.TypeAttributes = new List<AopAttribute>(arr.Length);
                 foreach (var o in arr) filterInfo.TypeAttributes.Add(o as AopAttribute);
             }

@@ -11,21 +11,21 @@ namespace Afx.Aop
     public sealed class AopContext
     {
         /// <summary>
-        /// TagetType
+        /// TargetType
         /// </summary>
-        public Type TagetType { get; set; }
+        public Type TargetType { get; set; }
         /// <summary>
         /// Method
         /// </summary>
         public MethodInfo Method { get; set; }
         /// <summary>
-        /// Taget
+        /// Proxy
         /// </summary>
-        public object Taget { get; set; }
+        public object Proxy { get; set; }
         /// <summary>
-        /// Parameters
+        /// Arguments
         /// </summary>
-        public object[] Parameters { get; set; }
+        public object[] Arguments { get; set; }
         /// <summary>
         /// UserState
         /// </summary>

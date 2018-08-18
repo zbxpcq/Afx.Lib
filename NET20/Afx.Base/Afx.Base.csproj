@@ -42,9 +42,6 @@
     <Compile Include="..\..\src\Afx.Base\Ioc\IContainer.cs">
       <Link>Ioc\IContainer.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Afx.Base\Ioc\IocUtils.cs">
-      <Link>Ioc\IocUtils.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\Models\DiskFreeSpaceModel.cs">
       <Link>Utils\Models\DiskFreeSpaceModel.cs</Link>
     </Compile>
@@ -161,12 +158,6 @@
     <None Include="..\..\src\Afx.Base\IocConfig.xml">
       <Link>IocConfig.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\src\Afx.Base\DefaultImplement.xml">
-      <Link>DefaultImplement.xml</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

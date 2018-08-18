@@ -34,9 +34,9 @@
             Aop上下文
             </summary>
         </member>
-        <member name="P:Afx.Aop.AopContext.TagetType">
+        <member name="P:Afx.Aop.AopContext.TargetType">
             <summary>
-            TagetType
+            TargetType
             </summary>
         </member>
         <member name="P:Afx.Aop.AopContext.Method">
@@ -44,14 +44,14 @@
             Method
             </summary>
         </member>
-        <member name="P:Afx.Aop.AopContext.Taget">
+        <member name="P:Afx.Aop.AopContext.Proxy">
             <summary>
-            Taget
+            Proxy
             </summary>
         </member>
-        <member name="P:Afx.Aop.AopContext.Parameters">
+        <member name="P:Afx.Aop.AopContext.Arguments">
             <summary>
-            Parameters
+            Arguments
             </summary>
         </member>
         <member name="P:Afx.Aop.AopContext.UserState">

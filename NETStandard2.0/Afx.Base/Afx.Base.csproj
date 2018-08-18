@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Afx.Base</RootNamespace>
-    <Version>6.3.1.0</Version>
+    <Version>6.3.3.0</Version>
     <PackageTags>Afx.Base AOP IOC MAP Utils Afx</PackageTags>
     <Authors>jerrylai@aliyun.com</Authors>
     <Description>Afx.Base AOP IOC MAP Utils</Description>
@@ -35,7 +35,6 @@
     <Compile Include="..\..\src\Afx.Base\Configuration\NodeModel.cs" Link="Configuration\NodeModel.cs" />
     <Compile Include="..\..\src\Afx.Base\Configuration\XmlConfig.cs" Link="Configuration\XmlConfig.cs" />
     <Compile Include="..\..\src\Afx.Base\Ioc\IContainer.cs" Link="Ioc\IContainer.cs" />
-    <Compile Include="..\..\src\Afx.Base\Ioc\IocUtils.cs" Link="Ioc\IocUtils.cs" />
     <Compile Include="..\..\src\Afx.Base\Map\IToObject.cs" Link="Map\IToObject.cs" />
     <Compile Include="..\..\src\Afx.Base\Map\MapFactory.cs" Link="Map\MapFactory.cs" />
     <Compile Include="..\..\src\Afx.Base\Map\ToObject.cs" Link="Map\ToObject.cs" />
@@ -52,11 +51,6 @@
     <Compile Include="..\..\src\Afx.Base\Utils\Md5Utils.cs" Link="Utils\Md5Utils.cs" />
     <Compile Include="..\..\src\Afx.Base\Utils\PathUtils.cs" Link="Utils\PathUtils.cs" />
     <Compile Include="..\..\src\Afx.Base\Utils\StringUtils.cs" Link="Utils\StringUtils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\src\Afx.Base\DefaultImplement.xml" Link="DefaultImplement.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\Afx.Base\IocConfig.xml" Link="IocConfig.xml">
