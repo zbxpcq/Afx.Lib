@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Congfig>
-    <Key db="0" >
-        <RoleList key="afx_role_list" />
-    </Key>
-    <FormatKey db="1" >
-        <User key="afx_user_{0}" expire="10:10:12" />
-    </FormatKey>
-</Congfig>

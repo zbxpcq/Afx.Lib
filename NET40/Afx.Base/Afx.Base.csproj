@@ -41,8 +41,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\AopAttribute.cs">
+      <Link>DynamicProxy\AopAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\AopContext.cs">
+      <Link>DynamicProxy\AopContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\IAop.cs">
+      <Link>DynamicProxy\IAop.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\IProxy.cs">
+      <Link>DynamicProxy\IProxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\ProxyGenerator.cs">
+      <Link>DynamicProxy\ProxyGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\ProxyUtil.cs">
+      <Link>DynamicProxy\ProxyUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\Container.cs">
+      <Link>Ioc\Container.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\CreateMode.cs">
+      <Link>Ioc\CreateMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\CtorContext.cs">
+      <Link>Ioc\CtorContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\delegate.cs">
+      <Link>Ioc\delegate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\Extensions.cs">
+      <Link>Ioc\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\FuncContext.cs">
+      <Link>Ioc\FuncContext.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Afx.Base\Ioc\IContainer.cs">
       <Link>Ioc\IContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\ObjectContext.cs">
+      <Link>Ioc\ObjectContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\RegisterContext.cs">
+      <Link>Ioc\RegisterContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\ServiceContext.cs">
+      <Link>Ioc\ServiceContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Ioc\TargetContext.cs">
+      <Link>Ioc\TargetContext.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\EnumUtils.cs">
       <Link>Utils\EnumUtils.cs</Link>
@@ -64,24 +112,6 @@
     </Compile>
     <Compile Include="..\..\src\Assembly.cs">
       <Link>Properties\Assembly.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Aop\AopAttribute.cs">
-      <Link>Aop\AopAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Aop\AopContext.cs">
-      <Link>Aop\AopContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Aop\AopInfoModel.cs">
-      <Link>Aop\AopInfoModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Aop\AopProxy.cs">
-      <Link>Aop\AopProxy.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Aop\AopUtils.cs">
-      <Link>Aop\AopUtils.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Aop\IAop.cs">
-      <Link>Aop\IAop.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Collections\SafeDictionary.cs">
       <Link>Collections\SafeDictionary.cs</Link>
@@ -122,9 +152,6 @@
     <Compile Include="..\..\src\Afx.Base\Internal\SYSTEM_INFO.cs">
       <Link>Internal\SYSTEM_INFO.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Afx.Base\Ioc\IocContainer.cs">
-      <Link>Ioc\IocContainer.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\Afx.Base\IO\FindByteStream.cs">
       <Link>IO\FindByteStream.cs</Link>
     </Compile>
@@ -159,11 +186,6 @@
       <Link>Utils\SystemUtils.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\src\Afx.Base\IocConfig.xml">
-      <Link>IocConfig.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

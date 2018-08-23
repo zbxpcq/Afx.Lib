@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Afx.Base</RootNamespace>
-    <Version>6.3.3.0</Version>
+    <Version>6.4.0.0</Version>
     <PackageTags>Afx.Base AOP IOC MAP Utils Afx</PackageTags>
     <Authors>jerrylai@aliyun.com</Authors>
     <Description>Afx.Base AOP IOC MAP Utils</Description>
@@ -22,24 +22,33 @@
     <DocumentationFile>..\..\Publish\Afx.Base\netstandard2.0\Afx.Base.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Afx.Base\Aop\AopAttribute.cs" Link="Aop\AopAttribute.cs" />
-    <Compile Include="..\..\src\Afx.Base\Aop\AopContext.cs" Link="Aop\AopContext.cs" />
-    <Compile Include="..\..\src\Afx.Base\Aop\AopInfoModel.cs" Link="Aop\AopInfoModel.cs" />
-    <Compile Include="..\..\src\Afx.Base\Aop\AopProxy.cs" Link="Aop\AopProxy.cs" />
-    <Compile Include="..\..\src\Afx.Base\Aop\AopUtils.cs" Link="Aop\AopUtils.cs" />
-    <Compile Include="..\..\src\Afx.Base\Aop\IAop.cs" Link="Aop\IAop.cs" />
     <Compile Include="..\..\src\Afx.Base\Collections\SafeDictionary.cs" Link="Collections\SafeDictionary.cs" />
     <Compile Include="..\..\src\Afx.Base\Collections\SafeList.cs" Link="Collections\SafeList.cs" />
     <Compile Include="..\..\src\Afx.Base\Configuration\IniConfig.cs" Link="Configuration\IniConfig.cs" />
     <Compile Include="..\..\src\Afx.Base\Configuration\ItemModel.cs" Link="Configuration\ItemModel.cs" />
     <Compile Include="..\..\src\Afx.Base\Configuration\NodeModel.cs" Link="Configuration\NodeModel.cs" />
     <Compile Include="..\..\src\Afx.Base\Configuration\XmlConfig.cs" Link="Configuration\XmlConfig.cs" />
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\AopAttribute.cs" Link="DynamicProxy\AopAttribute.cs" />
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\AopContext.cs" Link="DynamicProxy\AopContext.cs" />
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\IAop.cs" Link="DynamicProxy\IAop.cs" />
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\IProxy.cs" Link="DynamicProxy\IProxy.cs" />
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\ProxyGenerator.cs" Link="DynamicProxy\ProxyGenerator.cs" />
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\ProxyUtil.cs" Link="DynamicProxy\ProxyUtil.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\Container.cs" Link="Ioc\Container.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\CreateMode.cs" Link="Ioc\CreateMode.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\CtorContext.cs" Link="Ioc\CtorContext.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\delegate.cs" Link="Ioc\delegate.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\Extensions.cs" Link="Ioc\Extensions.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\FuncContext.cs" Link="Ioc\FuncContext.cs" />
     <Compile Include="..\..\src\Afx.Base\Ioc\IContainer.cs" Link="Ioc\IContainer.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\ObjectContext.cs" Link="Ioc\ObjectContext.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\RegisterContext.cs" Link="Ioc\RegisterContext.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\ServiceContext.cs" Link="Ioc\ServiceContext.cs" />
+    <Compile Include="..\..\src\Afx.Base\Ioc\TargetContext.cs" Link="Ioc\TargetContext.cs" />
     <Compile Include="..\..\src\Afx.Base\Map\IToObject.cs" Link="Map\IToObject.cs" />
     <Compile Include="..\..\src\Afx.Base\Map\MapFactory.cs" Link="Map\MapFactory.cs" />
     <Compile Include="..\..\src\Afx.Base\Map\ToObject.cs" Link="Map\ToObject.cs" />
     <Compile Include="..\..\src\Afx.Base\Map\TypeKey.cs" Link="Map\TypeKey.cs" />
-    <Compile Include="..\..\src\Afx.Base\Ioc\IocContainer.cs" Link="Ioc\IocContainer.cs" />
     <Compile Include="..\..\src\Afx.Base\IO\FindByteStream.cs" Link="IO\FindByteStream.cs" />
     <Compile Include="..\..\src\Afx.Base\IO\FindStream.cs" Link="IO\FindStream.cs" />
     <Compile Include="..\..\src\Afx.Base\Threading\ReadLock.cs" Link="Threading\ReadLock.cs" />
@@ -53,12 +62,7 @@
     <Compile Include="..\..\src\Afx.Base\Utils\StringUtils.cs" Link="Utils\StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\Afx.Base\IocConfig.xml" Link="IocConfig.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Aop\" />
+    <Folder Include="DynamicProxy\" />
     <Folder Include="Collections\" />
     <Folder Include="Configuration\" />
     <Folder Include="Map\" />

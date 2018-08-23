@@ -6,10 +6,10 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Afx.Tcp.Host/6.3.2.0": {
+      "Afx.Tcp.Host/6.3.3.0": {
         "dependencies": {
-          "Afx.Sockets": "6.3.2",
-          "Afx.Tcp.Protocols": "6.3.2"
+          "Afx.Sockets": "6.3.3",
+          "Afx.Tcp.Protocols": "6.3.3"
         },
         "runtime": {
           "Afx.Tcp.Host.dll": {}
@@ -74,14 +74,14 @@
           }
         }
       },
-      "Afx.Sockets/6.3.2": {
+      "Afx.Sockets/6.3.3": {
         "runtime": {
           "Afx.Sockets.dll": {}
         }
       },
-      "Afx.Tcp.Protocols/6.3.2": {
+      "Afx.Tcp.Protocols/6.3.3": {
         "dependencies": {
-          "Afx.Sockets": "6.3.2",
+          "Afx.Sockets": "6.3.3",
           "protobuf-net": "2.3.17"
         },
         "runtime": {
@@ -91,7 +91,7 @@
     }
   },
   "libraries": {
-    "Afx.Tcp.Host/6.3.2.0": {
+    "Afx.Tcp.Host/6.3.3.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -131,12 +131,12 @@
       "path": "system.servicemodel.primitives/4.5.3",
       "hashPath": "system.servicemodel.primitives.4.5.3.nupkg.sha512"
     },
-    "Afx.Sockets/6.3.2": {
+    "Afx.Sockets/6.3.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Afx.Tcp.Protocols/6.3.2": {
+    "Afx.Tcp.Protocols/6.3.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

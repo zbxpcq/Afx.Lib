@@ -1,126 +1,54 @@
-﻿using Afx.Aop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
 namespace Afx.Ioc
 {
-    public interface IContainer
+    public interface IContainer : IDisposable
     {
-        bool IsEnabledAop { get; set; }
+        event OnGetCallback GetEvent;
 
-        /// <summary>
-        /// 加载配置
-        /// </summary>
-        /// <param name="configFile"></param>
-        void Load(string configFile);
+        IRegisterContext Register<TService>(TService instance);
 
-        /// <summary>
-        /// 注册 ioc
-        /// </summary>
-        /// <param name="interfaceType">接口type</param>
-        /// <param name="classType">实现类type</param>
-        void Register(Type interfaceType, Type classType);
-        /// <summary>
-        /// 注册ioc
-        /// </summary>
-        /// <typeparam name="TInterface">接口</typeparam>
-        /// <typeparam name="TClass">实现类</typeparam>
-        void Register<TInterface, TClass>() where TInterface: TClass;
+        IRegisterContext Register<TService>(Func<IContainer, TService> func);
 
-        /// <summary>
-        /// 注册程序集所有接口实现
-        /// </summary>
-        /// <typeparam name="TBaseInterface">接口</typeparam>
-        /// <param name="assemblyName">程序集名称</param>
-        /// <returns></returns>
-        int Register<TBaseInterface>(string assemblyName);
+        IRegisterContext Register(Type serviceType, Type targetType);
 
-        /// <summary>
-        /// 注册程序集所有接口实现
-        /// </summary>
-        /// <typeparam name="TBaseInterface">接口</typeparam>
-        /// <param name="assembly">程序集</param>
-        /// <returns></returns>
-        int Register<TBaseInterface>(Assembly assembly);
+        IRegisterContext Register<TService, TImplement>() where TService : TImplement;
 
-        /// <summary>
-        /// 注册程序集所有接口实现
-        /// </summary>
-        /// <param name="baseInterfaceType">接口 type</param>
-        /// <param name="assemblyName">程序集名称</param>
-        /// <returns></returns>
-        int Register(Type baseInterfaceType, string assemblyName);
-        /// <summary>
-        /// 注册程序集所有接口实现
-        /// </summary>
-        /// <param name="baseInterfaceType">接口 type</param>
-        /// <param name="assembly">程序集</param>
-        /// <returns></returns>
-        int Register(Type baseInterfaceType, Assembly assembly);
+        List<IRegisterContext> Register<TBaseService>(string assemblyName);
 
-        /// <summary>
-        /// 根据指定类型获取
-        /// </summary>
-        /// <typeparam name="TInterface">返回接口类型</typeparam>
-        /// <param name="name">类名，不传返回最后注册实现类</param>
-        /// <param name="args">构造函数参数</param>
-        /// <returns></returns>
-        TInterface Get<TInterface>(string name, object[] args);
+        List<IRegisterContext> Register<TBaseService>(Assembly assembly);
 
-        /// <summary>
-        /// 根据指定类型获取
-        /// </summary>
-        /// <typeparam name="TInterface">返回接口类型</typeparam>
-        /// <param name="name">类名，不传返回最后注册实现类</param>
-        /// <returns></returns>
-        TInterface Get<TInterface>(string name);
+        List<IRegisterContext> Register(Type baseServiceType, string assemblyName);
 
-        /// <summary>
-        /// 根据指定类型获取
-        /// </summary>
-        /// <typeparam name="TInterface">返回类型</typeparam>
-        /// <returns>返回最后注册实现类</returns>
-        TInterface Get<TInterface>();
+        List<IRegisterContext> Register(Type baseServiceType, Assembly assembly);
+        
+        object Get(Type serviceType);
 
-        /// <summary>
-        /// 添加全局IAop实现类型
-        /// </summary>
-        /// <param name="aopTypeList">IAop实现类型 list</param>
-        void AddGlobalAop(List<Type> aopTypeList);
+        object Get(Type serviceType, object[] args);
 
-        /// <summary>
-        /// 添加全局IAop实现类型
-        /// </summary>
-        /// <typeparam name="TAop"></typeparam>
-        void AddGlobalAop<TAop>() where TAop : class, IAop;
+        object GetByName(Type serviceType, string name);
 
-        /// <summary>
-        /// 添加全局IAop实现类型
-        /// </summary>
-        /// <param name="aopType">IAop实现类型</param>
-        void AddGlobalAop(Type aopType);
+        object GetByName(Type serviceType, string name, object[] args);
 
-        /// <summary>
-        /// 添加指定实现类的IAop
-        /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
-        /// <param name="aopTypeList"></param>
-        void AddAop<TInterface>(List<Type> aopTypeList);
+        object GetByKey(Type serviceType, object key);
 
-        /// <summary>
-        /// 添加指定实现类的IAop
-        /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
-        /// <typeparam name="TAop"></typeparam>
-        void AddAop<TInterface, TAop>() where TAop : class, IAop;
+        object GetByKey(Type serviceType, object key, object[] args);
 
-        /// <summary>
-        /// 添加指定实现类的IAop
-        /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
-        /// <param name="aopType"></param>
-        void AddAop<TInterface>(Type aopType);
+        TService Get<TService>();
+
+        TService Get<TService>(object[] args);
+
+        TService GetByName<TService>(string name);
+
+        TService GetByName<TService>(string name, object[] args);
+
+        TService GetByKey<TService>(object key);
+
+        TService GetByKey<TService>(object key, object[] args);
+
+        bool IsDisposed { get; }
     }
 }
