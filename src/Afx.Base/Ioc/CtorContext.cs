@@ -5,12 +5,23 @@ using System.Text;
 
 namespace Afx.Ioc
 {
+    /// <summary>
+    /// 构造器信息
+    /// </summary>
     public class CtorContext
     {
+        /// <summary>
+        /// 构造器
+        /// </summary>
         public ConstructorInfo Ctor { get; private set; }
 
+        /// <summary>
+        /// 构造器参数信息
+        /// </summary>
         public readonly ParameterInfo[] ParameterInfos;
-
+        /// <summary>
+        /// 构造器参数类型
+        /// </summary>
         public readonly Type[] ParameterTypes;
 
         internal CtorContext(ConstructorInfo ctor)
@@ -23,6 +34,11 @@ namespace Afx.Ioc
                 this.ParameterTypes[i] = this.ParameterInfos[i].ParameterType;
         }
 
+        /// <summary>
+        /// 参数类型是否当前匹配构造器
+        /// </summary>
+        /// <param name="paramterTypes">参数类型</param>
+        /// <returns>bool</returns>
         public bool IsMatch(Type[] paramterTypes)
         {
             bool result = false;
@@ -57,6 +73,11 @@ namespace Afx.Ioc
             return result;
         }
 
+        /// <summary>
+        /// 参数是否当前匹配构造器
+        /// </summary>
+        /// <param name="args">参数</param>
+        /// <returns>bool</returns>
         public bool IsMatch(object[] args)
         {
             Type[] paramterTypes = new Type[args == null ? 0 : args.Length];

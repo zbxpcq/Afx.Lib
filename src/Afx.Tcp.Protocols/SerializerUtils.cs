@@ -6,13 +6,26 @@ using ProtoBuf;
 
 namespace Afx.Tcp.Protocols
 {
+    /// <summary>
+    /// SerializerUtils
+    /// </summary>
     public static class SerializerUtils
     {
+        /// <summary>
+        /// IsProtoBuf
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static bool IsProtoBuf<T>()
         {
             return IsProtoBuf(typeof(T));
         }
 
+        /// <summary>
+        /// IsProtoBuf
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static bool IsProtoBuf(Type type)
         {
             if(type.IsArray)
@@ -28,6 +41,12 @@ namespace Afx.Tcp.Protocols
             return att != null && att.Length > 0;
         }
 
+        /// <summary>
+        /// Deserialize
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static T Deserialize<T>(byte[] buffer)
         {
             T model = default(T);
@@ -40,6 +59,12 @@ namespace Afx.Tcp.Protocols
             return model;
         }
 
+        /// <summary>
+        /// Deserialize
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static object Deserialize(Type type, byte[] buffer)
         {
             object model = null;
@@ -69,7 +94,12 @@ namespace Afx.Tcp.Protocols
 
             return model;
         }
-        
+
+        /// <summary>
+        /// Serialize
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public static byte[] Serialize(object model)
         {
             byte[] buffer = null;

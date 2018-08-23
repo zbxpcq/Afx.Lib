@@ -11,7 +11,7 @@ using Afx.Threading;
 namespace Afx.DynamicProxy
 {
     /// <summary>
-    /// aop代理工厂
+    /// DynamicProxy Generator
     /// </summary>
     public class ProxyGenerator : IDisposable
     {
@@ -106,23 +106,56 @@ namespace Afx.DynamicProxy
             return list;
         }
 
+        /// <summary>
+        /// 创建 IAop func
+        /// </summary>
         public Func<Type, IAop> AopFunc;
 
+        /// <summary>
+        /// 创建子类代理
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enableAop">enableAop</param>
+        /// <param name="aopType">aopType</param>
+        /// <returns>代理实例</returns>
         public T CreateClassProxy<T>( bool enableAop, Type[] aopType) where T: class
         {
             return this.CreateClassProxy<T>(null, enableAop, aopType);
         }
 
+        /// <summary>
+        /// 创建子类代理
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="args">构造函数参数</param>
+        /// <param name="enableAop">enableAop</param>
+        /// <param name="aopType">aopType</param>
+        /// <returns>代理实例</returns>
         public T CreateClassProxy<T>(object[] args, bool enableAop, Type[] aopType) where T : class
         {
             return (T)this.CreateClassProxy(typeof(T), null, enableAop, aopType);
         }
 
+        /// <summary>
+        /// 创建子类代理
+        /// </summary>
+        /// <param name="targetType">target Type</param>
+        /// <param name="enableAop">enableAop</param>
+        /// <param name="aopType">aopType</param>
+        /// <returns>代理实例</returns>
         public object CreateClassProxy(Type targetType, bool enableAop, Type[] aopType)
         {
             return this.CreateClassProxy(targetType, null, enableAop, aopType);
         }
 
+        /// <summary>
+        /// 创建子类代理
+        /// </summary>
+        /// <param name="targetType">target Type</param>
+        /// <param name="args">构造函数参数</param>
+        /// <param name="enableAop">enableAop</param>
+        /// <param name="aopType">aopType</param>
+        /// <returns>代理实例</returns>
         public object CreateClassProxy(Type targetType, object[] args, bool enableAop, Type[] aopType)
         {
             object result = null;
@@ -433,11 +466,27 @@ namespace Afx.DynamicProxy
             return list;
         }
 
-
-        public T CreateInterfaceProxy<T>(T target, bool enableAop, Type[] aopType)
+        /// <summary>
+        /// 创建接口代理
+        /// </summary>
+        /// <typeparam name="TInterface">接口</typeparam>
+        /// <param name="target">target</param>
+        /// <param name="enableAop">enableAop</param>
+        /// <param name="aopType">aopType</param>
+        /// <returns>TInterface</returns>
+        public TInterface CreateInterfaceProxy<TInterface>(TInterface target, bool enableAop, Type[] aopType)
         {
-            return (T)this.CreateInterfaceProxy(typeof(T), target, enableAop, aopType);
+            return (TInterface)this.CreateInterfaceProxy(typeof(TInterface), target, enableAop, aopType);
         }
+
+        /// <summary>
+        /// 创建接口代理
+        /// </summary>
+        /// <param name="interfaceType">接口 Type</param>
+        /// <param name="target">target</param>
+        /// <param name="enableAop">enableAop</param>
+        /// <param name="aopType">aopType</param>
+        /// <returns></returns>
         public object CreateInterfaceProxy(Type interfaceType, object target, bool enableAop, Type[] aopType)
         {
             object result = target;
@@ -706,6 +755,9 @@ namespace Afx.DynamicProxy
             return proxyType;
         }
 
+        /// <summary>
+        /// 释放资源
+        /// </summary>
         public void Dispose()
         {
             

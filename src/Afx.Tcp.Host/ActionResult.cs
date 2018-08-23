@@ -23,7 +23,10 @@ namespace  Afx.Tcp.Host
         {
             this.Result = new MsgData();
         }
-
+        /// <summary>
+        /// ActionResult
+        /// </summary>
+        /// <param name="msg"></param>
         public ActionResult(MsgData msg)
         {
             if (msg == null) throw new ArgumentNullException("msg");

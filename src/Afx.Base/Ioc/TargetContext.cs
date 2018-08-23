@@ -4,13 +4,19 @@ using System.Text;
 
 namespace Afx.Ioc
 {
+    /// <summary>
+    /// TService Target Info
+    /// </summary>
     public class TargetContext
     {
+        /// <summary>
+        /// TService Target Type
+        /// </summary>
         public Type TargetType { get; private set; }
 
         private readonly CtorContext[] ctors;
 
-        public TargetContext(Type targetType)
+        internal TargetContext(Type targetType)
         {
             if (targetType == null) throw new ArgumentNullException("targetType");
             var arr = targetType.GetConstructors();
@@ -21,6 +27,10 @@ namespace Afx.Ioc
                 this.ctors[i] = new CtorContext(arr[i]);
         }
 
+        /// <summary>
+        /// 获取TService Target构造器
+        /// </summary>
+        /// <returns>CtorContext list</returns>
         public List<CtorContext> GetCtors()
         {
             return new List<CtorContext>(this.ctors);

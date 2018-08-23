@@ -4,14 +4,29 @@ using System.Text;
 
 namespace Afx.Ioc
 {
+    /// <summary>
+    /// TService 实现信息
+    /// </summary>
     public class ObjectContext
     {
+        /// <summary>
+        /// TService CreateMode
+        /// </summary>
         public CreateMode Mode { get; private set; }
 
+        /// <summary>
+        /// TService Target Info (Mode=CreateMode.None)
+        /// </summary>
         public TargetContext TargetInfo { get; private set; }
 
+        /// <summary>
+        /// TService Func Info (Mode=CreateMode.Method)
+        /// </summary>
         public FuncContext Func { get; private set; }
 
+        /// <summary>
+        /// TService Instance (Mode=CreateMode.Instance)
+        /// </summary>
         public object Instance { get; private set; }
 
         internal string Name { get;  set; }

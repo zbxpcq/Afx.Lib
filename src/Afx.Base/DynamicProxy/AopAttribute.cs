@@ -11,8 +11,15 @@ namespace Afx.DynamicProxy
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public class AopAttribute : Attribute
     {
+        /// <summary>
+        /// IAop Type
+        /// </summary>
         public Type AopType { get; private set; }
 
+        /// <summary>
+        /// AopAttribute
+        /// </summary>
+        /// <param name="type">IAop Type</param>
         public AopAttribute(Type type)
         {
             if (type != null && typeof(IAop).IsAssignableFrom(type))

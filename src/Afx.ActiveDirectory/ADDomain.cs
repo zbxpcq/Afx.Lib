@@ -14,8 +14,17 @@ namespace Afx.ActiveDirectory
     /// </summary>
     public class ADDomain
     {
+        /// <summary>
+        /// Domain
+        /// </summary>
         public string Domain { get; private set; }
+        /// <summary>
+        /// Account
+        /// </summary>
         public string Account { get; set; }
+        /// <summary>
+        /// Password
+        /// </summary>
         public string Password { get; set; }
 
         /// <summary>

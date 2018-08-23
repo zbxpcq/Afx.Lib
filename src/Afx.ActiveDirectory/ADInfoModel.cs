@@ -55,7 +55,7 @@ namespace Afx.ActiveDirectory
             this.list.TrimExcess();
         }
         /// <summary>
-        /// 
+        /// Add
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
@@ -73,7 +73,7 @@ namespace Afx.ActiveDirectory
             }
         }
         /// <summary>
-        /// 
+        /// Get
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -92,7 +92,7 @@ namespace Afx.ActiveDirectory
             return value;
         }
         /// <summary>
-        /// 
+        /// Remove
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -107,7 +107,7 @@ namespace Afx.ActiveDirectory
             return result;
         }
         /// <summary>
-        /// 
+        /// Contains
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -122,7 +122,7 @@ namespace Afx.ActiveDirectory
             return result;
         }
         /// <summary>
-        /// 
+        /// Clear
         /// </summary>
         public void Clear()
         {
@@ -130,7 +130,7 @@ namespace Afx.ActiveDirectory
             this.list.TrimExcess();
         }
         /// <summary>
-        /// 
+        /// this
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -140,7 +140,7 @@ namespace Afx.ActiveDirectory
             set { this.Add(name, value); }
         }
         /// <summary>
-        /// 
+        /// Dispose
         /// </summary>
         public void Dispose()
         {
@@ -151,7 +151,7 @@ namespace Afx.ActiveDirectory
             this.list = null;
         }
         /// <summary>
-        /// 
+        /// GetEnumerator
         /// </summary>
         /// <returns></returns>
         public IEnumerator<ADPropertyModel> GetEnumerator()
@@ -200,7 +200,7 @@ namespace Afx.ActiveDirectory
         /// </summary>
         public List<ADInfoModel> Children { get; set; }
         /// <summary>
-        /// 
+        /// Dispose
         /// </summary>
         public void Dispose()
         {

@@ -9,15 +9,27 @@ using Afx.Utils;
 
 namespace Afx.Ioc
 {
+    /// <summary>
+    /// ioc Container
+    /// </summary>
     public class Container : IContainer
     {
         private Dictionary<Type, ServiceContext> serviceDic;
         private ReadWriteLock rwLock;
         private Afx.DynamicProxy.ProxyGenerator proxyGenerator;
 
+        /// <summary>
+        /// 是否 Dispose
+        /// </summary>
         public bool IsDisposed { get; private set; }
+        /// <summary>
+        /// 获取TService事件
+        /// </summary>
         public event OnGetCallback GetEvent;
 
+        /// <summary>
+        /// 实例化
+        /// </summary>
         public Container()
         {
             this.serviceDic = new Dictionary<Type, ServiceContext>();
@@ -34,6 +46,12 @@ namespace Afx.Ioc
             return aop;
         }
 
+        /// <summary>
+        /// 注册单例
+        /// </summary>
+        /// <typeparam name="TService">TService Type</typeparam>
+        /// <param name="instance">实例</param>
+        /// <returns>IRegisterContext</returns>
         public IRegisterContext Register<TService>(TService instance)
         {
             if (instance == null) throw new ArgumentNullException("instance");
@@ -54,6 +72,12 @@ namespace Afx.Ioc
             return new RegisterContext() { Container = this, ServiceType = serviceType, Context = objectContext };
         }
 
+        /// <summary>
+        /// 注册TService Create func
+        /// </summary>
+        /// <typeparam name="TService">TService Type</typeparam>
+        /// <param name="func">func</param>
+        /// <returns>IRegisterContext</returns>
         public IRegisterContext Register<TService>(Func<IContainer, TService> func)
         {
             if (func == null) throw new ArgumentNullException("func");
@@ -73,6 +97,12 @@ namespace Afx.Ioc
             return new RegisterContext() { Container = this, ServiceType = serviceType, Context = objectContext };
         }
 
+        /// <summary>
+        /// 注册TService
+        /// </summary>
+        /// <param name="serviceType">TService Type</param>
+        /// <param name="targetType">target Type</param>
+        /// <returns>IRegisterContext</returns>
         public IRegisterContext Register(Type serviceType, Type targetType)
         {
             Extensions.Check(serviceType, targetType);
@@ -90,16 +120,34 @@ namespace Afx.Ioc
             return new RegisterContext() { Container = this, ServiceType = serviceType, Context = objectContext };
         }
 
-        public IRegisterContext Register<TService, TClass>() where TService : TClass
+        /// <summary>
+        /// 注册TService
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <typeparam name="TImplement"></typeparam>
+        /// <returns>IRegisterContext</returns>
+        public IRegisterContext Register<TService, TImplement>() where TService : TImplement
         {
-            return this.Register(typeof(TService), typeof(TClass));
+            return this.Register(typeof(TService), typeof(TImplement));
         }
 
+        /// <summary>
+        /// 注册程序集TService
+        /// </summary>
+        /// <typeparam name="TBaseService">Base TService</typeparam>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>IRegisterContext list</returns>
         public List<IRegisterContext> Register<TBaseService>(string assemblyName)
         {
             return this.Register(typeof(TBaseService), assemblyName);
         }
 
+        /// <summary>
+        /// 注册程序集TService
+        /// </summary>
+        /// <typeparam name="TBaseService">Base TService</typeparam>
+        /// <param name="assembly">程序集</param>
+        /// <returns>IRegisterContext list</returns>
         public List<IRegisterContext> Register<TBaseService>(Assembly assembly)
         {
             return this.Register(typeof(TBaseService), assembly);
@@ -205,6 +253,12 @@ namespace Afx.Ioc
             return assembly;
         }
 
+        /// <summary>
+        /// 注册程序集TService
+        /// </summary>
+        /// <param name="baseServiceType">Base TService Type</param>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>IRegisterContext list</returns>
         public List<IRegisterContext> Register(Type baseServiceType, string assemblyName)
         {
             if (string.IsNullOrEmpty(assemblyName)) throw new ArgumentNullException("assemblyName");
@@ -213,6 +267,12 @@ namespace Afx.Ioc
             return this.Register(baseServiceType, assembly);
         }
 
+        /// <summary>
+        /// 注册程序集TService
+        /// </summary>
+        /// <param name="baseServiceType">Base TService Type</param>
+        /// <param name="assembly">程序集</param>
+        /// <returns>IRegisterContext list</returns>
         public List<IRegisterContext> Register(Type baseServiceType, Assembly assembly)
         {
             if (baseServiceType == null) throw new ArgumentNullException("baseServiceType");
@@ -380,68 +440,145 @@ namespace Afx.Ioc
             return result;
         }
 
+        /// <summary>
+        /// 获取TService
+        /// </summary>
+        /// <param name="serviceType">TService Type</param>
+        /// <returns>TService</returns>
         public object Get(Type serviceType)
         {
             return this.Get(serviceType, null);
         }
 
+        /// <summary>
+        /// 获取TService
+        /// </summary>
+        /// <param name="serviceType">TService Type</param>
+        /// <param name="args">构造函数参数</param>
+        /// <returns>TService</returns>
         public object Get(Type serviceType, object[] args)
         {
             return this.Create(serviceType, args, null, null);
         }
 
+        /// <summary>
+        /// 根据命名获取TService
+        /// </summary>
+        /// <param name="serviceType">TService Type</param>
+        /// <param name="name">命名</param>
+        /// <returns>TService</returns>
         public object GetByName(Type serviceType, string name)
         {
             return this.GetByName(serviceType, name, null);
         }
 
+        /// <summary>
+        /// 根据命名获取TService
+        /// </summary>
+        /// <param name="serviceType">TService Type</param>
+        /// <param name="name">命名</param>
+        /// <param name="args">构造函数参数</param>
+        /// <returns>TService</returns>
         public object GetByName(Type serviceType, string name, object[] args)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
             return this.Create(serviceType, args, name, null);
         }
 
+        /// <summary>
+        /// 根据Key获取TService
+        /// </summary>
+        /// <param name="serviceType">TService Type</param>
+        /// <param name="key">key</param>
+        /// <returns>TService</returns>
         public object GetByKey(Type serviceType, object key)
         {
             return this.GetByKey(serviceType, key);
         }
 
+        /// <summary>
+        /// 根据Key获取TService
+        /// </summary>
+        /// <param name="serviceType">TService Type</param>
+        /// <param name="key">key</param>
+        /// <param name="args">构造函数参数</param>
+        /// <returns>TService</returns>
         public object GetByKey(Type serviceType, object key, object[] args)
         {
             if (key == null) throw new ArgumentNullException("key");
             return this.Create(serviceType, args, null, key);
         }
 
+        /// <summary>
+        /// 获取TService
+        /// </summary>
+        /// <typeparam name="TService">TService Type</typeparam>
+        /// <returns>TService</returns>
         public TService Get<TService>()
         {
             return this.Get<TService>(null);
         }
 
+        /// <summary>
+        /// 获取TService
+        /// </summary>
+        /// <typeparam name="TService">TService Type</typeparam>
+        /// <param name="args">构造函数参数</param>
+        /// <returns>TService</returns>
         public TService Get<TService>(object[] args)
         {
             return (TService)this.Get(typeof(TService), args);
         }
 
+        /// <summary>
+        /// 根据命名获取TService
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="name">命名</param>
+        /// <returns>TService</returns>
         public TService GetByName<TService>(string name)
         {
             return this.GetByName<TService>(name, null);
         }
 
+        /// <summary>
+        /// 根据命名获取TService
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="name">命名</param>
+        /// <param name="args">构造函数参数</param>
+        /// <returns>TService</returns>
         public TService GetByName<TService>(string name, object[] args)
         {
             return (TService)this.GetByName(typeof(TService), name, args);
         }
 
+        /// <summary>
+        /// 根据Key获取TService
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="key">key</param>
+        /// <returns>TService</returns>
         public TService GetByKey<TService>(object key)
         {
             return this.GetByKey<TService>(key, null);
         }
 
+        /// <summary>
+        /// 根据Key获取TService
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="key">key</param>
+        /// <param name="args">构造函数参数</param>
+        /// <returns>TService</returns>
         public TService GetByKey<TService>(object key, object[] args)
         {
             return (TService)this.GetByKey(typeof(TService), key, args);
         }
 
+        /// <summary>
+        /// 释放资源
+        /// </summary>
         public void Dispose()
         {
             if (this.IsDisposed) return;
