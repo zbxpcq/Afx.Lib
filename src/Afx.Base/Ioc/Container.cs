@@ -63,7 +63,6 @@ namespace Afx.Ioc
         public IRegisterContext Register<TService>(TService instance)
         {
             if (instance == null) throw new ArgumentNullException("instance");
-            var targetType = instance.GetType();
             var serviceType = typeof(TService);
             ServiceContext serviceContext = null;
             ObjectContext objectContext = null;
@@ -71,7 +70,6 @@ namespace Afx.Ioc
             {
                 if (!this.serviceDic.TryGetValue(serviceType, out serviceContext))
                 {
-                    objectContext = serviceContext.Add(instance);
                     this.serviceDic[serviceType] = serviceContext = new ServiceContext(serviceType);
                 }
             }
@@ -97,7 +95,7 @@ namespace Afx.Ioc
             {
                 if (!this.serviceDic.TryGetValue(serviceType, out serviceContext))
                 {
-                    this.serviceDic[serviceType] = serviceContext = new ServiceContext(serviceType, funcContext);
+                    this.serviceDic[serviceType] = serviceContext = new ServiceContext(serviceType);
                 }
             }
             objectContext = serviceContext.Add(funcContext);
@@ -120,7 +118,7 @@ namespace Afx.Ioc
             {
                 if (!this.serviceDic.TryGetValue(serviceType, out serviceContext))
                 {
-                    this.serviceDic[serviceType] = serviceContext = new ServiceContext(serviceType, new TargetContext(targetType));
+                    this.serviceDic[serviceType] = serviceContext = new ServiceContext(serviceType);
                 }
             }
             objectContext = serviceContext.Add(new TargetContext(targetType));
