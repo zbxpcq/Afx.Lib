@@ -47,8 +47,17 @@
     <Compile Include="..\..\src\Afx.Base\DynamicProxy\AopContext.cs">
       <Link>DynamicProxy\AopContext.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\AssemblyDynamicBuilder.cs">
+      <Link>DynamicProxy\AssemblyDynamicBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\ClassProxy.cs">
+      <Link>DynamicProxy\ClassProxy.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Afx.Base\DynamicProxy\IAop.cs">
       <Link>DynamicProxy\IAop.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\InterfaceProxy.cs">
+      <Link>DynamicProxy\InterfaceProxy.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\DynamicProxy\IProxy.cs">
       <Link>DynamicProxy\IProxy.cs</Link>
@@ -58,6 +67,9 @@
     </Compile>
     <Compile Include="..\..\src\Afx.Base\DynamicProxy\ProxyUtil.cs">
       <Link>DynamicProxy\ProxyUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\DynamicProxy\TypeDynamicBuilder.cs">
+      <Link>DynamicProxy\TypeDynamicBuilder.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Ioc\Container.cs">
       <Link>Ioc\Container.cs</Link>

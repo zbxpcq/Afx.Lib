@@ -60,7 +60,7 @@ namespace Afx.Ioc
             ObjectContext objectContext = null;
             lock (this.root)
             {
-                objectContext = this.objectList.Find(q => q.Mode == CreateMode.Method && q.Func.Method == func.Method && q.Func.Target == func.Target);
+                objectContext = this.objectList.Find(q => q.Mode == CreateMode.Method && q.Func.Method == func.Method && (q.Func.Target == func.Target || q.Func.Target.Equals(func.Target)));
                 if (objectContext == null)
                 {
                     objectContext = new ObjectContext(func);
@@ -78,7 +78,7 @@ namespace Afx.Ioc
             ObjectContext objectContext = null;
             lock (this.root)
             {
-                objectContext = this.objectList.Find(q => q.Mode == CreateMode.Instance && q.Instance == instance);
+                objectContext = this.objectList.Find(q => q.Mode == CreateMode.Instance && (q.Instance == instance || q.Instance.Equals(instance)));
                 if (objectContext == null)
                 {
                     objectContext = new ObjectContext(instance);
@@ -107,7 +107,7 @@ namespace Afx.Ioc
             ObjectContext objectContext = null;
             lock (this.root)
             {
-                objectContext = this.objectList.Find(q=>q.Name == name);
+                objectContext = this.objectList.Find(q => q.Name == name);
             }
 
             return objectContext;
@@ -119,10 +119,15 @@ namespace Afx.Ioc
             ObjectContext objectContext = null;
             lock (this.root)
             {
-                objectContext = this.objectList.Find(q => key.Equals(q.Key));
+                objectContext = this.objectList.Find(q => q.Key == key || key.Equals(q.Key));
             }
 
             return objectContext;
+        }
+
+        public List<ObjectContext> GetAll()
+        {
+            return new List<ObjectContext>(this.objectList);
         }
     }
 }

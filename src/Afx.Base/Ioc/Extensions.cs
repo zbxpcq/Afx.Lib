@@ -46,7 +46,7 @@ namespace Afx.Ioc
             if (serviceType == null) throw new ArgumentNullException("serviceType");
             if (targetType == null) throw new ArgumentNullException("targetType");
             if (targetType.IsAbstract) throw new ArgumentException(targetType.FullName + " is abstract!", "targetType");
-            if (targetType == typeof(object)) throw new ArgumentNullException(targetType.FullName + " is error!", "targetType");
+            if (targetType == typeof(object)) throw new ArgumentException(targetType.FullName + " is error!", "targetType");
             if (serviceType == targetType) return;
             if (serviceType.IsAssignableFrom(targetType)) return;
 

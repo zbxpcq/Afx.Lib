@@ -7,7 +7,7 @@ namespace Afx.Ioc
     /// <summary>
     /// 创建 TService Context
     /// </summary>
-    public class OnGetContext : RegisterContext
+    public class CreateContext : RegisterContext
     {
         /// <summary>
         /// 构造函数参数
@@ -22,6 +22,6 @@ namespace Afx.Ioc
     /// <summary>
     /// 创建 TService Context Callback
     /// </summary>
-    /// <param name="context">OnGetContext</param>
-    public delegate void OnGetCallback(OnGetContext context);
+    /// <param name="context">CreateContext</param>
+    public delegate void CreateCallback(CreateContext context);
 }

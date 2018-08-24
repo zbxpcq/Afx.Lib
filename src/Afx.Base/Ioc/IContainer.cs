@@ -11,14 +11,15 @@ namespace Afx.Ioc
     public interface IContainer : IDisposable
     {
         /// <summary>
-        /// 获取TService事件
-        /// </summary>
-        event OnGetCallback GetEvent;
-
-        /// <summary>
         /// 是否 Dispose
         /// </summary>
         bool IsDisposed { get; }
+
+        /// <summary>
+        /// 注册创建 TService Context Callback
+        /// </summary>
+        /// <param name="createCallback"></param>
+        void RegisterCallback(CreateCallback createCallback);
 
         /// <summary>
         /// 注册单例
@@ -48,9 +49,16 @@ namespace Afx.Ioc
         /// 注册TService
         /// </summary>
         /// <typeparam name="TService"></typeparam>
+        /// <returns>IRegisterContext</returns>
+        IRegisterContext Register<TService>();
+
+        /// <summary>
+        /// 注册TService
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
         /// <typeparam name="TImplement"></typeparam>
         /// <returns>IRegisterContext</returns>
-        IRegisterContext Register<TService, TImplement>() where TService : TImplement;
+        IRegisterContext Register<TService, TImplement>() where TImplement : TService;
 
         /// <summary>
         /// 注册程序集TService
@@ -181,5 +189,33 @@ namespace Afx.Ioc
         /// <param name="args">构造函数参数</param>
         /// <returns>TService</returns>
         TService GetByKey<TService>(object key, object[] args);
+
+        /// <summary>
+        /// 获取 TTService 最后注册信息
+        /// </summary>
+        /// <typeparam name="TTService"></typeparam>
+        /// <returns>IRegisterContext</returns>
+        IRegisterContext GetRegister<TTService>();
+
+        /// <summary>
+        /// 获取 TTService 注册信息
+        /// </summary>
+        /// <typeparam name="TTService"></typeparam>
+        /// <returns></returns>
+        List<IRegisterContext> GetRegisterList<TTService>();
+
+        /// <summary>
+        /// 获取 TTService 最后注册信息
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        IRegisterContext GetRegister(Type serviceType);
+
+        /// <summary>
+        /// 获取 TTService 注册信息
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        List<IRegisterContext> GetRegisterList(Type serviceType);
     }
 }

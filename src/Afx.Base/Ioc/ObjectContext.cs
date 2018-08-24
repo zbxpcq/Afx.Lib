@@ -33,7 +33,7 @@ namespace Afx.Ioc
 
         internal object Key { get; set; }
 
-        internal bool EnableAop { get; set; }
+        internal bool AopEnabled { get; set; }
 
         internal List<Type> AopTypeList { get; set; }
 

@@ -25,7 +25,7 @@ namespace Afx.Ioc
         /// <summary>
         /// 获取TService事件
         /// </summary>
-        public event OnGetCallback GetEvent;
+        private CreateCallback createCallback;
 
         /// <summary>
         /// 实例化
@@ -34,8 +34,7 @@ namespace Afx.Ioc
         {
             this.serviceDic = new Dictionary<Type, ServiceContext>();
             this.rwLock = new ReadWriteLock();
-            this.proxyGenerator = new DynamicProxy.ProxyGenerator();
-            this.proxyGenerator.AopFunc = this.CreateAop;
+            this.proxyGenerator = new DynamicProxy.ProxyGenerator(this.CreateAop);
             this.IsDisposed = false;
         }
 
@@ -44,6 +43,15 @@ namespace Afx.Ioc
             Afx.DynamicProxy.IAop aop = this.Get(type) as Afx.DynamicProxy.IAop;
 
             return aop;
+        }
+
+        /// <summary>
+        /// 注册创建 TService Context Callback
+        /// </summary>
+        /// <param name="createCallback"></param>
+        public void RegisterCallback(CreateCallback createCallback)
+        {
+            this.createCallback = createCallback;
         }
 
         /// <summary>
@@ -124,9 +132,19 @@ namespace Afx.Ioc
         /// 注册TService
         /// </summary>
         /// <typeparam name="TService"></typeparam>
+        /// <returns>IRegisterContext</returns>
+        public IRegisterContext Register<TService>()
+        {
+            return this.Register(typeof(TService), typeof(TService));
+        }
+
+        /// <summary>
+        /// 注册TService
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
         /// <typeparam name="TImplement"></typeparam>
         /// <returns>IRegisterContext</returns>
-        public IRegisterContext Register<TService, TImplement>() where TService : TImplement
+        public IRegisterContext Register<TService, TImplement>() where TImplement : TService
         {
             return this.Register(typeof(TService), typeof(TImplement));
         }
@@ -303,12 +321,12 @@ namespace Afx.Ioc
             return result;
         }
 
-        private object OnGetEvent(Type serviceType, ObjectContext objectContext, object[] args)
+        private object OnCreateEvent(Type serviceType, ObjectContext objectContext, object[] args)
         {
             object result = null;
-            if (this.GetEvent != null)
+            if (this.createCallback != null)
             {
-                OnGetContext context = new OnGetContext()
+                CreateContext context = new CreateContext()
                 {
                     Container = this,
                     ServiceType = serviceType,
@@ -316,16 +334,16 @@ namespace Afx.Ioc
                     Arguments = args
                 };
 
-                this.GetEvent(context);
+                this.createCallback(context);
 
                 result = context.Target;
             }
 
-            if((result == null || serviceType.IsInterface) && objectContext.EnableAop)
+            if((result == null || serviceType.IsInterface) && objectContext.AopEnabled)
             {
                 if(result == null && objectContext.Mode == CreateMode.None)
                 {
-                    result = this.proxyGenerator.CreateClassProxy(objectContext.TargetInfo.TargetType, args,
+                    result = this.proxyGenerator.GetClassProxy(objectContext.TargetInfo.TargetType, args,
                         true, objectContext.AopTypeList?.ToArray());
                 }
                 else if(serviceType.IsInterface)
@@ -336,7 +354,7 @@ namespace Afx.Ioc
                         target = objectContext.Mode == CreateMode.Instance
                               ? objectContext.Instance : objectContext.Func.Invoke(this);
                     }
-                    result = this.proxyGenerator.CreateInterfaceProxy(serviceType, target, true, objectContext.AopTypeList?.ToArray());
+                    result = this.proxyGenerator.GetInterfaceProxy(serviceType, target, true, objectContext.AopTypeList?.ToArray());
                 }
             }
 
@@ -370,11 +388,11 @@ namespace Afx.Ioc
                     switch (objectContext.Mode)
                     {
                         case CreateMode.Instance:
-                            result = this.OnGetEvent(serviceType, objectContext, args)
+                            result = this.OnCreateEvent(serviceType, objectContext, args)
                                 ?? objectContext.Instance;
                             break;
                         case CreateMode.Method:
-                            result = this.OnGetEvent(serviceType, objectContext, args)
+                            result = this.OnCreateEvent(serviceType, objectContext, args)
                                 ?? objectContext.Func.Invoke(this);
                             break;
                         case CreateMode.None:
@@ -384,7 +402,7 @@ namespace Afx.Ioc
                                 targetInfo = new TargetContext(targetInfo.TargetType.MakeGenericType(serviceType.GetGenericArguments()));
                                 objectContext = new ObjectContext(targetInfo)
                                 {
-                                    EnableAop = objectContext.EnableAop,
+                                    AopEnabled = objectContext.AopEnabled,
                                     AopTypeList = objectContext.AopTypeList,
                                     Name = objectContext.Name,
                                     Key = objectContext.Key
@@ -395,7 +413,7 @@ namespace Afx.Ioc
                             {
                                 if (ct.IsMatch(args))
                                 {
-                                    result = this.OnGetEvent(serviceType, objectContext, args)
+                                    result = this.OnCreateEvent(serviceType, objectContext, args)
                                         ?? Activator.CreateInstance(targetInfo.TargetType, args);
                                 }
                             }
@@ -428,7 +446,7 @@ namespace Afx.Ioc
                                 {
                                     args = new object[ctor.ParameterTypes.Length];
                                     for (int i = 0; i < args.Length; i++) args[i] = this.Create(ctor.ParameterTypes[i], null, null, null);
-                                    result = this.OnGetEvent(serviceType, objectContext, args)
+                                    result = this.OnCreateEvent(serviceType, objectContext, args)
                                         ?? Activator.CreateInstance(targetInfo.TargetType, args);
                                 }
                             }
@@ -574,6 +592,82 @@ namespace Afx.Ioc
         public TService GetByKey<TService>(object key, object[] args)
         {
             return (TService)this.GetByKey(typeof(TService), key, args);
+        }
+
+        /// <summary>
+        /// 获取 TTService 最后注册信息
+        /// </summary>
+        /// <typeparam name="TTService"></typeparam>
+        /// <returns>IRegisterContext</returns>
+        public IRegisterContext GetRegister<TTService>()
+        {
+            return this.GetRegister(typeof(TTService));
+        }
+
+        /// <summary>
+        /// 获取 TTService 注册信息
+        /// </summary>
+        /// <typeparam name="TTService"></typeparam>
+        /// <returns></returns>
+        public List<IRegisterContext> GetRegisterList<TTService>()
+        {
+            return this.GetRegisterList(typeof(TTService));
+        }
+
+        /// <summary>
+        /// 获取 TTService 最后注册信息
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public IRegisterContext GetRegister(Type serviceType)
+        {
+            if (serviceType == null) throw new ArgumentNullException("serviceType");
+            IRegisterContext registerContext = null;
+            using (this.rwLock.GetReadLock())
+            {
+                ServiceContext serviceContext = null;
+                if(this.serviceDic.TryGetValue(serviceType, out serviceContext))
+                {
+                    registerContext = new RegisterContext()
+                    {
+                        ServiceType = serviceType,
+                        Container = this,
+                        Context = serviceContext.Get()
+                    };
+                }
+            }
+
+            return registerContext;
+        }
+
+        /// <summary>
+        /// 获取 TTService 注册信息
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public List<IRegisterContext> GetRegisterList(Type serviceType)
+        {
+            if (serviceType == null) throw new ArgumentNullException("serviceType");
+            List<IRegisterContext> list = new List<IRegisterContext>();
+            using (this.rwLock.GetReadLock())
+            {
+                ServiceContext serviceContext = null;
+                if (this.serviceDic.TryGetValue(serviceType, out serviceContext))
+                {
+                    foreach (var o in serviceContext.GetAll())
+                    {
+                        list.Add(new RegisterContext()
+                        {
+                            ServiceType = serviceType,
+                            Container = this,
+                            Context = o
+                        });
+                    }
+                }
+            }
+            list.TrimExcess();
+
+            return list;
         }
 
         /// <summary>

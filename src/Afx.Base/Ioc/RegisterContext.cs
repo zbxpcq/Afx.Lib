@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Afx.DynamicProxy;
+
 namespace Afx.Ioc
 {
     /// <summary>
@@ -28,28 +30,35 @@ namespace Afx.Ioc
         /// </summary>
         /// <param name="name">命名</param>
         /// <returns>this</returns>
-        IRegisterContext SetName(string name);
+        IRegisterContext Name(string name);
 
         /// <summary>
         /// 设置key
         /// </summary>
         /// <param name="key">key</param>
         /// <returns>this</returns>
-        IRegisterContext SetKey(object key);
+        IRegisterContext Key(object key);
 
         /// <summary>
         /// 开启关闭aop
         /// </summary>
-        /// <param name="enable">enable</param>
+        /// <param name="enabled">enable</param>
         /// <returns>this</returns>
-        IRegisterContext EnableAop(bool enable);
+        IRegisterContext Aop(bool enabled);
 
         /// <summary>
         /// 添加 IAop Type
         /// </summary>
         /// <param name="type">IAop Type</param>
         /// <returns>this</returns>
-        IRegisterContext AopType(Type type);
+        IRegisterContext Aop(Type type);
+
+        /// <summary>
+        /// 添加 IAop Type
+        /// </summary>
+        /// <typeparam name="TAop"></typeparam>
+        /// <returns>this</returns>
+        IRegisterContext Aop<TAop>() where TAop: IAop;
     }
 
     /// <summary>
@@ -70,15 +79,26 @@ namespace Afx.Ioc
         /// TService ObjectContext
         /// </summary>
         public virtual ObjectContext Context { get; internal set; }
+
+        /// <summary>
+        /// 添加 IAop Type
+        /// </summary>
+        /// <typeparam name="TAop"></typeparam>
+        /// <returns>this</returns>
+        public virtual IRegisterContext Aop<TAop>() where TAop : IAop
+        {
+            return this.Aop(typeof(TAop));
+        }
+
         /// <summary>
         /// 添加 IAop Type
         /// </summary>
         /// <param name="type">IAop Type</param>
         /// <returns>this</returns>
-        public virtual IRegisterContext AopType(Type type)
+        public virtual IRegisterContext Aop(Type type)
         {
             if (type == null) throw new ArgumentNullException("type");
-            if(!typeof(Afx.DynamicProxy.IAop).IsAssignableFrom(type)) throw new ArgumentException(type.FullName + " 不是 IAop！","type");
+            if(!typeof(IAop).IsAssignableFrom(type)) throw new ArgumentException(type.FullName + " 不是 Afx.DynamicProxy.IAop！", "type");
             this.CheckAop();
             if (this.Context.AopTypeList == null) this.Context.AopTypeList = new List<Type>();
             if (!this.Context.AopTypeList.Contains(type)) this.Context.AopTypeList.Add(type);
@@ -89,12 +109,12 @@ namespace Afx.Ioc
         /// <summary>
         /// 开启关闭aop
         /// </summary>
-        /// <param name="enable">enable</param>
+        /// <param name="enabled">enable</param>
         /// <returns>this</returns>
-        public virtual IRegisterContext EnableAop(bool enable)
+        public virtual IRegisterContext Aop(bool enabled)
         {
             this.CheckAop();
-            this.Context.EnableAop = enable;
+            this.Context.AopEnabled = enabled;
 
             return this;
         }
@@ -112,7 +132,7 @@ namespace Afx.Ioc
         /// </summary>
         /// <param name="key">key</param>
         /// <returns>this</returns>
-        public virtual IRegisterContext SetKey(object key)
+        public virtual IRegisterContext Key(object key)
         {
             if (key == null) throw new ArgumentNullException("key");
             this.Context.Key = key;
@@ -124,7 +144,7 @@ namespace Afx.Ioc
         /// </summary>
         /// <param name="name">命名</param>
         /// <returns>this</returns>
-        public virtual IRegisterContext SetName(string name)
+        public virtual IRegisterContext Name(string name)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
             this.Context.Name = name;

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Data.MySql.Entity</id>
-    <version>6.4.0.0</version>
+    <version>6.5.0.0</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,26 +12,26 @@
     <tags>Afx.Data.MySql.Entity MySql EF EntityFramework EntityFrameworkCore Afx</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.0">
-        <dependency id="Afx.Data.Entity" version="6.4.0.0" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="6.4.0.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="6.5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="6.5.0.0" exclude="Build,Analyzers" />
         <dependency id="MySql.Data" version="6.9.12" exclude="Build,Analyzers" />
         <dependency id="MySql.Data.Entity" version="6.9.12" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Afx.Data.Entity" version="6.4.0.0" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="6.4.0.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="6.5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="6.5.0.0" exclude="Build,Analyzers" />
         <dependency id="MySql.Data" version="6.10.7" exclude="Build,Analyzers" />
         <dependency id="MySql.Data.Entity" version="6.10.7" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETCoreApp2.1">
-        <dependency id="Afx.Data.Entity" version="6.4.0.0" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="6.4.0.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="6.5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="6.5.0.0" exclude="Build,Analyzers" />
         <dependency id="MySqlConnector" version="0.43" exclude="Build,Analyzers" />
         <dependency id="Pomelo.EntityFrameworkCore.MySql" version="2.1.1" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Afx.Data.Entity" version="6.4.0.0" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="6.4.0.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="6.5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="6.5.0.0" exclude="Build,Analyzers" />
         <dependency id="MySqlConnector" version="0.43" exclude="Build,Analyzers" />
         <dependency id="Pomelo.EntityFrameworkCore.MySql" version="2.1.1" exclude="Build,Analyzers" />
       </group>
