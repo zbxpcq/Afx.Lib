@@ -339,7 +339,7 @@ namespace Afx.Ioc
                 result = context.Target;
             }
 
-            if((result == null || serviceType.IsInterface) && objectContext.AopEnabled)
+            if((result == null || serviceType.IsInterface) && objectContext.EnabledAop)
             {
                 if(result == null && objectContext.Mode == CreateMode.None)
                 {
@@ -402,7 +402,7 @@ namespace Afx.Ioc
                                 targetInfo = new TargetContext(targetInfo.TargetType.MakeGenericType(serviceType.GetGenericArguments()));
                                 objectContext = new ObjectContext(targetInfo)
                                 {
-                                    AopEnabled = objectContext.AopEnabled,
+                                    EnabledAop = objectContext.EnabledAop,
                                     AopTypeList = objectContext.AopTypeList,
                                     Name = objectContext.Name,
                                     Key = objectContext.Key

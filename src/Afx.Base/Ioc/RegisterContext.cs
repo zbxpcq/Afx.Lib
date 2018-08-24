@@ -114,7 +114,7 @@ namespace Afx.Ioc
         public virtual IRegisterContext Aop(bool enabled)
         {
             this.CheckAop();
-            this.Context.AopEnabled = enabled;
+            this.Context.EnabledAop = enabled;
 
             return this;
         }

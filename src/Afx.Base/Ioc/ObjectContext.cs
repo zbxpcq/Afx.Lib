@@ -29,11 +29,11 @@ namespace Afx.Ioc
         /// </summary>
         public object Instance { get; private set; }
 
-        internal string Name { get;  set; }
+        public string Name { get; internal set; }
 
-        internal object Key { get; set; }
+        public object Key { get; internal set; }
 
-        internal bool AopEnabled { get; set; }
+        public bool EnabledAop { get; internal set; }
 
         internal List<Type> AopTypeList { get; set; }
 
