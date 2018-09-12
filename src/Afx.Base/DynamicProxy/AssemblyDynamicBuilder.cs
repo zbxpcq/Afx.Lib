@@ -27,6 +27,8 @@ namespace Afx.DynamicProxy
         private AssemblyBuilder m_assemblyBuilder;
 #if NETCOREAPP || NETSTANDARD
         private AssemblyBuilderAccess m_assemblyBuilderAccess = AssemblyBuilderAccess.Run;
+#elif DEBUG && NET452
+        private AssemblyBuilderAccess m_assemblyBuilderAccess = AssemblyBuilderAccess.RunAndSave;
 #else
         private AssemblyBuilderAccess m_assemblyBuilderAccess = AssemblyBuilderAccess.Run;
 #endif
@@ -54,6 +56,13 @@ namespace Afx.DynamicProxy
             }
 #endif
         }
+
+#if DEBUG && NET452
+        public void SaveDynamicModule()
+        {
+            this.m_assemblyBuilder.Save(this.m_moduleName + ".dll");
+        }
+#endif
 
         /// <summary>
         /// GetDynamicName

@@ -40,7 +40,14 @@ namespace Afx.DynamicProxy
 
             this.IsDisposed = false;
         }
-         
+
+#if DEBUG && NET452
+        public void SaveDynamicModule()
+        {
+            this.assemblyDynamicBuilder.SaveDynamicModule();
+        }
+#endif
+
         /// <summary>
         /// 创建子类代理
         /// </summary>

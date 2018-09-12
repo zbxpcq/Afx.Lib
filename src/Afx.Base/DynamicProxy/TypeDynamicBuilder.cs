@@ -98,6 +98,37 @@ namespace Afx.DynamicProxy
             if (parameterTypes == null) throw new ArgumentNullException("parameterTypes");
             var methodBuilder = this.typeBuilder.DefineMethod(name, attributes, callingConvention, returnType, parameterTypes);
             ILGenerator il = methodBuilder.GetILGenerator();
+            
+            return il;
+        }
+
+        /// <summary>
+        /// DefineMethod
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="attributes"></param>
+        /// <param name="callingConvention"></param>
+        /// <param name="returnType"></param>
+        /// <param name="parameterTypes"></param>
+        /// <returns></returns>
+        public ILGenerator DefineMethod(string name, MethodAttributes attributes, CallingConventions callingConvention, Type returnType, ParameterInfo[] parameterInfos)
+        {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if (returnType == null) throw new ArgumentNullException("returnType");
+            if (parameterInfos == null) throw new ArgumentNullException("parameterInfos");
+            Type[] parameterTypes = ProxyUtil.GetType(parameterInfos);
+            var methodBuilder = this.typeBuilder.DefineMethod(name, attributes, callingConvention, returnType, parameterTypes);
+            for (int i = 0; i < parameterInfos.Length; i++)
+            {
+                var parameterInfo = parameterInfos[i];
+                var parameterBuilder = methodBuilder.DefineParameter(parameterInfo.Position + 1, parameterInfo.Attributes, parameterInfo.Name);
+                if ((parameterInfo.Attributes & ParameterAttributes.HasDefault) == ParameterAttributes.HasDefault)
+                {
+                    parameterBuilder.SetConstant(parameterInfo.DefaultValue);
+                }
+            }
+            ILGenerator il = methodBuilder.GetILGenerator();
+
             return il;
         }
 

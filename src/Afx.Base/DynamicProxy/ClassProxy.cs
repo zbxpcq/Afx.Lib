@@ -17,6 +17,7 @@ namespace Afx.DynamicProxy
         private ReadWriteLock m_rwClassLock;
         private Dictionary<Type, Type> m_classProxyDic;
         private Func<Type, IAop> AopFunc;
+
         /// <summary>
         /// 是否 Dispose
         /// </summary>
@@ -123,7 +124,7 @@ namespace Afx.DynamicProxy
             object result = null;
             if (targetType == null) throw new ArgumentNullException("targetType");
             Type proxyType = targetType;
-            if (!ProxyUtil.IsProxy(targetType))
+            if (!ProxyUtil.IsProxyType(targetType))
             {
                 proxyType = this.GetClassProxyType(targetType);
             }
@@ -253,7 +254,8 @@ namespace Afx.DynamicProxy
                     continue;
                 }
 
-                var parameterTypes = ProxyUtil.GetParameterType(baseMethod);
+                var parameterInfos = baseMethod.GetParameters();
+                var parameterTypes = ProxyUtil.GetType(parameterInfos);
                 MethodAttributes methattr = MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig;
                 CallingConventions calling = CallingConventions.Standard | CallingConventions.HasThis;
                 if (baseMethod.Attributes == newMethodAttr || baseMethod.Attributes == (MethodAttributes.Public | MethodAttributes.HideBySig))
@@ -261,17 +263,17 @@ namespace Afx.DynamicProxy
                     methattr = newMethodAttr;// MethodAttributes.Public | MethodAttributes.HideBySig;
                 }
 
-                ILGenerator il = typeDynamicBuilder.DefineMethod(baseMethod.Name, methattr, calling, baseMethod.ReturnType, parameterTypes);
+                ILGenerator il = typeDynamicBuilder.DefineMethod(baseMethod.Name, methattr, calling, baseMethod.ReturnType, parameterInfos);
                 #region 定义局部变量
                 var contextLocal = il.DeclareLocal(typeof(AopContext));
-                var methodBaseLocal = il.DeclareLocal(typeof(MethodBase));
-                var methodLocal = il.DeclareLocal(typeof(MethodInfo));
+                var proxyMethodBaseLocal = il.DeclareLocal(typeof(MethodBase));
+                var baseMethodLocal = il.DeclareLocal(typeof(MethodInfo));
                 var argsLocal = il.DeclareLocal(typeof(object[]));
                 var exLocal = il.DeclareLocal(typeof(Exception));
-                LocalBuilder returnLocal = null;//5
+                LocalBuilder resultLocal = null;//5
                 if (baseMethod.ReturnType != null && baseMethod.ReturnType != typeof(void))
                 {
-                    returnLocal = il.DeclareLocal(baseMethod.ReturnType);
+                    resultLocal = il.DeclareLocal(baseMethod.ReturnType);
                 }
 
                 Label execEndLabel = il.DefineLabel();
@@ -281,13 +283,13 @@ namespace Afx.DynamicProxy
 
                 #region 初始局部变量
                 il.Emit(OpCodes.Ldnull);
-                il.Emit(OpCodes.Stloc_S, contextLocal);
-                if (returnLocal != null)
+                il.Emit(OpCodes.Stloc, contextLocal);
+                if (resultLocal != null)
                 {
                     if (!baseMethod.ReturnType.IsValueType)
                     {
                         il.Emit(OpCodes.Ldnull);
-                        il.Emit(OpCodes.Stloc_S, returnLocal);
+                        il.Emit(OpCodes.Stloc, resultLocal);
                     }
                 }
                 #endregion
@@ -297,27 +299,28 @@ namespace Afx.DynamicProxy
                 il.Emit(OpCodes.Ldlen);
                 il.Emit(OpCodes.Ldc_I4_0);
                 il.Emit(OpCodes.Cgt_Un);
-                il.Emit(OpCodes.Brfalse_S, execEndLabel);
+                il.Emit(OpCodes.Brfalse, execEndLabel);
                 il.Emit(OpCodes.Newobj, typeof(AopContext).GetConstructor(Type.EmptyTypes));
-                il.Emit(OpCodes.Stloc_S, contextLocal);
+                il.Emit(OpCodes.Stloc, contextLocal);
                 il.Emit(OpCodes.Call, typeof(MethodBase).GetMethod("GetCurrentMethod", BindingFlags.Static | BindingFlags.Public));
-                il.Emit(OpCodes.Stloc_S, methodBaseLocal);
+                il.Emit(OpCodes.Stloc, proxyMethodBaseLocal);
 
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, targetTypeField);
-                il.Emit(OpCodes.Ldloc_S, methodBaseLocal);
-                il.Emit(OpCodes.Callvirt, typeof(MemberInfo).GetMethod("get_Name"));
-                il.Emit(OpCodes.Ldloc_S, methodBaseLocal);
+                //il.Emit(OpCodes.Ldloc, methodBaseLocal);
+                //il.Emit(OpCodes.Callvirt, typeof(MemberInfo).GetMethod("get_Name"));
+                il.Emit(OpCodes.Ldstr, baseMethod.Name);
+                il.Emit(OpCodes.Ldloc, proxyMethodBaseLocal);
                 il.Emit(OpCodes.Call, ProxyUtil.GetParameterTypeMethod);
                 il.Emit(OpCodes.Callvirt, typeof(Type).GetMethod("GetMethod", new Type[] { typeof(string), typeof(Type[]) }));
-                il.Emit(OpCodes.Stloc_S, methodLocal);
+                il.Emit(OpCodes.Stloc, baseMethodLocal);
 
                 il.Emit(OpCodes.Ldc_I4, parameterTypes.Length);
                 il.Emit(OpCodes.Newarr, typeof(Object));
-                il.Emit(OpCodes.Stloc_S, argsLocal);
+                il.Emit(OpCodes.Stloc, argsLocal);
                 for (int i = 0; i < parameterTypes.Length; i++)
                 {
-                    il.Emit(OpCodes.Ldloc_S, argsLocal);
+                    il.Emit(OpCodes.Ldloc, argsLocal);
                     il.Emit(OpCodes.Ldc_I4, i);
                     il.Emit(OpCodes.Ldarg, i + 1);
                     if (parameterTypes[i].IsValueType)
@@ -328,9 +331,9 @@ namespace Afx.DynamicProxy
                 }
 
                 il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldloc_S, methodLocal);
-                il.Emit(OpCodes.Ldloc_S, argsLocal);
-                il.Emit(OpCodes.Ldloc_S, contextLocal);
+                il.Emit(OpCodes.Ldloc, baseMethodLocal);
+                il.Emit(OpCodes.Ldloc, argsLocal);
+                il.Emit(OpCodes.Ldloc, contextLocal);
                 il.Emit(OpCodes.Call, ProxyUtil.OnExecutingMethod);
                 il.MarkLabel(execEndLabel);
                 il.Emit(OpCodes.Nop);
@@ -341,28 +344,28 @@ namespace Afx.DynamicProxy
                     il.Emit(OpCodes.Ldarg, i + 1);
                 }
                 il.Emit(OpCodes.Call, baseMethod);
-                if (returnLocal != null)
+                if (resultLocal != null)
                 {
-                    il.Emit(OpCodes.Stloc_S, returnLocal);
+                    il.Emit(OpCodes.Stloc, resultLocal);
                 }
 
                 il.BeginCatchBlock(typeof(Exception));
-                il.Emit(OpCodes.Stloc_S, exLocal);
+                il.Emit(OpCodes.Stloc, exLocal);
 
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, aopFuncsField);
                 il.Emit(OpCodes.Ldlen);
                 il.Emit(OpCodes.Ldc_I4_0);
                 il.Emit(OpCodes.Cgt_Un);
-                il.Emit(OpCodes.Brfalse_S, exEndLabel);
+                il.Emit(OpCodes.Brfalse, exEndLabel);
 
-                il.Emit(OpCodes.Ldloc_S, contextLocal);
-                il.Emit(OpCodes.Ldloc_S, exLocal);
+                il.Emit(OpCodes.Ldloc, contextLocal);
+                il.Emit(OpCodes.Ldloc, exLocal);
                 il.Emit(OpCodes.Call, ProxyUtil.OnExceptionMethod);
 
                 il.Emit(OpCodes.Nop);
                 il.MarkLabel(exEndLabel);
-                il.Emit(OpCodes.Ldloc_S, exLocal);
+                il.Emit(OpCodes.Ldloc, exLocal);
                 il.Emit(OpCodes.Throw);
                 il.EndExceptionBlock();
 
@@ -371,11 +374,11 @@ namespace Afx.DynamicProxy
                 il.Emit(OpCodes.Ldlen);
                 il.Emit(OpCodes.Ldc_I4_0);
                 il.Emit(OpCodes.Cgt_Un);
-                il.Emit(OpCodes.Brfalse_S, resultEndLabel);
-                il.Emit(OpCodes.Ldloc_S, contextLocal);
-                if (returnLocal != null)
+                il.Emit(OpCodes.Brfalse, resultEndLabel);
+                il.Emit(OpCodes.Ldloc, contextLocal);
+                if (resultLocal != null)
                 {
-                    il.Emit(OpCodes.Ldloc_S, returnLocal);
+                    il.Emit(OpCodes.Ldloc, resultLocal);
                     if (baseMethod.ReturnType.IsValueType)
                     {
                         il.Emit(OpCodes.Box, baseMethod.ReturnType);
@@ -388,16 +391,11 @@ namespace Afx.DynamicProxy
                 il.Emit(OpCodes.Call, ProxyUtil.OnResultMethod);
                 il.MarkLabel(resultEndLabel);
                 il.Emit(OpCodes.Nop);
-                if (returnLocal != null)
+                if (resultLocal != null)
                 {
-                    il.Emit(OpCodes.Ldloc_S, returnLocal);
+                    il.Emit(OpCodes.Ldloc, resultLocal);
                 }
                 il.Emit(OpCodes.Ret);
-
-                if(!baseMethod.IsVirtual)
-                {
-
-                }
             }
 
             proxyType = typeDynamicBuilder.CreateType();

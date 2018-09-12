@@ -10,6 +10,9 @@ namespace Afx.Ioc
     /// </summary>
     public interface IContainer : IDisposable
     {
+#if DEBUG && NET452
+        void SaveDynamicModule();
+#endif
         /// <summary>
         /// 是否 Dispose
         /// </summary>

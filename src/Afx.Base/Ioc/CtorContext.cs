@@ -47,27 +47,32 @@ namespace Afx.Ioc
             {
                 result = true;
             }
-            else if (paramterTypes.Length == this.ParameterTypes.Length)
+            else if (paramterTypes != null && paramterTypes.Length == this.ParameterTypes.Length)
             {
-                result = true;
+                int count = 0;
                 for (int i = 0; i < this.ParameterTypes.Length; i++)
                 {
                     var ct = this.ParameterTypes[i];
                     var it = paramterTypes[i];
-                    if (ct != it && !ct.IsAssignableFrom(it))
+                    if (it == null) break;
+
+                    if (ct == it || ct.IsAssignableFrom(it))
                     {
-                        if (it.IsValueType && ct.IsValueType && ct.IsGenericType
-                            && ct.GetGenericTypeDefinition() == typeof(Nullable<>))
-                        {
-                            var gt = ct.GetGenericArguments()[0];
-                            if (gt != it)
-                            {
-                                result = false;
-                                break;
-                            }
-                        }
+                        count++;
+                    }
+                    else if (it.IsValueType && ct.IsValueType && ct.IsGenericType
+                         && ct.GetGenericTypeDefinition() == typeof(Nullable<>)
+                        && ct.GetGenericArguments()[0] == it)
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
+
+                result = count == this.ParameterTypes.Length;
             }
 
             return result;
@@ -80,11 +85,51 @@ namespace Afx.Ioc
         /// <returns>bool</returns>
         public bool IsMatch(object[] args)
         {
-            Type[] paramterTypes = new Type[args == null ? 0 : args.Length];
-            for (int i = 0; i < paramterTypes.Length; i++)
-                paramterTypes[i] = args[i].GetType();
+            bool result = false;
+            if ((args == null || args.Length == 0)
+                && this.ParameterTypes.Length == 0)
+            {
+                result = true;
+            }
+            else if(args != null && args.Length == this.ParameterTypes.Length)
+            {
+                int count = 0;
+                for (int i = 0; i < args.Length; i++)
+                {
+                    var it = args[i] == null ? null : args[i].GetType();
+                    var ct = this.ParameterTypes[i];
+                    if (it == null)
+                    {
+                        if (ct.IsClass || ct.IsValueType && ct.IsGenericType
+                            && ct.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            count++;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else if (ct == it || ct.IsAssignableFrom(it))
+                    {
+                        count++;
+                    }
+                    else if (it.IsValueType && ct.IsValueType && ct.IsGenericType
+                         && ct.GetGenericTypeDefinition() == typeof(Nullable<>)
+                        && ct.GetGenericArguments()[0] == it)
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
-            return this.IsMatch(paramterTypes);
+                result = count == this.ParameterTypes.Length;
+            }
+
+            return result;
         }
     }
 }

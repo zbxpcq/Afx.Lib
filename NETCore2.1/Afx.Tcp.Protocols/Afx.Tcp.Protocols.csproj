@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>jerrylai</Authors>
-    <Version>6.5.1.0</Version>
+    <Version>6.5.2.0</Version>
     <Company>mycsv.cn</Company>
     <Product>Afx.Tcp.Protocols for .NETCore2.1</Product>
     <Description>Afx.Tcp.Protocols for .NETCore2.1</Description>
@@ -41,7 +41,7 @@
     <Folder Include="Langue\Enum\zh-CN\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="protobuf-net" Version="2.3.17" />
+    <PackageReference Include="protobuf-net" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Afx.Sockets\Afx.Sockets.csproj" />

@@ -4,8 +4,8 @@
 
 *.user
 .vs
-/nupkg
 obj
 bin
 packages
 /Publish
+/nupkg

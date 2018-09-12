@@ -359,15 +359,27 @@ namespace Afx.Ioc
             return result;
         }
 
+#if DEBUG && NET452
+        public void SaveDynamicModule()
+        {
+            this.proxyGenerator.SaveDynamicModule();
+        }
+#endif
+
         private object Create(Type serviceType, object[] args, string name, object key)
         {
             object result = null;
+            if(serviceType.IsGenericType && serviceType.IsGenericTypeDefinition)
+            {
+                return result;
+            }
+
             ServiceContext serviceContext = null;
             bool isGenericType = false;
             using (this.rwLock.GetReadLock())
             {
                 if (!this.serviceDic.TryGetValue(serviceType, out serviceContext)
-                    && serviceType.IsGenericType && !serviceType.IsGenericTypeDefinition)
+                    && serviceType.IsGenericType)
                 {
                     this.serviceDic.TryGetValue(serviceType.GetGenericTypeDefinition(), out serviceContext);
                     isGenericType = true;
@@ -412,7 +424,11 @@ namespace Afx.Ioc
                                 if (ct.IsMatch(args))
                                 {
                                     result = this.OnCreateEvent(serviceType, objectContext, args)
-                                        ?? Activator.CreateInstance(targetInfo.TargetType, args);
+                                        ?? ((args == null || args.Length == 0)
+                                            ? Activator.CreateInstance(targetInfo.TargetType)
+                                            : Activator.CreateInstance(targetInfo.TargetType, args));
+
+                                    break;
                                 }
                             }
 
