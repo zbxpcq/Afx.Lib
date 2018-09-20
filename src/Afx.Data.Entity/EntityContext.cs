@@ -93,17 +93,14 @@ namespace Afx.Data.Entity
         /// <returns>Entity 事务</returns>
         public virtual EntityTransaction BeginTransaction()
         {
-            if (this.Database.CurrentTransaction == null)
+            if (this.IsTransaction)
             {
-                this.Database.BeginTransaction();
-                return new EntityTransaction(this);
-            }
-            else if (EntityTransaction.Current == null)
-            {
-                return new EntityTransaction(this);
+                throw new InvalidOperationException("不能重复开启事务！");
             }
 
-            return EntityTransaction.Current;
+            this.saveChangeCount = 0;
+            this.Database.BeginTransaction();
+            return new EntityTransaction(this);
         }
 
         /// <summary>
@@ -113,19 +110,17 @@ namespace Afx.Data.Entity
         /// <returns>Entity 事务</returns>
         public virtual EntityTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            if (this.Database.CurrentTransaction == null)
+            if (this.IsTransaction)
             {
-                this.Database.BeginTransaction(isolationLevel);
-                return new EntityTransaction(this);
-            }
-            else if (EntityTransaction.Current == null)
-            {
-                return new EntityTransaction(this);
+                throw new InvalidOperationException("不能重复开启事务！");
             }
 
-            return EntityTransaction.Current;
+            this.saveChangeCount = 0;
+            this.Database.BeginTransaction(isolationLevel);
+            return new EntityTransaction(this);
         }
 
+        private int saveChangeCount = 0;
         /// <summary>
         /// 提交事务
         /// </summary>
@@ -149,6 +144,7 @@ namespace Afx.Data.Entity
             {
                 this.Database.CurrentTransaction.Rollback();
             }
+            this.ClearCommitCallback();
         }
 
         private bool isDisposed = false;
@@ -221,11 +217,11 @@ namespace Afx.Data.Entity
             return this.Database.ExecuteSqlCommandAsync(sql, parameters.ToArray());
         }
 #endif
-        private List<Action> commitCallbackList = new List<Action>();
+        private List<Action<int>> commitCallbackList = new List<Action<int>>();
         /// <summary>
         ///  commit or SaveChanges 成功之后执行action list
         /// </summary>
-        public List<Action> CommitCallbackList => this.commitCallbackList;
+        public List<Action<int>> CommitCallbackList => this.commitCallbackList;
         /// <summary>
         /// CommitCallback throw Exception Action
         /// </summary>
@@ -236,7 +232,7 @@ namespace Afx.Data.Entity
         /// </summary>
         /// <param name="action">需要执行的action</param>
         /// <returns>添加成功，返回所在的位置</returns>
-        public virtual int AddCommitCallback(Action action)
+        public virtual int AddCommitCallback(Action<int> action)
         {
             if (action == null) throw new ArgumentNullException("action");
             int index = this.CommitCallbackList.IndexOf(action);
@@ -255,7 +251,7 @@ namespace Afx.Data.Entity
         /// </summary>
         /// <param name="action">需要执行的action</param>
         /// <returns>移除成功返回true</returns>
-        public virtual bool RemoveCommitCallback(Action action)
+        public virtual bool RemoveCommitCallback(Action<int> action)
         {
             bool result = false;
             if (action == null) throw new ArgumentNullException("action");
@@ -269,6 +265,7 @@ namespace Afx.Data.Entity
         /// </summary>
         public virtual void ClearCommitCallback()
         {
+            this.saveChangeCount = 0;
             this.CommitCallbackList.Clear();
         }
 
@@ -276,13 +273,13 @@ namespace Afx.Data.Entity
         {
             foreach (var action in this.CommitCallbackList)
             {
-                try { action(); }
+                try { action(this.saveChangeCount); }
                 catch (Exception ex)
                 {
                     CommitCallbackError?.Invoke(ex);
                 }
             }
-            this.CommitCallbackList.Clear();
+            this.ClearCommitCallback();
         }
 
 #if NETCOREAPP || NETSTANDARD
@@ -296,7 +293,12 @@ namespace Afx.Data.Entity
             int count = base.SaveChanges(acceptAllChangesOnSuccess);
             if (!this.IsTransaction)
             {
+                this.saveChangeCount = count;
                 this.OnCommitCallback();
+            }
+            else
+            {
+                this.saveChangeCount += count;
             }
 
             return count;
@@ -313,7 +315,12 @@ namespace Afx.Data.Entity
             int count = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
             if (!this.IsTransaction)
             {
+                this.saveChangeCount = count;
                 this.OnCommitCallback();
+            }
+            else
+            {
+                this.saveChangeCount += count;
             }
 
             return count;
@@ -341,7 +348,12 @@ namespace Afx.Data.Entity
             int count = base.SaveChanges();
             if (!this.IsTransaction)
             {
+                this.saveChangeCount = count;
                 this.OnCommitCallback();
+            }
+            else
+            {
+                this.saveChangeCount += count;
             }
 
             return count;
@@ -357,7 +369,12 @@ namespace Afx.Data.Entity
             int count = await base.SaveChangesAsync(cancellationToken);
             if (!this.IsTransaction)
             {
+                this.saveChangeCount = count;
                 this.OnCommitCallback();
+            }
+            else
+            {
+                this.saveChangeCount += count;
             }
 
             return count;

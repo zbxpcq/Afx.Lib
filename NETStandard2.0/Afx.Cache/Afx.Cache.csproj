@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>6.5.4.0</Version>
+    <Version>6.5.5.0</Version>
     <Description>Afx.Cache for .NET Standard 2.0</Description>
     <Company>mycsv.cn</Company>
     <Copyright>Copyright © mycsv 2018</Copyright>
@@ -31,6 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="StackExchange.Redis" Version="2.0.495" />
+    <PackageReference Include="StackExchange.Redis" Version="2.0.505" />
   </ItemGroup>
 </Project>
