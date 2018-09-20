@@ -458,46 +458,32 @@ namespace Afx.Data.SQLite.Entity.Schema
         static SQLiteTableSchema()
         {
             dic.Add(typeof(int), "integer");
-            dic.Add(typeof(int?), "integer");
 
             dic.Add(typeof(IntPtr), "integer");
-            dic.Add(typeof(IntPtr?), "integer");
 
             dic.Add(typeof(long), "bigint");
-            dic.Add(typeof(long?), "bigint");
 
             dic.Add(typeof(bool), "boolean");
-            dic.Add(typeof(bool?), "boolean");
 
             dic.Add(typeof(short), "smallint");
-            dic.Add(typeof(short?), "smallint");
 
             dic.Add(typeof(char), "nchar(1)");
-            dic.Add(typeof(char?), "nchar(1)");
             dic.Add(typeof(char[]), "nchar({0})");
 
             dic.Add(typeof(byte), "tinyint");
-            dic.Add(typeof(byte?), "tinyint");
 
             dic.Add(typeof(decimal), "decimal({0},{1})");
-            dic.Add(typeof(decimal?), "decimal({0},{1})");
 
             dic.Add(typeof(float), "float");
-            dic.Add(typeof(float?), "float");
 
             dic.Add(typeof(double), "double");
-            dic.Add(typeof(double?), "double");
 
             dic.Add(typeof(DateTime), "varchar(30)");
-            dic.Add(typeof(DateTime?), "varchar(30)");
             dic.Add(typeof(DateTimeOffset), "varchar(30)");
-            dic.Add(typeof(DateTimeOffset?), "varchar(30)");
 
             dic.Add(typeof(TimeSpan), "varchar(30)");
-            dic.Add(typeof(TimeSpan?), "varchar(30)");
 
             dic.Add(typeof(Guid), "varchar(40)");
-            dic.Add(typeof(Guid?), "varchar(40)");
 
             dic.Add(typeof(string), "nvarchar({0})");
 

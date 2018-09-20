@@ -212,17 +212,23 @@ namespace Afx.Data.Entity.Schema
         {
             if (property == null) throw new ArgumentNullException("property");
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
-            ColumnInfoModel m = null;
+            ColumnInfoModel m = new ColumnInfoModel();
+            m.Name = property.Name;
             int maxlength = 0;
             int minlength = 0;
             GetColumnInLength(property, out maxlength, out minlength);
-            string dataType = this.GetColumnType(property.PropertyType, maxlength, minlength);
+            Type propertyType = property.PropertyType;
+            m.IsNullable = false;
+            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                m.IsNullable = true;
+                propertyType = propertyType.GetGenericArguments()[0];
+            }
+            string dataType = this.GetColumnType(propertyType, maxlength, minlength);
             if (string.IsNullOrEmpty(dataType))
             {
                 throw new Exception("未找到" + property.PropertyType.FullName + "对应的数据库类型!");
             }
-            m = new ColumnInfoModel();
-            m.Name = property.Name;
             m.DataType = dataType;
             m.MaxLength = maxlength;
             m.MinLength = minlength;
@@ -235,45 +241,51 @@ namespace Afx.Data.Entity.Schema
             }
 
             m.IsAutoIncrement = false;
-            atts = property.GetCustomAttributes(typeof(DatabaseGeneratedAttribute), false);
-            if (atts != null && atts.Length > 0)
+            if (propertyType == typeof(int) || propertyType == typeof(uint)
+                || propertyType == typeof(long) || propertyType == typeof(ulong))
             {
-                var att = atts[0] as DatabaseGeneratedAttribute;
-                if (att.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity)
-                    m.IsAutoIncrement = true;
+                atts = property.GetCustomAttributes(typeof(DatabaseGeneratedAttribute), false);
+                if (atts != null && atts.Length > 0)
+                {
+                    var att = atts[0] as DatabaseGeneratedAttribute;
+                    if (att.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity)
+                        m.IsAutoIncrement = true;
+                }
             }
 
             m.IsKey = false;
-            m.IsNullable = true;
             atts = property.GetCustomAttributes(typeof(KeyAttribute), false);
             if (atts != null && atts.Length > 0)
             {
                 m.IsKey = true;
-                m.IsNullable = false;
             }
             else
             {
-                atts = property.GetCustomAttributes(typeof(RequiredAttribute), false);
+                if (!propertyType.IsValueType)
+                {
+                    m.IsNullable = true;
+                    atts = property.GetCustomAttributes(typeof(RequiredAttribute), false);
+                    if (atts != null && atts.Length > 0)
+                    {
+                        m.IsNullable = false;
+                    }
+                }
+
+                atts = property.GetCustomAttributes(typeof(IndexAttribute), false);
                 if (atts != null && atts.Length > 0)
                 {
-                    m.IsNullable = false;
-                }
-            }
-
-            atts = property.GetCustomAttributes(typeof(IndexAttribute), false);
-            if (atts != null && atts.Length > 0)
-            {
-                m.Indexs = new List<IndexModel>(atts.Length);
-                foreach (var o in atts)
-                {
-                    var att = o as IndexAttribute;
-                    var index = new IndexModel();
-                    index.ColumnName = m.Name;
-                    index.IsUnique = att.IsUnique;
-                    if (!string.IsNullOrEmpty(att.Name))
-                        index.Name = att.Name;
-                    else
-                        m.Name = string.Format("IX_{0}_{1}", table, m.Name);
+                    m.Indexs = new List<IndexModel>(atts.Length);
+                    foreach (var o in atts)
+                    {
+                        var att = o as IndexAttribute;
+                        var index = new IndexModel();
+                        index.ColumnName = m.Name;
+                        index.IsUnique = att.IsUnique;
+                        if (!string.IsNullOrEmpty(att.Name))
+                            index.Name = att.Name;
+                        else
+                            m.Name = string.Format("IX_{0}_{1}", table, m.Name);
+                    }
                 }
             }
 

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Afx.Base</RootNamespace>
-    <Version>6.5.3.0</Version>
+    <Version>6.5.4.0</Version>
     <PackageTags>Afx.Base AOP IOC MAP Utils Afx</PackageTags>
     <Authors>jerrylai@aliyun.com</Authors>
     <Description>Afx.Base AOP IOC MAP Utils</Description>

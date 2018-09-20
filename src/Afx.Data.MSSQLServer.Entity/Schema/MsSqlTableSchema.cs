@@ -417,48 +417,34 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
         static MsSqlTableSchema()
         {
             dic.Add(typeof(int), "int");
-            dic.Add(typeof(int?), "int");
 
             dic.Add(typeof(IntPtr), "int");
-            dic.Add(typeof(IntPtr?), "int");
 
             dic.Add(typeof(long), "bigint");
-            dic.Add(typeof(long?), "bigint");
 
             dic.Add(typeof(bool), "bit");
-            dic.Add(typeof(bool?), "bit");
 
             dic.Add(typeof(short), "smallint");
-            dic.Add(typeof(short?), "smallint");
 
             dic.Add(typeof(char), "nchar(1)");
-            dic.Add(typeof(char?), "nchar(1)");
 
             dic.Add(typeof(char[]), "nchar({0})");
             
             dic.Add(typeof(byte), "tinyint");
-            dic.Add(typeof(byte?), "tinyint");
 
             dic.Add(typeof(decimal), "decimal({0},{1})");
-            dic.Add(typeof(decimal?), "decimal({0},{1})");
 
             dic.Add(typeof(float), "real");
-            dic.Add(typeof(float?), "real");
 
             dic.Add(typeof(double), "float");
-            dic.Add(typeof(double?), "float");
 
             dic.Add(typeof(DateTime), "datetime");
-            dic.Add(typeof(DateTime?), "datetime");
 
             dic.Add(typeof(DateTimeOffset), "datetimeoffset(7)");
-            dic.Add(typeof(DateTimeOffset?), "datetimeoffset(7)");
 
             dic.Add(typeof(TimeSpan),  "timestamp");
-            dic.Add(typeof(TimeSpan?), "timestamp");
             
             dic.Add(typeof(Guid), "Uniqueidentifier");
-            dic.Add(typeof(Guid?), "Uniqueidentifier");
 
             dic.Add(typeof(string), "nvarchar({0})");
 

@@ -410,46 +410,32 @@ namespace Afx.Data.MySql.Entity.Schema
         static MySqlTableSchema()
         {
             dic.Add(typeof(int), "int");
-            dic.Add(typeof(int?), "int");
 
             dic.Add(typeof(IntPtr), "int");
-            dic.Add(typeof(IntPtr?), "int");
 
             dic.Add(typeof(long), "bigint");
-            dic.Add(typeof(long?), "bigint");
 
             dic.Add(typeof(bool), "bool");
-            dic.Add(typeof(bool?), "bool");
 
             dic.Add(typeof(short), "smallint");
-            dic.Add(typeof(short?), "smallint");
 
             dic.Add(typeof(char), "char(1)");
-            dic.Add(typeof(char?), "char(1)");
             dic.Add(typeof(char[]), "char({0})");
 
             dic.Add(typeof(byte), "tinyint");
-            dic.Add(typeof(byte?), "tinyint");
 
             dic.Add(typeof(decimal), "decimal({0},{1})");
-            dic.Add(typeof(decimal?), "decimal({0},{1})");
 
             dic.Add(typeof(float), "float");
-            dic.Add(typeof(float?), "float");
 
             dic.Add(typeof(double), "double");
-            dic.Add(typeof(double?), "double");
 
             dic.Add(typeof(DateTime), "datetime");
-            dic.Add(typeof(DateTime?), "datetime");
             dic.Add(typeof(DateTimeOffset), "datetime");
-            dic.Add(typeof(DateTimeOffset?), "datetime");
 
             dic.Add(typeof(TimeSpan),  "timestamp");
-            dic.Add(typeof(TimeSpan?), "timestamp");
 
             dic.Add(typeof(Guid), "varchar(40)");
-            dic.Add(typeof(Guid?), "varchar(40)");
 
             dic.Add(typeof(string), "varchar({0})");
 

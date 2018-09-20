@@ -35,19 +35,6 @@ namespace Afx.Utils
         }
 
         /// <summary>
-        /// GetDisplayName
-        /// </summary>
-        /// <param name="enum"></param>
-        /// <param name="langue"></param>
-        /// <param name="directory"></param>
-        /// <returns></returns>
-        public static string GetDisplayName(this Enum @enum, string langue = null, string directory = null)
-        {
-            var m = GetInfo(@enum, langue, directory);
-
-            return m != null ? m.DisplayName : @enum.GetName();
-        }
-        /// <summary>
         /// GetDescription
         /// </summary>
         /// <param name="enum"></param>
@@ -64,15 +51,12 @@ namespace Afx.Utils
         class EnumInfoModel
         {
             public string Name { get; private set; }
-
-            public string DisplayName { get; private set; }
-
+            
             public string Description { get; private set; }
 
-            public EnumInfoModel(string name, string displayName, string description)
+            public EnumInfoModel(string name, string description)
             {
                 this.Name = name;
-                this.DisplayName = displayName;
                 this.Description = description;
             }
         }
@@ -112,25 +96,16 @@ namespace Afx.Utils
             var rootElement = doc.DocumentElement;
             foreach (var s in names)
             {
-                string displayName = null;
                 string description = null;
                 if (rootElement != null)
                 {
                     var node = rootElement[s];
                     if (node != null)
                     {
-                        displayName = node.GetAttribute("displayName");
                         description = node.GetAttribute("description");
                     }
                 }
-
-                if (string.IsNullOrEmpty(displayName))
-                {
-                    var att = (DisplayNameAttribute)Attribute.GetCustomAttribute(type.GetField(s), typeof(DisplayNameAttribute), false);
-                    if (att != null) displayName = att.DisplayName;
-                    if (string.IsNullOrEmpty(displayName)) displayName = s;
-                }
-
+                
                 if (string.IsNullOrEmpty(description))
                 {
                     var att = (DescriptionAttribute)Attribute.GetCustomAttribute(type.GetField(s), typeof(DescriptionAttribute), false);
@@ -138,7 +113,7 @@ namespace Afx.Utils
                     if (string.IsNullOrEmpty(description)) description = s;
                 }
 
-                list.Add(new EnumInfoModel(s, displayName, description));
+                list.Add(new EnumInfoModel(s, description));
             }
 
             return list;
