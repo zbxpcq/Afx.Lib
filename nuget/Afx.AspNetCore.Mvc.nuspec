@@ -12,7 +12,7 @@
     <tags>Afx.AspNetCore.Mvc SID Afx</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp2.1">
-        <dependency id="Microsoft.AspNetCore.App" version="2.1.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.App" version="2.1.5" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

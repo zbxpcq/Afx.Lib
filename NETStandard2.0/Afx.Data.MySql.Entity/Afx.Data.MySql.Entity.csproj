@@ -29,7 +29,7 @@
     <Folder Include="Schema\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MySqlConnector" Version="0.44.1" />
+    <PackageReference Include="MySqlConnector" Version="0.46.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
   </ItemGroup>
   <ItemGroup>

@@ -26,13 +26,13 @@
       <group targetFramework=".NETCoreApp2.1">
         <dependency id="Afx.Data.Entity" version="6.5.5.0" exclude="Build,Analyzers" />
         <dependency id="Afx.Data" version="6.5.5.0" exclude="Build,Analyzers" />
-        <dependency id="MySqlConnector" version="0.44.1" exclude="Build,Analyzers" />
+        <dependency id="MySqlConnector" version="0.46.2" exclude="Build,Analyzers" />
         <dependency id="Pomelo.EntityFrameworkCore.MySql" version="2.1.2" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Afx.Data.Entity" version="6.5.5.0" exclude="Build,Analyzers" />
         <dependency id="Afx.Data" version="6.5.5.0" exclude="Build,Analyzers" />
-        <dependency id="MySqlConnector" version="0.44.1" exclude="Build,Analyzers" />
+        <dependency id="MySqlConnector" version="0.46.2" exclude="Build,Analyzers" />
         <dependency id="Pomelo.EntityFrameworkCore.MySql" version="2.1.2" exclude="Build,Analyzers" />
       </group>
     </dependencies>
