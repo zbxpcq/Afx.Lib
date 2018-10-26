@@ -27,27 +27,6 @@ namespace Afx.AspNetCore.Mvc
             this.next = next;
         }
 
-        private string OnEncryptSid(string value)
-        {
-            string s = value;
-            if (this.option.EncryptSid != null && !string.IsNullOrEmpty(value))
-            {
-                s = this.option.EncryptSid(value);
-            }
-
-            return s;
-        }
-
-        private string OnDecryptSid(string value)
-        {
-            string s = value;
-            if (this.option.DecryptSid != null && !string.IsNullOrEmpty(value))
-            {
-                s = this.option.DecryptSid(value);
-            }
-
-            return s;
-        }
         /// <summary>
         /// Invoke
         /// </summary>
@@ -63,7 +42,7 @@ namespace Afx.AspNetCore.Mvc
                 Microsoft.Extensions.Primitives.StringValues v;
                 if (context.Request.Headers.TryGetValue(this.option.Name, out v) && v.Count > 0)
                 {
-                    sid = this.OnDecryptSid(v.FirstOrDefault());
+                    sid = v.FirstOrDefault();
                 }
             }
 
@@ -72,49 +51,56 @@ namespace Afx.AspNetCore.Mvc
                 Microsoft.Extensions.Primitives.StringValues v;
                 if (context.Request.Headers.TryGetValue(this.option.Name, out v) && v.Count > 0)
                 {
-                    sid = this.OnDecryptSid(v.FirstOrDefault());
+                    sid = v.FirstOrDefault();
                 }
             }
 
             if (string.IsNullOrEmpty(sid) && this.option.IsCookie)
             {
-                string s = null;
-                if (context.Request.Cookies.TryGetValue(this.option.Name, out s))
-                {
-                    sid = this.OnDecryptSid(s);
-                }
+                context.Request.Cookies.TryGetValue(this.option.Name, out sid);
             }
 
-            if (string.IsNullOrEmpty(sid)) sid = Guid.NewGuid().ToString("n");
+            if (string.IsNullOrEmpty(sid))
+            {
+                sid = Guid.NewGuid().ToString("n");
+                context.Items["__CREATE_SID"] = true;
+            }
+            else
+            {
+                context.Items["__CREATE_SID"] = false;
+            }
 
             context.Items[this.option.Name] = sid;
-
-            this.option.RequestSidCallback?.Invoke(sid);
-
+            
             context.Response.OnStarting((o) =>
             {
-                var oldsid = o as string;
-                var newsid = oldsid;
-                if (this.option.ResponseSidCallback != null) newsid = this.option.ResponseSidCallback(oldsid);
-
-                if (oldsid != newsid && !string.IsNullOrEmpty(newsid))
+                var cont = o as HttpContext;
+                if (cont != null)
                 {
-                    var s = this.OnEncryptSid(newsid);
-                    if (this.option.IsCookie)
+                    bool iswr = false;
+                    var co = cont.Items["__CREATE_SID"];
+                    if (co is bool) iswr = (bool)co;
+                    if (iswr)
                     {
-                        context.Response.Cookies.Append(this.option.Name, s, this.option.Cookie);
-                    }
+                        var newsid = cont.Items[this.option.Name] as string;
+                        if (!string.IsNullOrEmpty(newsid))
+                        {
+                            if (this.option.IsCookie)
+                            {
+                                cont.Response.Cookies.Append(this.option.Name, newsid, this.option.Cookie);
+                            }
 
-                    if (this.option.IsHeader)
-                    {
-                        context.Request.Headers.Add(this.option.Name, s);
+                            if (this.option.IsHeader)
+                            {
+                                cont.Request.Headers.Add(this.option.Name, newsid);
+                            }
+                        }
                     }
+                    this.option.EndRequestCallback?.Invoke(cont);
                 }
 
-                this.option.EndRequestCallback?.Invoke(context);
-
                 return Task.CompletedTask;
-            }, sid);
+            }, context);
 
             return this.next.Invoke(context);
         }

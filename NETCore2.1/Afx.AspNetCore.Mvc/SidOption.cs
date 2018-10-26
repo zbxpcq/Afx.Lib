@@ -12,16 +12,6 @@ namespace Afx.AspNetCore.Mvc
     public class SidOption
     {
         /// <summary>
-        /// sid 请求回调
-        /// </summary>
-        public RequestSidCallback RequestSidCallback;
-
-        /// <summary>
-        /// sid请求结束回调
-        /// </summary>
-        public ResponseSidCallback ResponseSidCallback;
-
-        /// <summary>
         /// 请求回调
         /// </summary>
         public BeginRequestCallback BeginRequestCallback;
@@ -45,15 +35,6 @@ namespace Afx.AspNetCore.Mvc
         /// sid 是否存在IsCookie  (level 3)
         /// </summary>
         public bool IsCookie { get; set; } = true;
-
-        /// <summary>
-        /// sid 加密回调
-        /// </summary>
-        public Func<string, string> EncryptSid;
-        /// <summary>
-        /// sid解密回调
-        /// </summary>
-        public Func<string, string> DecryptSid;
 
         private string name = "sid";
         /// <summary>
