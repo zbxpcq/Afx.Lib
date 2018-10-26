@@ -53,7 +53,7 @@ namespace Afx.AspNetCore.Mvc
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public async Task Invoke(HttpContext context)
+        public Task Invoke(HttpContext context)
         {
             this.option.BeginRequestCallback?.Invoke(context);
 
@@ -85,6 +85,10 @@ namespace Afx.AspNetCore.Mvc
                 }
             }
 
+            if (string.IsNullOrEmpty(sid)) sid = Guid.NewGuid().ToString("n");
+
+            context.Items[this.option.Name] = sid;
+
             this.option.RequestSidCallback?.Invoke(sid);
 
             context.Response.OnStarting((o) =>
@@ -112,7 +116,7 @@ namespace Afx.AspNetCore.Mvc
                 return Task.CompletedTask;
             }, sid);
 
-            await this.next.Invoke(context);
+            return this.next.Invoke(context);
         }
     }
 }
