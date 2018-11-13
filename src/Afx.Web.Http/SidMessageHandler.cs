@@ -107,6 +107,35 @@ namespace Afx.Web.Http
         /// 
         /// </summary>
         public EndRequestCallback EndRequestCallback;
+
+        public Func<string, string> EncryptCallback;
+
+        public Func<string, string> DecryptCallback;
+
+        private string OnEncrypt(string val)
+        {
+            string result = val;
+            if(!string.IsNullOrEmpty(val) && this.EncryptCallback != null)
+            {
+                try { result = this.EncryptCallback(val); }
+                catch { }
+            }
+
+            return result;
+        }
+
+        private string OnDecrypt(string val)
+        {
+            string result = null;
+            if (!string.IsNullOrEmpty(val) && this.DecryptCallback != null)
+            {
+                try { result = this.DecryptCallback(val); }
+                catch { }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -141,6 +170,11 @@ namespace Afx.Web.Http
                 }
             }
 
+            if(!string.IsNullOrEmpty(sid))
+            {
+                sid = this.OnDecrypt(sid);
+            }
+
             var iscreate = false;
             if(string.IsNullOrEmpty(sid))
             {
@@ -150,11 +184,13 @@ namespace Afx.Web.Http
 
             this.BeginRequestCallback?.Invoke(request, sid);
 
+
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
             var newSid = this.EndRequestCallback?.Invoke(request, response, sid) ?? sid;
 
             if (!string.IsNullOrEmpty(newSid) && (sid != newSid || iscreate))
             {
+                newSid = this.OnEncrypt(newSid);
                 if (this.IsCookie)
                 {
                     response.Headers.AddCookies(new CookieHeaderValue[]

@@ -15,7 +15,6 @@ namespace Afx.AspNetCore.Mvc
     {
         private SidOption option;
         private RequestDelegate next;
-        private const string CREATE_SID_FLAG = "__CREATE_SID";
         /// <summary>
         /// SidMiddleware
         /// </summary>
@@ -26,6 +25,30 @@ namespace Afx.AspNetCore.Mvc
             if (option == null) throw new ArgumentNullException("option");
             this.option = option;
             this.next = next;
+        }
+
+        private string OnEncrypt(string val)
+        {
+            string result = val;
+            if (!string.IsNullOrEmpty(val) && this.option.EncryptCallback != null)
+            {
+                try { result = this.option.EncryptCallback(val); }
+                catch { }
+            }
+
+            return result;
+        }
+
+        private string OnDecrypt(string val)
+        {
+            string result = null;
+            if (!string.IsNullOrEmpty(val) && this.option.DecryptCallback != null)
+            {
+                try { result = this.option.DecryptCallback(val); }
+                catch { }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -59,14 +82,16 @@ namespace Afx.AspNetCore.Mvc
                 context.Request.Cookies.TryGetValue(this.option.Name, out sid);
             }
 
+            if(!string.IsNullOrEmpty(sid))
+            {
+                sid = this.OnDecrypt(sid);
+            }
+
+            bool iscreate = false;
             if (string.IsNullOrEmpty(sid))
             {
                 sid = Guid.NewGuid().ToString("n");
-                context.Items[CREATE_SID_FLAG] = true;
-            }
-            else
-            {
-                context.Items[CREATE_SID_FLAG] = false;
+                iscreate = true;
             }
 
             context.Items[this.option.Name] = sid;
@@ -75,30 +100,25 @@ namespace Afx.AspNetCore.Mvc
 
             context.Response.OnStarting((o) =>
             {
-                var cont = o as HttpContext;
-                if (cont != null)
+                var vt = ((HttpContext, string, bool))o;
+                var oldsid = vt.Item2;
+                var newsid = this.option.EndRequestCallback?.Invoke(vt.Item1, oldsid) ?? oldsid;
+                if (!string.IsNullOrEmpty(newsid) && (oldsid != newsid || vt.Item3))
                 {
-                    var oldsid = cont.Items[this.option.Name] as string;
-                    var newsid = this.option.EndRequestCallback?.Invoke(cont, oldsid) ?? oldsid;
-                    var ov = context.Items[CREATE_SID_FLAG];
-                    bool iscreate = true;
-                    if (ov != null && ov is bool) iscreate = (bool)ov;
-                    if (!string.IsNullOrEmpty(newsid) && (oldsid != newsid || iscreate))
+                    newsid = this.OnEncrypt(newsid);
+                    if (this.option.IsCookie)
                     {
-                        if (this.option.IsCookie)
-                        {
-                            cont.Response.Cookies.Append(this.option.Name, newsid, this.option.Cookie);
-                        }
+                        vt.Item1.Response.Cookies.Append(this.option.Name, newsid, this.option.Cookie);
+                    }
 
-                        if (this.option.IsHeader)
-                        {
-                            cont.Request.Headers.Add(this.option.Name, newsid);
-                        }
+                    if (this.option.IsHeader)
+                    {
+                        vt.Item1.Request.Headers.Add(this.option.Name, newsid);
                     }
                 }
 
                 return Task.CompletedTask;
-            }, context);
+            }, (context, sid, iscreate));
 
             return this.next.Invoke(context);
         }

@@ -21,6 +21,10 @@ namespace Afx.AspNetCore.Mvc
         /// </summary>
         public EndRequestCallback EndRequestCallback;
 
+        public Func<string, string> EncryptCallback;
+
+        public Func<string, string> DecryptCallback;
+
         /// <summary>
         /// sid 是否存在 IsQueryString (level 1)
         /// </summary>
