@@ -15,6 +15,7 @@ namespace Afx.AspNetCore.Mvc
     {
         private SidOption option;
         private RequestDelegate next;
+        private const string CREATE_SID_FLAG = "__CREATE_SID";
         /// <summary>
         /// SidMiddleware
         /// </summary>
@@ -34,8 +35,6 @@ namespace Afx.AspNetCore.Mvc
         /// <returns></returns>
         public Task Invoke(HttpContext context)
         {
-            this.option.BeginRequestCallback?.Invoke(context);
-
             string sid = null;
             if (this.option.IsQueryString)
             {
@@ -63,40 +62,39 @@ namespace Afx.AspNetCore.Mvc
             if (string.IsNullOrEmpty(sid))
             {
                 sid = Guid.NewGuid().ToString("n");
-                context.Items["__CREATE_SID"] = true;
+                context.Items[CREATE_SID_FLAG] = true;
             }
             else
             {
-                context.Items["__CREATE_SID"] = false;
+                context.Items[CREATE_SID_FLAG] = false;
             }
 
             context.Items[this.option.Name] = sid;
-            
+
+            this.option.BeginRequestCallback?.Invoke(context, sid);
+
             context.Response.OnStarting((o) =>
             {
                 var cont = o as HttpContext;
                 if (cont != null)
                 {
-                    bool iswr = false;
-                    var co = cont.Items["__CREATE_SID"];
-                    if (co is bool) iswr = (bool)co;
-                    if (iswr)
+                    var oldsid = cont.Items[this.option.Name] as string;
+                    var newsid = this.option.EndRequestCallback?.Invoke(cont, oldsid) ?? oldsid;
+                    var ov = context.Items[CREATE_SID_FLAG];
+                    bool iscreate = true;
+                    if (ov != null && ov is bool) iscreate = (bool)ov;
+                    if (!string.IsNullOrEmpty(newsid) && (oldsid != newsid || iscreate))
                     {
-                        var newsid = cont.Items[this.option.Name] as string;
-                        if (!string.IsNullOrEmpty(newsid))
+                        if (this.option.IsCookie)
                         {
-                            if (this.option.IsCookie)
-                            {
-                                cont.Response.Cookies.Append(this.option.Name, newsid, this.option.Cookie);
-                            }
+                            cont.Response.Cookies.Append(this.option.Name, newsid, this.option.Cookie);
+                        }
 
-                            if (this.option.IsHeader)
-                            {
-                                cont.Request.Headers.Add(this.option.Name, newsid);
-                            }
+                        if (this.option.IsHeader)
+                        {
+                            cont.Request.Headers.Add(this.option.Name, newsid);
                         }
                     }
-                    this.option.EndRequestCallback?.Invoke(cont);
                 }
 
                 return Task.CompletedTask;

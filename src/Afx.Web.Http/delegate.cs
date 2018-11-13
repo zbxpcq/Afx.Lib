@@ -12,23 +12,12 @@ namespace Afx.Web.Http
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="sid"></param>
-    public delegate void RequestSidCallback(string sid);
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="sid"></param>
-    /// <returns></returns>
-    public delegate string ResponseSidCallback(string sid);
-    /// <summary>
-    /// 
-    /// </summary>
     /// <param name="request"></param>
-    public delegate void BeginRequestCallback(HttpRequestMessage request);
+    public delegate void BeginRequestCallback(HttpRequestMessage request, string sid);
     /// <summary>
     /// 
     /// </summary>
     /// <param name="request"></param>
     /// <param name="response"></param>
-    public delegate void EndRequestCallback(HttpRequestMessage request, HttpResponseMessage response);
+    public delegate string EndRequestCallback(HttpRequestMessage request, HttpResponseMessage response, string sid);
 }

@@ -79,6 +79,8 @@ namespace Afx.HttpClient
         /// </summary>
         public X509CertificateCollection ClientCertificates {  get; private set; }
 
+        public Version ProtocolVersion { get; set; }
+
         private Dictionary<string, string> headersDic;
 
         private string _baseAddress = null;
@@ -241,8 +243,8 @@ namespace Afx.HttpClient
                 request.Headers.Add(HttpRequestHeader.AcceptLanguage, this.AcceptLanguage);
             if (!string.IsNullOrEmpty(this.AcceptCharset))
                 request.Headers.Add(HttpRequestHeader.AcceptCharset, this.AcceptCharset);
-
-            if(this.headersDic.Count > 0)
+            if(this.ProtocolVersion != null) request.ProtocolVersion = this.ProtocolVersion;
+            if (this.headersDic.Count > 0)
             {
                 foreach(var kv in this.headersDic)
                 {        
@@ -374,7 +376,7 @@ namespace Afx.HttpClient
         /// <param name="method"></param>
         /// <param name="formData"></param>
         /// <returns></returns>
-        public HtmlContent GetHtmlContent(string url, string method, FormData formData)
+        public HtmlContent GetHtmlContent(string url, string method, FormData formData, Encoding responseEncoding = null)
         {
             HtmlContent result = new HtmlContent();
             try
@@ -385,8 +387,8 @@ namespace Afx.HttpClient
                 {
                     using (var responseStream = this.GetResponseStream(response))
                     {
-                        Encoding encoding = Encoding.UTF8;
-                        if (response.CharacterSet != null)
+                        Encoding encoding = responseEncoding != null ? responseEncoding : Encoding.UTF8;
+                        if (responseEncoding == null && response.CharacterSet != null)
                         {
                             try { encoding = Encoding.GetEncoding(response.CharacterSet); }
                             catch { }
@@ -412,9 +414,9 @@ namespace Afx.HttpClient
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public HtmlContent Get(string url)
+        public HtmlContent Get(string url, Encoding responseEncoding = null)
         {
-            return this.GetHtmlContent(url, "GET", null);
+            return this.GetHtmlContent(url, "GET", null, responseEncoding);
         }
         /// <summary>
         /// post
@@ -422,18 +424,18 @@ namespace Afx.HttpClient
         /// <param name="url"></param>
         /// <param name="formData"></param>
         /// <returns></returns>
-        public HtmlContent Post(string url, FormData formData)
+        public HtmlContent Post(string url, FormData formData, Encoding responseEncoding = null)
         {
-            return this.GetHtmlContent(url, "POST", formData);
+            return this.GetHtmlContent(url, "POST", formData, responseEncoding);
         }
         /// <summary>
         /// delete
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public HtmlContent Delete(string url)
+        public HtmlContent Delete(string url, Encoding responseEncoding = null)
         {
-            return this.GetHtmlContent(url, "DELETE", null);
+            return this.GetHtmlContent(url, "DELETE", null, responseEncoding);
         }
         /// <summary>
         /// put
@@ -441,9 +443,9 @@ namespace Afx.HttpClient
         /// <param name="url"></param>
         /// <param name="formData"></param>
         /// <returns></returns>
-        public HtmlContent Put(string url, FormData formData)
+        public HtmlContent Put(string url, FormData formData, Encoding responseEncoding = null)
         {
-            return this.GetHtmlContent(url, "PUT", formData);
+            return this.GetHtmlContent(url, "PUT", formData, responseEncoding);
         }
         /// <summary>
         /// DownloadFile
@@ -507,7 +509,7 @@ namespace Afx.HttpClient
                                     this.OnProgressCall(call, length, position);
                                 }
                                 else if ((response.ContentLength == 0 || response.ContentLength > position)
-                                    && trycount < 3)
+                                    && trycount < 5)
                                 {
                                     System.Threading.Thread.Sleep(50);
                                     trycount++;
@@ -570,7 +572,7 @@ namespace Afx.HttpClient
                                     trycount = 0;
                                 }
                                 else if((response.ContentLength == 0 || response.ContentLength > position)
-                                    && trycount < 3)
+                                    && trycount < 5)
                                 {
                                     System.Threading.Thread.Sleep(50);
                                     trycount++;

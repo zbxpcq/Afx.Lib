@@ -102,52 +102,6 @@ namespace Afx.Web.Http
         /// <summary>
         /// 
         /// </summary>
-        public Func<string, string> EncryptSid;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private string OnEncryptSid(string value)
-        {
-            string s = value;
-            if (this.EncryptSid != null && !string.IsNullOrEmpty(value))
-            {
-                s = this.EncryptSid(value);
-            }
-
-            return s;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Func<string, string> DecryptSid;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private string OnDecryptSid(string value)
-        {
-            string s = value;
-            if (this.DecryptSid != null && !string.IsNullOrEmpty(value))
-            {
-                s = this.DecryptSid(value);
-            }
-
-            return s;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public RequestSidCallback RequestSidCallback;
-        /// <summary>
-        /// 
-        /// </summary>
-        public ResponseSidCallback ResponseSidCallback;
-        /// <summary>
-        /// 
-        /// </summary>
         public BeginRequestCallback BeginRequestCallback;
         /// <summary>
         /// 
@@ -162,13 +116,11 @@ namespace Afx.Web.Http
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            this.BeginRequestCallback?.Invoke(request);
-
             string sid = null;
             if(this.IsQueryString)
             {
                var queryString = request.RequestUri.ParseQueryString();
-                sid = this.OnDecryptSid(queryString?.GetValues(this.Name)?.FirstOrDefault());
+                sid = queryString?.GetValues(this.Name)?.FirstOrDefault();
             }
 
             if(this.IsHeader && string.IsNullOrEmpty(sid))
@@ -176,7 +128,7 @@ namespace Afx.Web.Http
                 IEnumerable<string> v = null;
                 if(request.Headers.TryGetValues(this.Name, out v))
                 {
-                    sid = this.OnDecryptSid(v?.FirstOrDefault());
+                    sid = v?.FirstOrDefault();
                 }
             }
 
@@ -185,44 +137,46 @@ namespace Afx.Web.Http
                 var cookie = request.Headers.GetCookies(Name).FirstOrDefault();
                 if (cookie != null)
                 {
-                    sid = this.OnDecryptSid(cookie[this.Name].Value);
+                    sid = cookie[this.Name].Value;
                 }
             }
-            
-            this.RequestSidCallback?.Invoke(sid);
+
+            var iscreate = false;
+            if(string.IsNullOrEmpty(sid))
+            {
+                sid = Guid.NewGuid().ToString("n");
+                iscreate = true;
+            }
+
+            this.BeginRequestCallback?.Invoke(request, sid);
 
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+            var newSid = this.EndRequestCallback?.Invoke(request, response, sid) ?? sid;
 
-            var newSid = sid;
-            if (this.ResponseSidCallback != null) newSid = this.ResponseSidCallback(sid);
-
-            if (sid != newSid && !string.IsNullOrEmpty(newSid))
+            if (!string.IsNullOrEmpty(newSid) && (sid != newSid || iscreate))
             {
-                var s = this.OnEncryptSid(newSid);
                 if (this.IsCookie)
                 {
                     response.Headers.AddCookies(new CookieHeaderValue[]
                     {
-                    new CookieHeaderValue(this.Name, s)
-                    {
-                        HttpOnly = this.CookieHttpOnly,
-                        Path = this.CookiePath,
-                        Domain = this.CookieDomain,
-                        Secure = this.CookieSecure,
-                        MaxAge = this.CookieMaxAge,
-                        Expires = this.CookieExpires
-                    }
+                        new CookieHeaderValue(this.Name, newSid)
+                        {
+                            HttpOnly = this.CookieHttpOnly,
+                            Path = this.CookiePath,
+                            Domain = this.CookieDomain,
+                            Secure = this.CookieSecure,
+                            MaxAge = this.CookieMaxAge,
+                            Expires = this.CookieExpires
+                        }
                     });
                 }
 
                 if(this.IsHeader)
                 {
-                    response.Headers.Add(this.Name, s);
+                    response.Headers.Add(this.Name, newSid);
                 }
             }
             
-            this.EndRequestCallback?.Invoke(request, response);
-
             return response;
         }
     }
