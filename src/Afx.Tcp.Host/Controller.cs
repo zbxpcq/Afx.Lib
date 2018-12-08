@@ -166,7 +166,7 @@ namespace  Afx.Tcp.Host
         /// </summary>
         /// <param name="error"></param>
         /// <returns></returns>
-        protected virtual ActionResult ParamError(string error)
+        protected virtual ActionResult Error(string error)
         {
             return this.Result(MsgStatus.Error, error);
         }
@@ -175,7 +175,7 @@ namespace  Afx.Tcp.Host
         /// ParamError
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult ParamError()
+        protected virtual ActionResult Error()
         {
             return this.Result(MsgStatus.Error, null);
         }

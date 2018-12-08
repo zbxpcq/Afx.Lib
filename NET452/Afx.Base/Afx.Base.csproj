@@ -181,8 +181,11 @@
     <Compile Include="..\..\src\Afx.Base\Threading\WriteLock.cs">
       <Link>Threading\WriteLock.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Afx.Base\Utils\DESUtils.cs">
-      <Link>Utils\DESUtils.cs</Link>
+    <Compile Include="..\..\src\Afx.Base\Utils\DesUtils.cs">
+      <Link>Utils\DesUtils.cs</Link>
+    </Compile>
+	<Compile Include="..\..\src\Afx.Base\Utils\TripleDesUtils.cs">
+      <Link>Utils\TripleDesUtils.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\HMACSha256Utils.cs">
       <Link>Utils\HMACSha256Utils.cs</Link>

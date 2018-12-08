@@ -7,14 +7,14 @@ using System.Text;
 namespace Afx.Utils
 {
     /// <summary>
-    /// DES 加密、解密
+    /// 3DES 加密、解密
     /// </summary>
-    public static class DesUtils
+    public static class TripleDesUtils
     {
         /// <summary>
-        /// 加密、解密默认 key
+        /// 加密、解密默认 key 24位
         /// </summary>
-        private const string DefaultKey = "cj9@i8+&";
+        private const string DefaultKey = "8fa1ad9983c64a4e8210ee6d";
         /// <summary>
         /// 加密、解密默认 CipherMode
         /// </summary>
@@ -25,12 +25,12 @@ namespace Afx.Utils
         public const PaddingMode DefaultPadding = PaddingMode.PKCS7;
 
         /// <summary>
-        /// 生成 8 个ASCII字符的 des key
+        /// 生成 24 个ASCII字符的 des key
         /// </summary>
-        /// <returns>8 个ASCII字符</returns>
+        /// <returns>24 个ASCII字符</returns>
         public static string CreateKey()
         {
-            return StringUtils.GetRandomString(8);
+            return StringUtils.GetRandomString(24);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Afx.Utils
         /// 加密 byte[]
         /// </summary>
         /// <param name="input">byte[]</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <returns>加密成功返回byte[]</returns>
         public static byte[] Encrypt(byte[] input, string key)
         {
@@ -68,8 +68,8 @@ namespace Afx.Utils
         /// 加密 byte[]
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="key">8 个ASCII字符 key</param>
-        /// <param name="iv">8 个ASCII字符 iv</param>
+        /// <param name="key">24个ASCII字符 key</param>
+        /// <param name="iv">8个ASCII字符 iv</param>
         /// <returns>加密成功返回byte[]</returns>
         public static byte[] Encrypt(byte[] input, string key, string iv)
         {
@@ -80,7 +80,7 @@ namespace Afx.Utils
         /// 加密 byte[]
         /// </summary>
         /// <param name="input">byte[]</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <param name="mode">指定用于加密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
         /// <returns>加密成功返回byte[]</returns>
@@ -93,8 +93,8 @@ namespace Afx.Utils
         /// 加密 byte[]
         /// </summary>
         /// <param name="input">byte[]</param>
-        /// <param name="key">8 个ASCII字符 key</param>
-        /// <param name="iv">8 个ASCII字符 iv</param>
+        /// <param name="key">24个ASCII字符 key</param>
+        /// <param name="iv">8个ASCII字符 iv</param>
         /// <param name="mode">指定用于加密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
         /// <returns>加密成功返回byte[]</returns>
@@ -102,7 +102,7 @@ namespace Afx.Utils
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
             byte[] keyBytes = Encoding.ASCII.GetBytes(key);
-            if (keyBytes.Length != 8) throw new ArgumentException("key.Length is error!", "key");
+            if (keyBytes.Length != 24) throw new ArgumentException("key.Length is error", "key");
             byte[] ivBytes = null;
             if (!string.IsNullOrEmpty(iv))
             {
@@ -112,7 +112,7 @@ namespace Afx.Utils
             byte[] output = null;
             if (input != null && input.Length > 0)
             {
-                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
                 {
                     des.Mode = mode;
                     des.Padding = padding;
@@ -122,7 +122,7 @@ namespace Afx.Utils
                     using (ICryptoTransform cryptoTransform = des.CreateEncryptor())
                     {
                         byte[] buffer = cryptoTransform.TransformFinalBlock(input, 0, input.Length);
-                        if(ivBytes == null)
+                        if (ivBytes == null)
                         {
                             output = new byte[buffer.Length + des.IV.Length];
                             Array.Copy(buffer, 0, output, 0, buffer.Length);
@@ -135,7 +135,7 @@ namespace Afx.Utils
                     }
                 }
             }
-            else if(input != null && input.Length == 0)
+            else if (input != null && input.Length == 0)
             {
                 output = new byte[0];
             }
@@ -157,7 +157,7 @@ namespace Afx.Utils
         /// 解密 byte[]
         /// </summary>
         /// <param name="input">byte[]</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <returns>解密成功返回byte[]</returns>
         public static byte[] Decrypt(byte[] input, string key)
         {
@@ -192,8 +192,8 @@ namespace Afx.Utils
         /// 解密 byte[]
         /// </summary>
         /// <param name="input">byte[]</param>
-        /// <param name="key">8 个ASCII字符 key</param>
-        /// <param name="iv">8 个ASCII字符 iv</param>
+        /// <param name="key">24个ASCII字符 key</param>
+        /// <param name="iv">8个ASCII字符 iv</param>
         /// <param name="mode">指定用于解密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
         /// <returns>解密成功返回byte[]</returns>
@@ -201,21 +201,21 @@ namespace Afx.Utils
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
             byte[] keyBytes = Encoding.ASCII.GetBytes(key);
-            if (keyBytes.Length != 8) throw new ArgumentException("key.Length is error!", "key");
+            if (keyBytes.Length != 24) throw new ArgumentException("key.Length is error!", "key");
             byte[] ivBytes = null;
             if (!string.IsNullOrEmpty(iv))
             {
                 ivBytes = Encoding.ASCII.GetBytes(iv);
                 if (ivBytes.Length != 8) throw new ArgumentException("iv.Length is error!", "iv");
             }
-            else if (input != null && input.Length > 0 && input.Length <= 8)
+            else if (input != null && 0 < input.Length && input.Length <= 8)
             {
-                 throw new ArgumentException("input.Length is error!", "input");
+                throw new ArgumentException("input.Length is error!", "input");
             }
             byte[] output = null;
             if (input != null && input.Length > 0)
             {
-                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
                 {
                     des.Mode = mode;
                     des.Padding = padding;
@@ -260,7 +260,7 @@ namespace Afx.Utils
         /// 加密 string
         /// </summary>
         /// <param name="input">string</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <returns>加密成功返回string</returns>
         public static string Encrypt(string input, string key)
         {
@@ -283,7 +283,7 @@ namespace Afx.Utils
         /// 加密 string
         /// </summary>
         /// <param name="input">string</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <param name="mode">指定用于加密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
         /// <returns>加密成功返回string</returns>
@@ -296,8 +296,8 @@ namespace Afx.Utils
         /// 加密 string
         /// </summary>
         /// <param name="input">string</param>
-        /// <param name="key">8 个ASCII字符 key</param>
-        /// <param name="iv">8 个ASCII字符 iv</param>
+        /// <param name="key">24个ASCII字符 key</param>
+        /// <param name="iv">8个ASCII字符 iv</param>
         /// <param name="mode">指定用于加密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
         /// <returns>加密成功返回string</returns>
@@ -310,7 +310,7 @@ namespace Afx.Utils
                 byte[] outputdata = Encrypt(inputdata, key, iv, mode, padding);
                 output = StringUtils.ByteToHexString(outputdata);
             }
-            else if(input == string.Empty)
+            else if (input == string.Empty)
             {
                 output = string.Empty;
             }
@@ -333,7 +333,7 @@ namespace Afx.Utils
         /// 解密 string
         /// </summary>
         /// <param name="input">string</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <returns>解密成功返回string</returns>
         public static string Decrypt(string input, string key)
         {
@@ -356,7 +356,7 @@ namespace Afx.Utils
         /// 解密 string
         /// </summary>
         /// <param name="input">string</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <param name="mode">指定用于解密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
         /// <returns>解密成功返回string</returns>
@@ -369,7 +369,7 @@ namespace Afx.Utils
         /// 解密 string
         /// </summary>
         /// <param name="input">string</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <param name="iv">8 个ASCII字符 iv</param>
         /// <param name="mode">指定用于解密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
@@ -377,17 +377,16 @@ namespace Afx.Utils
         public static string Decrypt(string input, string key, string iv, CipherMode mode, PaddingMode padding)
         {
             string output = null;
-            if (!string.IsNullOrEmpty(input))
+            byte[] inputdata = StringUtils.HexStringToByte(input);
+            if (inputdata != null && inputdata.Length > 0)
             {
-                if (input.Length % 2 != 0) throw new ArgumentException("input is error!", "input");
-                byte[] inputdata = StringUtils.HexStringToByte(input);
                 byte[] outputdata = Decrypt(inputdata, key, iv, mode, padding);
                 if (outputdata != null && outputdata.Length > 0)
                 {
                     output = Encoding.UTF8.GetString(outputdata);
                 }
             }
-            else if(input == string.Empty)
+            else if (input == string.Empty)
             {
                 output = string.Empty;
             }
@@ -413,7 +412,7 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="inputStream">要加密Stream</param>
         /// <param name="outputStream">加密输出Stream</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <returns>是否成功</returns>
         public static bool Encrypt(Stream inputStream, Stream outputStream, string key)
         {
@@ -425,7 +424,7 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="inputStream">要加密Stream</param>
         /// <param name="outputStream">加密输出Stream</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <param name="iv">8 个ASCII字符 iv</param>
         /// <returns>是否成功</returns>
         public static bool Encrypt(Stream inputStream, Stream outputStream, string key, string iv)
@@ -438,7 +437,7 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="inputStream">要加密Stream</param>
         /// <param name="outputStream">加密输出Stream</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <param name="iv">8 个ASCII字符 iv</param>
         /// <param name="mode">指定用于加密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
@@ -454,8 +453,8 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="inputStream">要加密Stream</param>
         /// <param name="outputStream">加密输出Stream</param>
-        /// <param name="key">8 个ASCII字符 key</param>
-        /// <param name="iv">8 个ASCII字符 iv</param>
+        /// <param name="key">24个ASCII字符 key</param>
+        /// <param name="iv">8个ASCII字符 iv</param>
         /// <param name="mode">指定用于加密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
         /// <returns>是否成功</returns>
@@ -468,7 +467,7 @@ namespace Afx.Utils
             if (!outputStream.CanWrite) throw new ArgumentException("outputStream is not write!", "outputStream");
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
             byte[] keyBytes = Encoding.ASCII.GetBytes(key);
-            if (keyBytes.Length != 8) throw new ArgumentException("key.Length is error!", "key");
+            if (keyBytes.Length != 24) throw new ArgumentException("key.Length is error!", "key");
             byte[] ivBytes = null;
             if (!string.IsNullOrEmpty(iv))
             {
@@ -478,7 +477,7 @@ namespace Afx.Utils
             bool result = false;
             if (inputStream.Length > 0)
             {
-                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
                 {
                     des.Mode = mode;
                     des.Padding = padding;
@@ -529,7 +528,7 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="inputStream">要解密Stream</param>
         /// <param name="outputStream">解密成功Stream</param>
-        /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="key">24个ASCII字符 key</param>
         /// <returns>是否成功</returns>
         public static bool Decrypt(Stream inputStream, Stream outputStream, string key)
         {
@@ -541,8 +540,8 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="inputStream">要解密Stream</param>
         /// <param name="outputStream">解密成功Stream</param>
-        /// <param name="key">8 个ASCII字符 key</param>
-        /// <param name="iv">8 个ASCII字符 iv</param>
+        /// <param name="key">24个ASCII字符 key</param>
+        /// <param name="iv">24个ASCII字符 iv</param>
         /// <returns>是否成功</returns>
         public static bool Decrypt(Stream inputStream, Stream outputStream, string key, string iv)
         {
@@ -554,8 +553,8 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="inputStream">要解密Stream</param>
         /// <param name="outputStream">解密成功Stream</param>
-        /// <param name="key">8 个ASCII字符 key</param>
-        /// <param name="iv">8 个ASCII字符 iv</param>
+        /// <param name="key">24个ASCII字符 key</param>
+        /// <param name="iv">8个ASCII字符 iv</param>
         /// <param name="mode">指定用于解密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
         /// <returns>是否成功</returns>
@@ -568,7 +567,7 @@ namespace Afx.Utils
             if (!outputStream.CanWrite) throw new ArgumentException("outputStream is not write!", "outputStream");
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
             byte[] keyBytes = Encoding.ASCII.GetBytes(key);
-            if (keyBytes.Length != 8) throw new ArgumentException("key.Length is error!", "key");
+            if (keyBytes.Length != 24) throw new ArgumentException("key.Length is error!", "key");
             byte[] ivBytes = null;
             if (!string.IsNullOrEmpty(iv))
             {
@@ -577,14 +576,13 @@ namespace Afx.Utils
             }
             else if (0 < inputStream.Length)
             {
-                if (inputStream.Length <= 8) throw new ArgumentException("inputStream.Length is error!", "inputStream");
-                if (!inputStream.CanSeek) throw new ArgumentException("inputStream is not seek!", "inputStream");
+                if(inputStream.Length <= 8) throw new ArgumentException("inputStream.Length is error!", "inputStream");
+                if(!inputStream.CanSeek) throw new ArgumentException("inputStream is not seek!", "inputStream");
             }
             bool result = false;
-
             if (inputStream.Length > 0)
             {
-                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
                 {
                     des.Mode = mode;
                     des.Padding = padding;
@@ -604,7 +602,7 @@ namespace Afx.Utils
                     using (var cryptoTransform = des.CreateDecryptor())
                     {
                         CryptoStream cryptoStream = new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write);
-                        //using (cryptoStream encStream = new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write))
+                        //using (CryptoStream cryptoStream = new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write))
                         {
                             long endlength = inputStream.Length;
                             if (ivBytes == null) endlength = endlength - des.IV.Length;

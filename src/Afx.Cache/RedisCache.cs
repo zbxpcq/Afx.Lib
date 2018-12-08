@@ -116,7 +116,8 @@ namespace Afx.Cache
                 {
                     var data = ToByteArray(value);
                     result = database.StringSet(key, data);
-                    if (expireIn.HasValue) database.KeyExpire(key, expireIn.Value);
+                    if (expireIn.HasValue) result = database.StringSet(key, data, expireIn);
+                    else result = database.StringSet(key, data);
                 }
             }
 

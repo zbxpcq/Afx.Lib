@@ -62,23 +62,28 @@ namespace Afx.Utils
         public static byte[] HexStringToByte(string input)
         {
             byte[] result = null;
-            if (!string.IsNullOrEmpty(input) && input.Length % 2 == 0)
+            if (!string.IsNullOrEmpty(input))
             {
-                try
+                if (input.Length % 2 != 0) throw new ArgumentException("input.Length is error!", "input");
+                byte[] outputdata = new byte[input.Length / 2];
+                int i = 0, j = 0;
+                while (i < input.Length)
                 {
-                    byte[] outputdata = new byte[input.Length / 2];
-                    int i = 0, j = 0;
-                    while (i < input.Length)
+                    string s = input.Substring(i, 2);
+                    foreach(char c in s)
                     {
-                        string s = input.Substring(i, 2);
-                        outputdata[j] = Convert.ToByte(s, 16);
-                        i += 2;
-                        j++;
+                        if('0' <= c && c <= '9' || 'a' <= c && c <= 'f' || 'A' <= c && c <= 'F')
+                        {
+                            continue;
+                        }
+                        throw new ArgumentException(string.Format("input[{0}] is error!", i), "input");
                     }
-
-                    result = outputdata;
+                    outputdata[j] = Convert.ToByte(s, 16);
+                    i += 2;
+                    j++;
                 }
-                catch { }
+
+                result = outputdata;
             }
 
             return result;
@@ -92,11 +97,11 @@ namespace Afx.Utils
         /// <returns></returns>
         public static string GetRandomString(int count = 8)
         {
-            Random random = new Random(DateTime.Now.Millisecond);
             char[] chars = new char[count];
             for (int i = 0; i < count; i++)
             {
-                int index = (random.Next(1, short.MaxValue) << random.Next(1, 5)) % _allChars.Length;
+                int num = Math.Abs(Guid.NewGuid().GetHashCode());
+                int index = num % _allChars.Length;
                 chars[i] = _allChars[index];
             }
 

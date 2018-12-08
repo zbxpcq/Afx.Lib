@@ -19,7 +19,7 @@ namespace Afx.Data.Entity
     /// <summary>
     /// 实体 Context
     /// </summary>
-    public class EntityContext : DbContext
+    public class EntityContext : DbContext, IDisposable
     {
 #if NETCOREAPP || NETSTANDARD
         /// <summary>
@@ -386,7 +386,7 @@ namespace Afx.Data.Entity
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-            if (!this.isDisposed)
+            if (disposing && !this.isDisposed)
             {
                 this.isDisposed = true;
                 this.Rollback();

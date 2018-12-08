@@ -182,6 +182,8 @@ namespace Afx.Web.Http
                 iscreate = true;
             }
 
+            request.Properties[this.Name] = sid;
+
             this.BeginRequestCallback?.Invoke(request, sid);
 
 
