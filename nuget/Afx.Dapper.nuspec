@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Afx.Dapper</id>
+    <version>6.5.11.0</version>
+    <authors>jerrylai</authors>
+    <owners>jerrylai</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Afx.Dapper</description>
+    <releaseNotes>Afx.Dapper</releaseNotes>
+    <copyright>Copyright © mycsv 2018</copyright>
+    <tags>Afx.Dapper</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Dapper" version="1.50.2" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Dapper" version="1.50.5" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp2.1">
+        <dependency id="Dapper" version="1.50.5" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Dapper" version="1.50.5" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Publish\Afx.Dapper\netstandard2.0\**" target="lib\netstandard2.0" />
+    <file src="..\Publish\Afx.Dapper\netcoreapp2.1\**" target="lib\netcoreapp2.1" />
+    <file src="..\Publish\Afx.Dapper\net452\Afx.Dapper.dll" target="lib\net452\Afx.Dapper.dll" />
+    <file src="..\Publish\Afx.Dapper\net40\Afx.Dapper.dll" target="lib\net40\Afx.Dapper.dll" />
+  </files>
+</package>

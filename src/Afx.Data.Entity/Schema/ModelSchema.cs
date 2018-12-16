@@ -83,6 +83,7 @@ namespace Afx.Data.Entity.Schema
             if (column.IsKey)
             {
                 attsString.AppendLine(string.Format(attrFormat, "Key"));
+                if(column.IsNonClustered) attsString.AppendLine(string.Format(attrFormat, "NonClustered"));
             }
 
             if (!column.IsKey && !column.IsNullable)

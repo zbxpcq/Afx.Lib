@@ -14,8 +14,11 @@ namespace Afx.Ioc
     /// </summary>
     public class Container : IContainer
     {
-        private Dictionary<Type, ServiceContext> serviceDic;
-        private ReadWriteLock rwLock;
+#if NET20
+        private Afx.Collections.SafeDictionary<Type, ServiceContext> serviceDic;
+#else
+        private System.Collections.Concurrent.ConcurrentDictionary<Type, ServiceContext> serviceDic;
+#endif
         private Afx.DynamicProxy.ProxyGenerator proxyGenerator;
 
         /// <summary>
@@ -32,8 +35,11 @@ namespace Afx.Ioc
         /// </summary>
         public Container()
         {
-            this.serviceDic = new Dictionary<Type, ServiceContext>();
-            this.rwLock = new ReadWriteLock();
+#if NET20
+            this.serviceDic = new Afx.Collections.SafeDictionary<Type, ServiceContext>();
+#else
+            this.serviceDic = new System.Collections.Concurrent.ConcurrentDictionary<Type, ServiceContext>();
+#endif
             this.proxyGenerator = new DynamicProxy.ProxyGenerator(this.CreateAop);
             this.IsDisposed = false;
         }
@@ -54,6 +60,26 @@ namespace Afx.Ioc
             this.createCallback = createCallback;
         }
 
+        private ServiceContext GetOrAddServiceContext(Type serviceType)
+        {
+            ServiceContext serviceContext = null;
+            if (!this.serviceDic.TryGetValue(serviceType, out serviceContext))
+            {
+                var temp = new ServiceContext(serviceType);
+                if (serviceDic.TryAdd(serviceType, temp))
+                {
+                    serviceContext = temp;
+                }
+                else
+                {
+                    this.serviceDic.TryGetValue(serviceType, out serviceContext);
+                    temp.Dispose();
+                }
+            }
+
+            return serviceContext;
+        }
+
         /// <summary>
         /// 注册单例
         /// </summary>
@@ -64,16 +90,8 @@ namespace Afx.Ioc
         {
             if (instance == null) throw new ArgumentNullException("instance");
             var serviceType = typeof(TService);
-            ServiceContext serviceContext = null;
-            ObjectContext objectContext = null;
-            using (this.rwLock.GetWriteLock())
-            {
-                if (!this.serviceDic.TryGetValue(serviceType, out serviceContext))
-                {
-                    this.serviceDic[serviceType] = serviceContext = new ServiceContext(serviceType);
-                }
-            }
-            objectContext = serviceContext.Add(instance);
+            ServiceContext serviceContext = this.GetOrAddServiceContext(serviceType); 
+            ObjectContext objectContext = serviceContext.Add(instance);
 
             return new RegisterContext() { Container = this, ServiceType = serviceType, Context = objectContext };
         }
@@ -89,16 +107,8 @@ namespace Afx.Ioc
             if (func == null) throw new ArgumentNullException("func");
             var serviceType = typeof(TService);
             var funcContext = new FuncContext(func.Target, func.Method);
-            ServiceContext serviceContext = null;
-            ObjectContext objectContext = null;
-            using (this.rwLock.GetWriteLock())
-            {
-                if (!this.serviceDic.TryGetValue(serviceType, out serviceContext))
-                {
-                    this.serviceDic[serviceType] = serviceContext = new ServiceContext(serviceType);
-                }
-            }
-            objectContext = serviceContext.Add(funcContext);
+            ServiceContext serviceContext = this.GetOrAddServiceContext(serviceType);
+            ObjectContext objectContext = serviceContext.Add(funcContext);
 
             return new RegisterContext() { Container = this, ServiceType = serviceType, Context = objectContext };
         }
@@ -112,16 +122,8 @@ namespace Afx.Ioc
         public IRegisterContext Register(Type serviceType, Type targetType)
         {
             Extensions.Check(serviceType, targetType);
-            ServiceContext serviceContext = null;
-            ObjectContext objectContext = null;
-            using (this.rwLock.GetWriteLock())
-            {
-                if (!this.serviceDic.TryGetValue(serviceType, out serviceContext))
-                {
-                    this.serviceDic[serviceType] = serviceContext = new ServiceContext(serviceType);
-                }
-            }
-            objectContext = serviceContext.Add(new TargetContext(targetType));
+            ServiceContext serviceContext = this.GetOrAddServiceContext(serviceType);
+            ObjectContext objectContext = serviceContext.Add(new TargetContext(targetType));
 
             return new RegisterContext() { Container = this, ServiceType = serviceType, Context = objectContext };
         }
@@ -175,94 +177,97 @@ namespace Afx.Ioc
             Assembly assembly = null;
             if (!string.IsNullOrEmpty(name))
             {
-                if (assemblyDic.TryGetValue(name, out assembly))
+                lock (this.assemblyDic)
                 {
-                    return assembly;
-                }
-
-                var arr = AppDomain.CurrentDomain.GetAssemblies();
-                foreach (var item in arr)
-                {
-                    var s = item.FullName.Split(',')[0].Trim();
-                    if (string.Equals(s, name, StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(item.ManifestModule.Name, name, StringComparison.OrdinalIgnoreCase))
+                    if (assemblyDic.TryGetValue(name, out assembly))
                     {
-                        assembly = item;
-                        assemblyDic[name] = assembly;
                         return assembly;
                     }
-                }
 
-                if (assembly == null)
-                {
-                    try
+                    var arr = AppDomain.CurrentDomain.GetAssemblies();
+                    foreach (var item in arr)
                     {
-                        if (name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                        var s = item.FullName.Split(',')[0].Trim();
+                        if (string.Equals(s, name, StringComparison.OrdinalIgnoreCase)
+                            || string.Equals(item.ManifestModule.Name, name, StringComparison.OrdinalIgnoreCase))
                         {
-                            assembly = Assembly.Load(name.Substring(0, name.Length - ".dll".Length));
-                        }
-                        else
-                        {
-                            assembly = Assembly.Load(name);
-                        }
-                        if (assembly != null)
-                        {
+                            assembly = item;
                             assemblyDic[name] = assembly;
                             return assembly;
                         }
                     }
-                    catch { }
-                }
 
-                string filename = name;
-                bool isExists = File.Exists(filename);
-                if (!isExists && File.Exists(filename + ".dll"))
-                {
-                    isExists = true;
-                    filename = filename + ".dll";
-                }
-                else if (!isExists && File.Exists(filename + ".exe"))
-                {
-                    isExists = true;
-                    filename = filename + ".exe";
-                }
+                    if (assembly == null)
+                    {
+                        try
+                        {
+                            if (name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                            {
+                                assembly = Assembly.Load(name.Substring(0, name.Length - ".dll".Length));
+                            }
+                            else
+                            {
+                                assembly = Assembly.Load(name);
+                            }
+                            if (assembly != null)
+                            {
+                                assemblyDic[name] = assembly;
+                                return assembly;
+                            }
+                        }
+                        catch { }
+                    }
 
-                if (!isExists)
-                {
-                    var s = PathUtils.GetFileFullPath(name);
-                    if (File.Exists(s))
+                    string filename = name;
+                    bool isExists = File.Exists(filename);
+                    if (!isExists && File.Exists(filename + ".dll"))
                     {
                         isExists = true;
-                        filename = s;
+                        filename = filename + ".dll";
                     }
-                    if (!name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                    else if (!isExists && File.Exists(filename + ".exe"))
                     {
-                        s = PathUtils.GetFileFullPath(name + ".dll");
-                        if (File.Exists(s))
-                        {
-                            isExists = true;
-                            filename = s;
-                        }
+                        isExists = true;
+                        filename = filename + ".exe";
                     }
-                    else if (!name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-                    {
-                        s = PathUtils.GetFileFullPath(name + ".exe");
-                        if (File.Exists(s))
-                        {
-                            isExists = true;
-                            filename = s;
-                        }
-                    }
-                }
 
-                if (isExists)
-                {
-                    try
+                    if (!isExists)
                     {
-                        assembly = Assembly.LoadFrom(filename);
-                        assemblyDic[name] = assembly;
+                        var s = PathUtils.GetFileFullPath(name);
+                        if (File.Exists(s))
+                        {
+                            isExists = true;
+                            filename = s;
+                        }
+                        if (!name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                        {
+                            s = PathUtils.GetFileFullPath(name + ".dll");
+                            if (File.Exists(s))
+                            {
+                                isExists = true;
+                                filename = s;
+                            }
+                        }
+                        else if (!name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                        {
+                            s = PathUtils.GetFileFullPath(name + ".exe");
+                            if (File.Exists(s))
+                            {
+                                isExists = true;
+                                filename = s;
+                            }
+                        }
                     }
-                    catch { }
+
+                    if (isExists)
+                    {
+                        try
+                        {
+                            assembly = Assembly.LoadFrom(filename);
+                            assemblyDic[name] = assembly;
+                        }
+                        catch { }
+                    }
                 }
             }
 
@@ -376,14 +381,12 @@ namespace Afx.Ioc
 
             ServiceContext serviceContext = null;
             bool isGenericType = false;
-            using (this.rwLock.GetReadLock())
+
+            if (!this.serviceDic.TryGetValue(serviceType, out serviceContext)
+                && serviceType.IsGenericType)
             {
-                if (!this.serviceDic.TryGetValue(serviceType, out serviceContext)
-                    && serviceType.IsGenericType)
-                {
-                    this.serviceDic.TryGetValue(serviceType.GetGenericTypeDefinition(), out serviceContext);
-                    isGenericType = true;
-                }
+                this.serviceDic.TryGetValue(serviceType.GetGenericTypeDefinition(), out serviceContext);
+                isGenericType = true;
             }
 
             if (serviceContext != null)
@@ -435,25 +438,22 @@ namespace Afx.Ioc
                             if (result == null && (args == null || args.Length == 0))
                             {
                                 CtorContext ctor = null;
-                                using (this.rwLock.GetReadLock())
+                                foreach (var ct in ctors)
                                 {
-                                    foreach (var ct in ctors)
+                                    ctor = ct;
+                                    foreach (var t in ct.ParameterTypes)
                                     {
-                                        ctor = ct;
-                                        foreach (var t in ct.ParameterTypes)
+                                        if (!this.serviceDic.ContainsKey(t) && t.IsGenericType && !t.IsGenericTypeDefinition)
                                         {
-                                            if (!this.serviceDic.ContainsKey(t) && t.IsGenericType && !t.IsGenericTypeDefinition)
+                                            var tt = t.GetGenericTypeDefinition();
+                                            if (!this.serviceDic.ContainsKey(tt))
                                             {
-                                                var tt = t.GetGenericTypeDefinition();
-                                                if (!this.serviceDic.ContainsKey(tt))
-                                                {
-                                                    ctor = null;
-                                                    break;
-                                                }
+                                                ctor = null;
+                                                break;
                                             }
                                         }
-                                        if (ctor != null) break;
                                     }
+                                    if (ctor != null) break;
                                 }
 
                                 if (ctor != null)
@@ -637,18 +637,15 @@ namespace Afx.Ioc
         {
             if (serviceType == null) throw new ArgumentNullException("serviceType");
             IRegisterContext registerContext = null;
-            using (this.rwLock.GetReadLock())
+            ServiceContext serviceContext = null;
+            if (this.serviceDic.TryGetValue(serviceType, out serviceContext))
             {
-                ServiceContext serviceContext = null;
-                if(this.serviceDic.TryGetValue(serviceType, out serviceContext))
+                registerContext = new RegisterContext()
                 {
-                    registerContext = new RegisterContext()
-                    {
-                        ServiceType = serviceType,
-                        Container = this,
-                        Context = serviceContext.Get()
-                    };
-                }
+                    ServiceType = serviceType,
+                    Container = this,
+                    Context = serviceContext.Get()
+                };
             }
 
             return registerContext;
@@ -663,20 +660,17 @@ namespace Afx.Ioc
         {
             if (serviceType == null) throw new ArgumentNullException("serviceType");
             List<IRegisterContext> list = new List<IRegisterContext>();
-            using (this.rwLock.GetReadLock())
+            ServiceContext serviceContext = null;
+            if (this.serviceDic.TryGetValue(serviceType, out serviceContext))
             {
-                ServiceContext serviceContext = null;
-                if (this.serviceDic.TryGetValue(serviceType, out serviceContext))
+                foreach (var o in serviceContext.GetAll())
                 {
-                    foreach (var o in serviceContext.GetAll())
+                    list.Add(new RegisterContext()
                     {
-                        list.Add(new RegisterContext()
-                        {
-                            ServiceType = serviceType,
-                            Container = this,
-                            Context = o
-                        });
-                    }
+                        ServiceType = serviceType,
+                        Container = this,
+                        Context = o
+                    });
                 }
             }
             list.TrimExcess();
@@ -691,9 +685,11 @@ namespace Afx.Ioc
         {
             if (this.IsDisposed) return;
 
-            this.rwLock.Dispose();
-            this.rwLock = null;
+#if NET20
+            this.serviceDic.Dispose();
+#else
             this.serviceDic.Clear();
+#endif
             this.serviceDic = null;
             this.assemblyDic.Clear();
             this.assemblyDic = null;

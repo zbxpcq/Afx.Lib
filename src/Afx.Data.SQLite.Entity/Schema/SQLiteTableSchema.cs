@@ -374,6 +374,7 @@ namespace Afx.Data.SQLite.Entity.Schema
                     ColumnInfoModel m = new ColumnInfoModel();
                     list.Add(m);
                     m.Name = row["name"].ToString();
+                    m.IsNonClustered = false;
                     m.IsKey = Convert.ToBoolean(row["pk"]);
                     m.IsNullable = !Convert.ToBoolean(row["notnull"]);
                     m.IsAutoIncrement = false;

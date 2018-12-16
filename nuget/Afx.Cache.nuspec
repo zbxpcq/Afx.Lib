@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Cache</id>
-    <version>6.5.10.0</version>
+    <version>6.5.11.0</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,21 +14,21 @@
       <group targetFramework=".NETFramework4.0">
         <dependency id="Microsoft.Bcl" version="1.1.10" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Bcl.Async" version="1.0.168" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Bcl.Build" version="1.0.14" exclude="Build,Analyzers" />
-        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.21" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
         <dependency id="StackExchange.Redis" version="1.2.1" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
         <dependency id="StackExchange.Redis" version="1.2.6" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETCoreApp2.1">
-        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
-        <dependency id="StackExchange.Redis" version="2.0.513" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="2.0.519" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
-        <dependency id="StackExchange.Redis" version="2.0.513" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="2.0.519" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

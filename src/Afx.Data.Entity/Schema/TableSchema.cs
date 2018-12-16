@@ -254,10 +254,13 @@ namespace Afx.Data.Entity.Schema
             }
 
             m.IsKey = false;
+            m.IsNonClustered = false;
             atts = property.GetCustomAttributes(typeof(KeyAttribute), false);
             if (atts != null && atts.Length > 0)
             {
                 m.IsKey = true;
+                atts = property.GetCustomAttributes(typeof(NonClusteredAttribute), false);
+                m.IsNonClustered = atts != null && atts.Length > 0;
             }
             else
             {

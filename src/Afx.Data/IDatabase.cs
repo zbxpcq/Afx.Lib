@@ -40,7 +40,12 @@ namespace Afx.Data
         /// 指示或指定如何解释 CommandText 属性
         /// </summary>
         CommandType? CommandType { get; set; }
-        
+
+        /// <summary>
+        /// （以秒为单位）
+        /// </summary>
+        int? CommandTimeout { get; set; }
+
         /// <summary>
         /// DbConnection
         /// </summary>
@@ -51,7 +56,7 @@ namespace Afx.Data
         /// </summary>
         /// <param name="name">要添加到集合中的 DbParameter 的 DbParameter.ParameterName。</param>
         /// <param name="value">要添加到集合中的 DbParameter 的 DbParameter.Value。</param>
-        void AddParameter(string name, object value);
+        void AddParameter(string name, object value, DbType? dbType = null);
 
         /// <summary>
         /// 添加 DbParameter 
@@ -118,13 +123,13 @@ namespace Afx.Data
         /// <summary>
         /// 开启事务
         /// </summary>
-        Transaction BeginTransaction();
+        AfxTransaction BeginTransaction();
 
         /// <summary>
         /// 开启事务
         /// </summary>
         /// <param name="isolationLevel">事务级别</param>
-        Transaction BeginTransaction(IsolationLevel isolationLevel);
+        AfxTransaction BeginTransaction(IsolationLevel isolationLevel);
 
         /// <summary>
         /// 提交事务

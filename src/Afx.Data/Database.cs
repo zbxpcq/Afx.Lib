@@ -11,6 +11,24 @@ namespace Afx.Data
     /// </summary>
     public abstract class Database : IDatabase
     {
+        class CloseConnection : IDisposable
+        {
+            private Database db;
+            public CloseConnection(Database db)
+            {
+                this.db = db;
+            }
+
+            public void Dispose()
+            {
+                if (this.db != null)
+                {
+                    this.db.Close();
+                    this.db = null;
+                }
+            }
+        }
+
         private DbTransaction transaction = null;
         private bool isOwnsConnection = true;
         /// <summary>
@@ -61,6 +79,11 @@ namespace Afx.Data
         public CommandType? CommandType { get; set; }
 
         /// <summary>
+        /// （以秒为单位）
+        /// </summary>
+        public int? CommandTimeout { get; set; }
+
+        /// <summary>
         /// DbConnection
         /// </summary>
         public DbConnection Connection { get; private set; }
@@ -107,6 +130,11 @@ namespace Afx.Data
                 command.CommandType = this.CommandType.Value;
                 this.OnLog("-- CommandType = " + this.CommandType.Value.ToString());
             }
+            if (this.CommandTimeout.HasValue)
+            {
+                command.CommandTimeout = this.CommandTimeout.Value;
+                this.OnLog("-- CommandTimeout = " + this.CommandTimeout.Value.ToString());
+            }
             if (this.parameters.Count > 0)
             {
                 foreach (var p in parameters)
@@ -125,17 +153,16 @@ namespace Afx.Data
             return command;
         }
 
-        
-
         #region
         /// <summary>
         /// 添加 DbParameter 
         /// </summary>
         /// <param name="name">要添加到集合中的 DbParameter 的 DbParameter.ParameterName。</param>
         /// <param name="value">要添加到集合中的 DbParameter 的 DbParameter.Value。</param>
-        public void AddParameter(string name, object value)
+        public void AddParameter(string name, object value, DbType? dbType = null)
         {
             DbParameter param = this.CreateParameter(name, value ?? DBNull.Value);
+            if (dbType.HasValue) param.DbType = dbType.Value;
             this.parameters.Add(param);
         }
 
@@ -184,13 +211,15 @@ namespace Afx.Data
         }
         #endregion
 
-        private void Open()
+        private CloseConnection Open()
         {
             if (ConnectionState.Open != this.Connection.State)
             {
                 this.Connection.Open();
                 this.OnLog("-- Connection Open");
             }
+
+            return new CloseConnection(this);
         }
 
         internal void Close()
@@ -253,26 +282,15 @@ namespace Afx.Data
         /// <returns>object</returns>
         public object ExecuteScalar()
         {
-            object obj = null;
-            try
+            using (var command = this.GetCommand())
             {
-                using (var command = this.GetCommand())
+                using (this.Open())
                 {
-                    this.Open();
-                    obj = command.ExecuteScalar();
+                    object obj = command.ExecuteScalar();
                     this.OnLog("-- ExecuteScalar");
+                    return obj;
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                this.Close();
-            }
-
-            return obj;
         }
 
         /// <summary>
@@ -281,26 +299,15 @@ namespace Afx.Data
         /// <returns>受影响的行数。</returns>
         public int ExecuteNonQuery()
         {
-            int num = 0;
-            try
+            using (var command = this.GetCommand())
             {
-                using (var command = this.GetCommand())
+                using (this.Open())
                 {
-                    this.Open();
-                    num = command.ExecuteNonQuery();
+                    int num = command.ExecuteNonQuery();
                     this.OnLog("-- ExecuteNonQuery");
+                    return num;
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                this.Close();
-            }
-
-            return num;
         }
 
         /// <summary>
@@ -310,30 +317,19 @@ namespace Afx.Data
         /// <returns>已在 DataTable 中成功添加或刷新的行数。</returns>
         public int Fill(DataTable dt)
         {
-            int num = 0;
-            try
+            using (DbDataAdapter adapter = this.CreateDataAdapter())
             {
-                using (DbDataAdapter adapter = this.CreateDataAdapter())
+                using (var command = this.GetCommand())
                 {
-                    using (var command = this.GetCommand())
+                    adapter.SelectCommand = command;
+                    using (this.Open())
                     {
-                        adapter.SelectCommand = command;
-                        this.Open();
-                        num = adapter.Fill(dt);
+                        int num = adapter.Fill(dt);
                         this.OnLog("-- Fill DataTable");
+                        return num;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                this.Close();
-            }
-
-            return num;
         }
 
         /// <summary>
@@ -343,29 +339,19 @@ namespace Afx.Data
         /// <returns>已在 DataSet 中成功添加或刷新的行数</returns>
         public int Fill(DataSet ds)
         {
-            int num = 0;
-            try
+            using (DbDataAdapter adapter = this.CreateDataAdapter())
             {
-                using (DbDataAdapter adapter = this.CreateDataAdapter())
+                using (var command = this.GetCommand())
                 {
-                    using (var command = this.GetCommand())
+                    adapter.SelectCommand = command;
+                    using (this.Open())
                     {
-                        adapter.SelectCommand = command;
-                        this.Open();
-                        num = adapter.Fill(ds);
+                        int num = adapter.Fill(ds);
                         this.OnLog("-- Fill DataSet");
+                        return num;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                this.Close();
-            }
-            return num;
         }
 
         #region 事务
@@ -380,34 +366,26 @@ namespace Afx.Data
         /// <summary>
         /// 开启事务
         /// </summary>
-        public Transaction BeginTransaction()
+        public AfxTransaction BeginTransaction()
         {
-            if (null == this.transaction)
-            {
-                this.Open();
-                this.transaction = this.Connection.BeginTransaction();
-                this.OnLog("-- BeginTransaction");
-                return new Transaction(this);
-            }
-
-            return Transaction.Current;
+            if (null != this.transaction) throw new InvalidOperationException("事务已开启，不能重复开启！");
+            this.Open();
+            this.transaction = this.Connection.BeginTransaction();
+            this.OnLog("-- BeginTransaction");
+            return new AfxTransaction(this);
         }
 
         /// <summary>
         /// 开启事务
         /// </summary>
         /// <param name="isolationLevel">事务级别</param>
-        public Transaction BeginTransaction(IsolationLevel isolationLevel)
+        public AfxTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            if (null == this.transaction)
-            {
-                this.Open();
-                this.transaction = this.Connection.BeginTransaction(isolationLevel);
-                this.OnLog("-- BeginTransaction " + isolationLevel.ToString());
-                return new Transaction(this);
-            }
-
-            return Transaction.Current;
+            if (null != this.transaction) throw new InvalidOperationException("已开启事务，不能重复开启！");
+            this.Open();
+            this.transaction = this.Connection.BeginTransaction(isolationLevel);
+            this.OnLog("-- BeginTransaction " + isolationLevel.ToString());
+            return new AfxTransaction(this);
         }
 
         /// <summary>
@@ -415,15 +393,13 @@ namespace Afx.Data
         /// </summary>
         public void Commit()
         {
-            Transaction.ClearCurrent();
-            if (null != this.transaction)
-            {
-                this.transaction.Commit();
-                this.transaction.Dispose();
-                this.transaction = null;
-                this.OnLog("-- Commit");
-                this.Close();
-            }
+            if (null == this.transaction) throw new InvalidOperationException("未开启事务，不能提交！");
+            AfxTransaction.ClearCurrent();
+            this.transaction.Commit();
+            this.transaction.Dispose();
+            this.transaction = null;
+            this.OnLog("-- Commit");
+            this.Close();
         }
 
         /// <summary>
@@ -431,7 +407,7 @@ namespace Afx.Data
         /// </summary>
         public void Rollback()
         {
-            Transaction.ClearCurrent();
+            AfxTransaction.ClearCurrent();
             if (null != this.transaction)
             {
                 this.transaction.Rollback();

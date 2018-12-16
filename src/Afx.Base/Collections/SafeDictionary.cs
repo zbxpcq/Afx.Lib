@@ -71,17 +71,7 @@ namespace Afx.Collections
         /// <returns></returns>
         public bool Add(TKey key, TValue value)
         {
-            bool result = false;
-            using (this.m_readWriteLock.GetWriteLock())
-            {
-                if (!this.m_dic.ContainsKey(key))
-                {
-                    this.m_dic.Add(key, value);
-                    result = true;
-                }
-            }
-
-            return result;
+            return this.TryAdd(key, value);
         }
         /// <summary>
         /// ContainsKey
@@ -128,6 +118,22 @@ namespace Afx.Collections
 
             return val;
         }
+
+        public bool TryAdd(TKey key, TValue value)
+        {
+            bool result = false;
+            using (this.m_readWriteLock.GetWriteLock())
+            {
+                if (!this.m_dic.ContainsKey(key))
+                {
+                    this.m_dic.Add(key, value);
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// TryGetValue
         /// </summary>

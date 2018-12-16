@@ -8,7 +8,7 @@ namespace Afx.Data.Extensions
     /// <summary>
     /// IDataReader 读取结果转换成实体
     /// </summary>
-    public interface IReaderToModel
+    public interface IReaderToModel : IDisposable
     {
         /// <summary>
         /// 转换实体

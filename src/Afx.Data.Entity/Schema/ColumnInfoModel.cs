@@ -55,6 +55,8 @@ namespace Afx.Data.Entity.Schema
         /// 索引
         /// </summary>
         public List<IndexModel> Indexs { get; set; }
+
+        public bool IsNonClustered { get; set; }
     }
 
     public class IndexModel

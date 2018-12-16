@@ -40,11 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Assembly.cs">
-      <Link>Properties\Assembly.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\Afx.Data\Database.cs">
       <Link>Database.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Assembly.cs">
+      <Link>Properties\Assembly.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Data\IDatabase.cs">
       <Link>IDatabase.cs</Link>

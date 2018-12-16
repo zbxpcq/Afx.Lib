@@ -46,11 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\Afx.Data.Entity\NonClusteredAttribute.cs">
+      <Link>Attribute\NonClusteredAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Assembly.cs">
       <Link>Properties\Assembly.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Data.Entity\DecimalAttribute.cs">
-      <Link>DecimalAttribute.cs</Link>
+      <Link>Attribute\DecimalAttribute.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Data.Entity\EntityContext.cs">
       <Link>EntityContext.cs</Link>

@@ -17,7 +17,22 @@ namespace Afx.Data.Extensions
         /// <returns></returns>
         public abstract object To(IDataReader reader);
 
-        Dictionary<string, int> dic = new Dictionary<string, int>();
+        private Dictionary<string, int> dic;
+        public ReaderToModel()
+        {
+            this.dic = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        public virtual void SetOrdinal(IDataReader reader)
+        {
+            this.dic.Clear();
+            for(int i=0; i<reader.FieldCount; i++)
+            {
+                var key = reader.GetName(i);
+                this.dic[key] = i;
+            }
+        }
+
         /// <summary>
         /// 获取列所在位置
         /// </summary>
@@ -27,12 +42,9 @@ namespace Afx.Data.Extensions
         public int GetOrdinal(IDataReader reader, string name)
         {
             int i = -1;
-            if (!dic.TryGetValue(name, out i))
+            if (!this.dic.TryGetValue(name, out i))
             {
                 i = -1;
-                try { i = reader.GetOrdinal(name); }
-                catch { }
-                dic[name] = i;
             }
             return i;
         }
@@ -106,6 +118,11 @@ namespace Afx.Data.Extensions
             }
 
             return buffer;
+        }
+
+        public void Dispose()
+        {
+            this.dic = null;
         }
     }
 }

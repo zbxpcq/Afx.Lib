@@ -475,7 +475,7 @@ namespace Afx.Data
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-            this.Close();
+            if(disposing) this.Close();
             base.Dispose(disposing);
         }
     }

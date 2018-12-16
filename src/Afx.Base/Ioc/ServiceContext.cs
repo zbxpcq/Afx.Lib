@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Afx.Ioc
 {
-    internal class ServiceContext
+    internal class ServiceContext : IDisposable
     {
         public Type ServiceType { get; private set; }
 
@@ -127,7 +127,25 @@ namespace Afx.Ioc
 
         public List<ObjectContext> GetAll()
         {
-            return new List<ObjectContext>(this.objectList);
+            List<ObjectContext> list = null;
+            lock (this.root)
+            {
+                list = new List<ObjectContext>(this.objectList);
+            }
+            return list;   
+        }
+
+        public void Dispose()
+        {
+            if (this.root != null)
+            {
+                lock (this.root)
+                {
+                    this.ServiceType = null;
+                    this.objectList = null;
+                }
+            }
+            this.root = null;
         }
     }
 }

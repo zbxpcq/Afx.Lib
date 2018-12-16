@@ -7,17 +7,17 @@ namespace Afx.Data
     /// <summary>
     /// 事务
     /// </summary>
-    public sealed class Transaction : IDisposable
+    public sealed class AfxTransaction : IDisposable
     {
         [ThreadStatic]
-        private static Transaction current;
+        private static AfxTransaction current;
         /// <summary>
         /// 当前事务
         /// </summary>
-        public static Transaction Current { get { return current; } }
+        public static AfxTransaction Current { get { return current; } }
 
         private Database db;
-        internal Transaction(Database db)
+        internal AfxTransaction(Database db)
         {
             this.db = db;
             current = this;

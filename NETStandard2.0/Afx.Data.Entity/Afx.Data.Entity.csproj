@@ -4,7 +4,7 @@
     <Description>Afx.Data.Entity for .NET Standard 2.0</Description>
     <PackageReleaseNotes>Afx.Data.Entity for .NET Standard 2.0</PackageReleaseNotes>
     <Product>Afx.Data.Entity for .NET Standard 2.0</Product>
-    <Version>6.5.10.0</Version>
+    <Version>6.5.11.0</Version>
     <Authors>jerrylai@aliyun.com</Authors>
     <Company>mycsv.cn</Company>
     <Copyright>Copyright © mycsv 2018</Copyright>
@@ -25,6 +25,7 @@
     <Compile Include="..\..\src\Afx.Data.Entity\EntityContext.cs" Link="EntityContext.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\EntityTransaction.cs" Link="EntityTransaction.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\IndexAttribute.cs" Link="Attribute\IndexAttribute.cs" />
+    <Compile Include="..\..\src\Afx.Data.Entity\NonClusteredAttribute.cs" Link="Attribute\NonClusteredAttribute.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\BuildDatabase.cs" Link="Schema\BuildDatabase.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\BuildModel.cs" Link="Schema\BuildModel.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\ColumnInfoModel.cs" Link="Schema\ColumnInfoModel.cs" />

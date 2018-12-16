@@ -12,8 +12,8 @@ namespace Afx.Data.Extensions
         /// </summary>
         /// <param name="db">IDatabase</param>
         /// <param name="sql">sql</param>
-        /// <param name="obj">sql 参数</param>
+        /// <param name="parameters">sql 参数</param>
         /// <returns></returns>
-        string To(IDatabase db, string sql, object obj);
+        string To(IDatabase db, string sql, object parameters);
     }
 }

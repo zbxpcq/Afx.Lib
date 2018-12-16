@@ -333,6 +333,7 @@ namespace Afx.Data.MySql.Entity.Schema
                         m.DataType = row["DataType"].ToString();
                         m.IsAutoIncrement = Convert.ToBoolean(row["IsAutoIncrement"]);
                         m.IsKey = Convert.ToBoolean(row["IsKey"]);
+                        m.IsNonClustered = false;
                         m.IsNullable = Convert.ToBoolean(row["IsNullable"]);
                         m.Order = Convert.ToInt32(row["Order"]);
                         var index_row = index_dt.Select("Order = " + m.Order);

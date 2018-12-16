@@ -125,8 +125,8 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
             if (keyColumns.Count > 0)
             {
                 createTableSql.Append(" ON [PRIMARY]");
-
-                createKeySql.AppendFormat("ALTER TABLE [{0}] ADD CONSTRAINT PK_{0} PRIMARY KEY CLUSTERED(", table);
+                string s = keyColumns.Count(q => q.IsNonClustered == true) > 0 ? "NONCLUSTERED" : "CLUSTERED";
+                createKeySql.AppendFormat("ALTER TABLE [{0}] ADD CONSTRAINT PK_{0} PRIMARY KEY {1}(", table, s);
                 foreach (var column in keyColumns)
                 {
                     createKeySql.AppendFormat("[{0}],", column.Name);
@@ -344,6 +344,12 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
                         m.Order = Convert.ToInt32(row["Order"]);
                         var index_row = index_dt.Select("IsKey = 1 and Order = " + m.Order);
                         m.IsKey = index_row != null && index_row.Length > 0;
+                        m.IsNonClustered = false;
+                        if (m.IsKey)
+                        {
+                            index_row = index_dt.Select("IsKey = 1 and Order = " + m.Order + " and IndexType = 2");
+                            m.IsNonClustered = index_row != null && index_row.Length > 0;
+                        }
                         index_row = index_dt.Select("IsKey = 0 and Order = " + m.Order);
                         if (index_row != null && index_row.Length > 0)
                         {
@@ -463,7 +469,7 @@ INNER JOIN sys.types t ON col.system_type_id=t.system_type_id AND col.user_type_
 WHERE o.name=@table";
         private const string SelectTableIndexSql = @"SELECT col.column_id [Order],
 ISNULL(idx.is_primary_key, 0) IsKey,
-ISNULL(idx.name,'') IndexName, ISNULL(idx.is_unique,0) IsUnique
+ISNULL(idx.name,'') IndexName, ISNULL(idx.is_unique,0) IsUnique, idx.[type] IndexType
 FROM sys.columns col
 INNER JOIN sys.objects o ON col.[object_id] = o.[object_id] AND o.[type] = 'U'
 INNER JOIN sys.index_columns idx_col ON col.[object_id] = idx_col.[object_id] AND col.column_id = idx_col.column_id
