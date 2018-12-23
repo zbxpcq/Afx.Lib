@@ -8,5 +8,6 @@ namespace Afx
     public delegate TResult Func<TResult>();
 
     public delegate TResult Func<T, TResult>(T obj);
+
 #endif
 }

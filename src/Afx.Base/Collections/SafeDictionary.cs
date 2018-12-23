@@ -49,17 +49,17 @@ namespace Afx.Collections
         {
             if (comparer != null)
             {
-                this.m_dic = capacity >= 0 
+                this.m_dic = capacity >= 0
                     ? new Dictionary<TKey, TValue>(capacity, comparer)
                     : new Dictionary<TKey, TValue>(comparer);
             }
             else
             {
-                this.m_dic = capacity >= 0 
+                this.m_dic = capacity >= 0
                     ? new Dictionary<TKey, TValue>(capacity)
                     : new Dictionary<TKey, TValue>();
             }
-            
+
             this.m_readWriteLock = new ReadWriteLock();
             this.IsDisposed = false;
         }
@@ -209,10 +209,10 @@ namespace Afx.Collections
             get
             {
                 List<TKey> list = null;
-                using(this.m_readWriteLock.GetReadLock())
+                using (this.m_readWriteLock.GetReadLock())
                 {
                     list = new List<TKey>(this.m_dic.Keys.Count);
-                    foreach(var k in this.m_dic.Keys)
+                    foreach (var k in this.m_dic.Keys)
                     {
                         list.Add(k);
                     }

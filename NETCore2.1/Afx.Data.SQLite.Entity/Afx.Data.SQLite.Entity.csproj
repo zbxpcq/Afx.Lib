@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>6.5.11.0</Version>
+    <Version>6.5.12.0</Version>
     <Company>mycsv.cn</Company>
     <Product>Afx.Data.SQLite.Entity for .NETCore2.1</Product>
     <Description>Afx.Data.SQLite.Entity for .NETCore2.1</Description>

@@ -184,45 +184,50 @@ namespace Afx.Data
         {
             var t = typeof(Convert);
             var types = new Type[] { typeof(object) };
-            convertDic.Add(typeof(bool), t.GetMethod("ToBoolean", types));
-            convertDic.Add(typeof(byte), t.GetMethod("ToByte", types));
-            convertDic.Add(typeof(char), t.GetMethod("ToChar", types));
-            convertDic.Add(typeof(DateTime), t.GetMethod("ToDateTime", types));
-            convertDic.Add(typeof(decimal), t.GetMethod("ToDecimal", types));
-            convertDic.Add(typeof(double), t.GetMethod("ToDouble", types));
-            convertDic.Add(typeof(short), t.GetMethod("ToInt16", types));
-            convertDic.Add(typeof(int), t.GetMethod("ToInt32", types));
-            convertDic.Add(typeof(long), t.GetMethod("ToInt64", types));
-            convertDic.Add(typeof(sbyte), t.GetMethod("ToSByte", types));
-            convertDic.Add(typeof(float), t.GetMethod("ToSingle", types));
-            convertDic.Add(typeof(ushort), t.GetMethod("ToUInt16", types));
-            convertDic.Add(typeof(uint), t.GetMethod("ToUInt32", types));
-            convertDic.Add(typeof(ulong), t.GetMethod("ToUInt64", types));
 
-            convertDic.Add(typeof(string), t.GetMethod("ToString", types));
+            AddConvert(Convert.ToBoolean);
+            AddConvert(Convert.ToByte);
+            AddConvert(Convert.ToChar);
+            AddConvert(Convert.ToDateTime);
+            AddConvert(Convert.ToDecimal);
+            AddConvert(Convert.ToDouble);
+            AddConvert(Convert.ToInt16);
+            AddConvert(Convert.ToInt32);
+            AddConvert(Convert.ToInt64);
+            AddConvert(Convert.ToSByte);
+            AddConvert(Convert.ToSingle);
+            AddConvert(Convert.ToUInt16);
+            AddConvert(Convert.ToUInt32);
+            AddConvert(Convert.ToUInt64);
 
-            t = typeof(DatabaseExtension);
-            convertDic.Add(typeof(DateTimeOffset), t.GetMethod("ToDateTimeOffset", types));
-            convertDic.Add(typeof(Guid), t.GetMethod("ToGuid", types));
-            convertDic.Add(typeof(TimeSpan), t.GetMethod("ToTimeSpan", types));
+            AddConvert(Convert.ToString);
 
+            AddConvert(ConvertToDateTimeOffset);
+            AddConvert(ConvertToGuid);
+            AddConvert(ConvertToTimeSpan);
         }
 
-        public static DateTimeOffset ToDateTimeOffset(object obj)
+        public static void AddConvert<T>(Func<object, T> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            convertDic[typeof(T)] = func.Method;
+        }
+
+        public static DateTimeOffset ConvertToDateTimeOffset(object obj)
         {
             if (obj == null) throw new ArgumentNullException("obj");
             if (obj is DateTimeOffset) return (DateTimeOffset)obj;
             return DateTimeOffset.Parse(obj.ToString());
         }
 
-        public static Guid ToGuid(object obj)
+        public static Guid ConvertToGuid(object obj)
         {
             if (obj == null) throw new ArgumentNullException("obj");
             if (obj is Guid) return (Guid)obj;
             return Guid.Parse(obj.ToString());
         }
 
-        public static TimeSpan ToTimeSpan(object obj)
+        public static TimeSpan ConvertToTimeSpan(object obj)
         {
             if (obj == null) throw new ArgumentNullException("obj");
             if (obj is TimeSpan) return (TimeSpan)obj;
@@ -304,6 +309,8 @@ namespace Afx.Data
             il.Emit(OpCodes.Ldarg_1);
             il.Emit(OpCodes.Call, typeof(ReaderToModel).GetMethod("SetOrdinal", new Type[] { typeof(IDataReader) }));
             var parr = t.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            bool isThrow = false;
+            PropertyInfo throwPropertyInfo = null;
             foreach (var p in parr)
             {
                 var setmethod = p.GetSetMethod();
@@ -389,18 +396,20 @@ namespace Afx.Data
                         }
                         il.Emit(OpCodes.Callvirt, setmethod);
                     }
-                    else if (pt.IsValueType)
+                    else
                     {
-                        il.Emit(OpCodes.Ldloc, localModel);
-                        il.Emit(OpCodes.Ldarg_1);
-                        il.Emit(OpCodes.Ldloc, locali);
-                        il.Emit(OpCodes.Callvirt, typeof(IDataRecord).GetMethod("GetValue", new Type[] { typeof(int) }));
-                        il.Emit(OpCodes.Unbox, p.PropertyType);
-                        if (isNullable)
-                        {
-                            il.Emit(OpCodes.Newobj, typeof(Nullable<>).MakeGenericType(new Type[] { pt }).GetConstructor(new Type[] { pt }));
-                        }
-                        il.Emit(OpCodes.Callvirt, setmethod);
+                        isThrow = true;
+                        if (throwPropertyInfo == null) throwPropertyInfo = p;
+                        //il.Emit(OpCodes.Ldloc, localModel);
+                        //il.Emit(OpCodes.Ldarg_1);
+                        //il.Emit(OpCodes.Ldloc, locali);
+                        //il.Emit(OpCodes.Callvirt, typeof(IDataRecord).GetMethod("GetValue", new Type[] { typeof(int) }));
+                        //il.Emit(OpCodes.Unbox, p.PropertyType);
+                        //if (isNullable)
+                        //{
+                        //    il.Emit(OpCodes.Newobj, typeof(Nullable<>).MakeGenericType(new Type[] { pt }).GetConstructor(new Type[] { pt }));
+                        //}
+                        //il.Emit(OpCodes.Callvirt, setmethod);
                     }
 
                     il.MarkLabel(p_endlb);
@@ -414,6 +423,8 @@ namespace Afx.Data
 #else
             convertType = typeBuilder.CreateType();
 #endif
+
+            if (isThrow) throw new InvalidCastException(t.FullName + "未找到属性" + throwPropertyInfo.Name + "的数据类型转换方法，请调用Afx.Data.DatabaseExtension.AddConvert添加数据类型转换方法。");
 
             return convertType;
         }

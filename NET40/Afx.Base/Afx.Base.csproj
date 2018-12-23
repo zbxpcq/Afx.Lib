@@ -41,6 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\Afx.Base\Collections\Node.cs">
+      <Link>Collections\Node.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Collections\NodeList.cs">
+      <Link>Collections\NodeList.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Afx.Base\DynamicProxy\AopAttribute.cs">
       <Link>DynamicProxy\AopAttribute.cs</Link>
     </Compile>
@@ -103,6 +109,12 @@
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Ioc\TargetContext.cs">
       <Link>Ioc\TargetContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Threading\CasLock.cs">
+      <Link>Threading\CasLock.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Base\Threading\ILock.cs">
+      <Link>Threading\ILock.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\EnumUtils.cs">
       <Link>Utils\EnumUtils.cs</Link>
@@ -185,7 +197,7 @@
     <Compile Include="..\..\src\Afx.Base\Utils\DesUtils.cs">
       <Link>Utils\DesUtils.cs</Link>
     </Compile>
-	<Compile Include="..\..\src\Afx.Base\Utils\TripleDesUtils.cs">
+    <Compile Include="..\..\src\Afx.Base\Utils\TripleDesUtils.cs">
       <Link>Utils\TripleDesUtils.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\HMACSha256Utils.cs">
