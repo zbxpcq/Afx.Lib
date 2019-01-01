@@ -124,6 +124,16 @@ namespace Afx.DynamicProxy
             return this.interfaceProxy.GetProxy(interfaceType, target, enableAop, aopType);
         }
 
+        public bool RegisterClassProxy(Type targetType)
+        {
+            return this.classProxy.Register(targetType);
+        }
+
+        public bool RegisterInterfaceProxy(Type interfaceType)
+        {
+            return this.interfaceProxy.Register(interfaceType);
+        }
+
         /// <summary>
         /// 释放资源
         /// </summary>

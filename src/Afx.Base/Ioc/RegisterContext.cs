@@ -115,6 +115,22 @@ namespace Afx.Ioc
         {
             this.CheckAop();
             this.Context.EnabledAop = enabled;
+            if(enabled)
+            {
+                var container = this.Container as Container;
+                switch(this.Context.Mode)
+                {
+                    case CreateMode.None:
+                        container.proxyGenerator.RegisterClassProxy(this.Context.TargetInfo.TargetType);
+                        break;
+                    case CreateMode.Instance:
+                    case CreateMode.Method:
+                        if(this.ServiceType.IsInterface)
+                            container.proxyGenerator.RegisterClassProxy(this.ServiceType);
+                        break;
+                }
+
+            }
 
             return this;
         }

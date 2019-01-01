@@ -263,12 +263,8 @@ namespace Afx.Tcp.Protocols
         /// <param name="cmd"></param>
         public virtual void RemoveCmdCall(int cmd)
         {
-#if NET20
-            this.MsgCmdCallDic.Remove(cmd);
-#else
             MsgCmdCallModel callInfo;
             this.MsgCmdCallDic.TryRemove(cmd, out callInfo);
-#endif
         }
 
 #if NET20
@@ -278,13 +274,9 @@ namespace Afx.Tcp.Protocols
 #endif
         private MsgIdCallModel GetMsgIdCall(int msgId)
         {
-#if NET20
-            MsgIdCallModel callInfo = this.MsgIdCallDic[msgId];
-            this.MsgIdCallDic.Remove(msgId);
-#else
             MsgIdCallModel callInfo;
             this.MsgIdCallDic.TryRemove(msgId, out callInfo);
-#endif
+
             return callInfo;
         }
         /// <summary>
@@ -304,12 +296,8 @@ namespace Afx.Tcp.Protocols
         /// <param name="msgId"></param>
         public virtual void RemoveMsgIdCall(int msgId)
         {
-#if NET20
-            this.MsgIdCallDic.Remove(msgId);
-#else
             MsgIdCallModel callInfo;
             this.MsgIdCallDic.TryRemove(msgId, out callInfo);
-#endif
         }
         /// <summary>
         /// SendAsync
@@ -510,11 +498,12 @@ namespace Afx.Tcp.Protocols
             {
                 this.isDisposed = true;
                 this.Reset();
-#if NET20
-                this.MsgCmdCallDic.Dispose();
-                this.MsgIdCallDic.Dispose();
-#endif
+                this.MsgCmdCallDic.Clear();
+                this.MsgIdCallDic.Clear();
                 this.tcpClient.Dispose();
+                this.MsgCmdCallDic = null;
+                this.MsgIdCallDic = null;
+                this.tcpClient = null;
             }
         }
     }

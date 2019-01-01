@@ -40,9 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Afx.Base\Collections\Node.cs">
-      <Link>Collections\Node.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\Afx.Base\Collections\NodeList.cs">
       <Link>Collections\NodeList.cs</Link>
     </Compile>
@@ -108,12 +105,6 @@
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Ioc\TargetContext.cs">
       <Link>Ioc\TargetContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Threading\CasLock.cs">
-      <Link>Threading\CasLock.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Threading\ILock.cs">
-      <Link>Threading\ILock.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\EnumUtils.cs">
       <Link>Utils\EnumUtils.cs</Link>
@@ -184,14 +175,8 @@
     <Compile Include="..\..\src\Afx.Base\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Afx.Base\Threading\ReadLock.cs">
-      <Link>Threading\ReadLock.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\Afx.Base\Threading\ReadWriteLock.cs">
       <Link>Threading\ReadWriteLock.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\Afx.Base\Threading\WriteLock.cs">
-      <Link>Threading\WriteLock.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Base\Utils\DesUtils.cs">
       <Link>Utils\DesUtils.cs</Link>

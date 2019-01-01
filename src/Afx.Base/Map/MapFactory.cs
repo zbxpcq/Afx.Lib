@@ -29,8 +29,11 @@ namespace Afx.Map
 
         private string m_moduleName;
         private ModuleBuilder m_moduleBuilder;
-        private ReadWriteLock m_rwLock;
-        private Dictionary<TypeKey, IToObject> m_toObjectDic;
+#if NET20
+        private Afx.Collections.SafeDictionary<TypeKey, IToObject> m_toObjectDic;
+#else
+        private System.Collections.Concurrent.ConcurrentDictionary<TypeKey, IToObject> m_toObjectDic;
+#endif
 
         private AssemblyBuilderAccess m_assemblyBuilderAccess = AssemblyBuilderAccess.Run;
         private AssemblyBuilder m_assemblyBuilder;
@@ -57,8 +60,11 @@ namespace Afx.Map
                 this.m_moduleBuilder = m_assemblyBuilder.DefineDynamicModule(this.m_moduleName);
             }
 #endif
-            this.m_rwLock = new ReadWriteLock();
-            this.m_toObjectDic = new Dictionary<TypeKey, IToObject>();
+#if NET20
+            this.m_toObjectDic = new Afx.Collections.SafeDictionary<TypeKey, IToObject>();
+#else
+            this.m_toObjectDic = new System.Collections.Concurrent.ConcurrentDictionary<TypeKey, IToObject>();
+#endif
         }
 
 #if !NETCOREAPP && !NETSTANDARD && DEBUG
@@ -273,28 +279,18 @@ namespace Afx.Map
             IToObject toObject = null;
             if (key != null && key.FromType != null && key.ToType != null)
             {
-                using (this.m_rwLock.GetReadLock())
+                if (this.m_toObjectDic.TryGetValue(key, out toObject)) return toObject;
+
+                try
                 {
-                    this.m_toObjectDic.TryGetValue(key, out toObject);
+                    var type = this.CreateMapType(key);
+                    if (type == null) return toObject;
+
+                    object obj = Activator.CreateInstance(type, new object[] { key.FromType, this });
+                    toObject = obj as IToObject;
+                    this.m_toObjectDic.TryAdd(key, toObject);
                 }
-                if (toObject != null) return toObject;
-
-                using (this.m_rwLock.GetWriteLock())
-                {
-                    this.m_toObjectDic.TryGetValue(key, out toObject);
-                    if (toObject != null) return toObject;
-
-                    try
-                    {
-                        var type = this.CreateMapType(key);
-                        if (type == null) return toObject;
-
-                        object obj = Activator.CreateInstance(type, new object[] { key.FromType, this });
-                        toObject = obj as IToObject;
-                        this.m_toObjectDic[key] = toObject;
-                    }
-                    catch { }
-                }
+                catch { }
             }
 
             return toObject;

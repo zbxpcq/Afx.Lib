@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Afx.Threading;
 
 namespace Afx.Collections
 {
@@ -28,14 +27,30 @@ namespace Afx.Collections
     public delegate ForeachResult NodeFunc<T>(T item, object state);
 
     /// <summary>
-    /// CAS锁单链表
+    /// 无锁栈
     ///  add by jerrylai@aliyun.com
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class NodeList<T>
     {
+        class Node
+        {
+            public T Data;
+            public Node Next;
+
+            public Node() { }
+
+            public Node(T data) : this(data, null) { }
+
+            public Node(T data, Node next)
+            {
+                this.Data = data;
+                this.Next = next;
+            }
+        }
+
         private int m_count = 0;
-        private Node<T> m_head;
+        private Node m_head;
 
         public int Count { get { return m_count; } }
 
@@ -43,44 +58,31 @@ namespace Afx.Collections
         /// 以原子方式添加到第一个
         /// </summary>
         /// <param name="value"></param>
-        public void Add(T value)
+        public void Push(T value)
         {
-            Node<T> node = new Node<T>(value, this.m_head);
-            var old = node.Next;
-            while (Interlocked.CompareExchange(ref this.m_head, node, old) != old)
+            Node node = new Node(value);
+            node.Next = this.m_head;
+            while (Interlocked.CompareExchange(ref this.m_head, node, node.Next) != node.Next)
             {
-                Thread.SpinWait(5);
                 node.Next = this.m_head;
-                old = node.Next;
             }
             Interlocked.Increment(ref this.m_count);
         }
 
         /// <summary>
-        /// 以原子方式遍历， func返回: true.删除当前value,false.不做任何操作
+        /// 以原子方式遍历
         /// </summary>
         /// <param name="func"></param>
         /// <param name="state"></param>
         public void Foreach(NodeFunc<T> func, object state = null)
         {
             if (func == null) throw new ArgumentNullException("func");
-            Exception ex = null;
-            Node<T> prev = this.m_head;
+            Node prev = this.m_head;
             var curr = prev;
             ForeachResult result = false;
-            while (!result.IsStop && curr != null)
+            while (curr != null)
             {
-                try
-                {
-                    result = func(curr.Data, state);
-                }
-                catch (Exception e)
-                {
-                    ex = e;
-                    break;
-                }
-
-                if (result.IsDelete)
+                if ((result = func(curr.Data, state)).IsDelete)
                 {
                     if (prev == curr)
                     {
@@ -88,6 +90,17 @@ namespace Afx.Collections
                         {
                             Interlocked.Decrement(ref this.m_count);
                             prev = curr.Next;
+                        }
+                        else
+                        {
+                            prev = this.GetPrevNode(curr);
+                            if (prev != null)
+                            {
+                                if (Interlocked.CompareExchange(ref prev.Next, curr.Next, curr) == curr)
+                                {
+                                    Interlocked.Decrement(ref this.m_count);
+                                }
+                            }
                         }
                     }
                     else
@@ -99,24 +112,39 @@ namespace Afx.Collections
                         }
                     }
                 }
-                else
+                else if (prev != curr)
                 {
-                    if (prev != curr) prev = curr;
+                    prev = curr;
                 }
+
+                if (result.IsStop) break;
                 curr = curr.Next;
             }
-            if (ex != null) throw ex;
+        }
+
+        private Node GetPrevNode(Node node)
+        {
+            Node prev = null;
+            var curr = this.m_head;
+            while (curr != null)
+            {
+                if (curr == node) return prev;
+                prev = curr;
+                curr = curr.Next;
+            }
+
+            return null;
         }
 
         public List<T> GetAll()
         {
             List<T> list = new List<T>(this.Count);
-            this.Foreach((item, state) =>
+            Node curr = this.m_head;
+            while (curr != null)
             {
-                list.Add(item);
-
-                return false;
-            });
+                list.Add(curr.Data);
+                curr = curr.Next;
+            }
             return list;
         }
     }

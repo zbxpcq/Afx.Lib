@@ -5,12 +5,12 @@ using System.IO;
 using System.Xml;
 using System.ComponentModel;
 
-using Afx.Collections;
-
 namespace Afx.Utils
 {
     /// <summary>
     /// EnumUtils
+    /// add by jerrylai@aliyun.com
+    /// https://github.com/jerrylai/Afx.Lib
     /// </summary>
     public static class EnumUtils
     {
@@ -51,7 +51,7 @@ namespace Afx.Utils
         class EnumInfoModel
         {
             public string Name { get; private set; }
-            
+
             public string Description { get; private set; }
 
             public EnumInfoModel(string name, string description)
@@ -61,19 +61,24 @@ namespace Afx.Utils
             }
         }
 
-        private static SafeDictionary<string, SafeDictionary<Type, List<EnumInfoModel>>> enumDic = new SafeDictionary<string, SafeDictionary<Type, List<EnumInfoModel>>>();
+#if NET20
+        private static Afx.Collections.SafeDictionary<string, Afx.Collections.SafeDictionary<Type, List<EnumInfoModel>>> enumDic = new Afx.Collections.SafeDictionary<string, Afx.Collections.SafeDictionary<Type, List<EnumInfoModel>>>(StringComparer.OrdinalIgnoreCase);
+#else
+        private static System.Collections.Concurrent.ConcurrentDictionary<string, System.Collections.Concurrent.ConcurrentDictionary<Type, List<EnumInfoModel>>> enumDic = new System.Collections.Concurrent.ConcurrentDictionary<string, System.Collections.Concurrent.ConcurrentDictionary<Type, List<EnumInfoModel>>>(StringComparer.OrdinalIgnoreCase);
+#endif
 
-        private static SafeDictionary<Type, List<EnumInfoModel>> GetLangueDic(string langue)
+#if NET20
+        private static Afx.Collections.SafeDictionary<Type, List<EnumInfoModel>> GetLangueDic(string langue)
         {
-            SafeDictionary<Type, List<EnumInfoModel>> dic = null;
-            if (enumDic.ContainsKey(langue))
+            Afx.Collections.SafeDictionary<Type, List<EnumInfoModel>> dic = null;
+#else
+        private static System.Collections.Concurrent.ConcurrentDictionary<Type, List<EnumInfoModel>> GetLangueDic(string langue)
+        {
+            System.Collections.Concurrent.ConcurrentDictionary<Type, List<EnumInfoModel>> dic = null;
+#endif
+            if (!enumDic.TryGetValue(langue, out dic))
             {
-                dic = enumDic[langue];
-            }
-            else
-            {
-                dic = new SafeDictionary<Type, List<EnumInfoModel>>();
-                enumDic[langue] = dic;
+                enumDic[langue] = dic = new System.Collections.Concurrent.ConcurrentDictionary<Type, List<EnumInfoModel>>();
             }
 
             return dic;
@@ -105,7 +110,7 @@ namespace Afx.Utils
                         description = node.GetAttribute("description");
                     }
                 }
-                
+
                 if (string.IsNullOrEmpty(description))
                 {
                     var att = (DescriptionAttribute)Attribute.GetCustomAttribute(type.GetField(s), typeof(DescriptionAttribute), false);
@@ -123,21 +128,16 @@ namespace Afx.Utils
         {
             EnumInfoModel m = null;
             if (string.IsNullOrEmpty(langue)) langue = System.Globalization.CultureInfo.CurrentCulture.Name;
-            if (string.IsNullOrEmpty(directory)) directory = AppDomain.CurrentDomain.BaseDirectory;
+            if (string.IsNullOrEmpty(directory)) directory = Directory.GetCurrentDirectory();
             var dic = GetLangueDic(langue);
             if (dic != null)
             {
                 var type = @enum.GetType();
                 var name = @enum.GetName();
                 List<EnumInfoModel> list = null;
-                if (dic.ContainsKey(type))
+                if (!dic.TryGetValue(type, out list))
                 {
-                    list = dic[type];
-                }
-                else
-                {
-                    list = GetTypeInfo(type, langue, directory);
-                    dic[type] = list;
+                    dic[type] = list = GetTypeInfo(type, langue, directory);
                 }
 
                 m = list.Find(q => string.Equals(q.Name, name, StringComparison.OrdinalIgnoreCase));

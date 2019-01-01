@@ -10,7 +10,7 @@ namespace Afx.Data.Extensions
     /// </summary>
     public class ModelToParam : IModelToParam
     {
-        protected static readonly List<char> spChar = new List<char>() { ' ','=','<','>', ',',';', '(',')' };
+        protected static readonly List<char> spChar = new List<char>() { ' ','=','<','>', ',',';', '(',')','\r','\n','\t' };
         /// <summary>
         /// obj转换sqlParameter
         /// </summary>

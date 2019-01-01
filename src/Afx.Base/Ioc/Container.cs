@@ -19,7 +19,7 @@ namespace Afx.Ioc
 #else
         private System.Collections.Concurrent.ConcurrentDictionary<Type, ServiceContext> serviceDic;
 #endif
-        private Afx.DynamicProxy.ProxyGenerator proxyGenerator;
+        internal Afx.DynamicProxy.ProxyGenerator proxyGenerator;
 
         /// <summary>
         /// 是否 Dispose
@@ -684,15 +684,12 @@ namespace Afx.Ioc
         public void Dispose()
         {
             if (this.IsDisposed) return;
-
-#if NET20
-            this.serviceDic.Dispose();
-#else
             this.serviceDic.Clear();
-#endif
             this.serviceDic = null;
             this.assemblyDic.Clear();
             this.assemblyDic = null;
+            this.proxyGenerator.Dispose();
+            this.proxyGenerator = null;
         }
     }
 }

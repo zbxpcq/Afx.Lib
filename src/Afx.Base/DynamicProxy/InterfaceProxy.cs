@@ -11,8 +11,11 @@ namespace Afx.DynamicProxy
     public class InterfaceProxy : IDisposable
     {
         private AssemblyDynamicBuilder assemblyDynamicBuilder;
-        private ReadWriteLock m_rwInterfaceLock;
-        private Dictionary<Type, Type> m_interfaceProxyDic;
+#if NET20
+        private Afx.Collections.SafeDictionary<Type, Type> m_interfaceProxyDic;
+#else
+        private System.Collections.Concurrent.ConcurrentDictionary<Type, Type> m_interfaceProxyDic;
+#endif
         private Func<Type, IAop> AopFunc;
         /// <summary>
         /// 是否 Dispose
@@ -27,8 +30,11 @@ namespace Afx.DynamicProxy
         {
             if (assemblyDynamicBuilder == null) throw new ArgumentNullException("assemblyDynamicBuilder");
             this.assemblyDynamicBuilder = assemblyDynamicBuilder;
-            this.m_rwInterfaceLock = new ReadWriteLock();
-            this.m_interfaceProxyDic = new Dictionary<Type, Type>();
+#if NET20
+            this.m_interfaceProxyDic = new Afx.Collections.SafeDictionary<Type, Type>();
+#else
+            this.m_interfaceProxyDic = new System.Collections.Concurrent.ConcurrentDictionary<Type, Type>();
+#endif
             this.AopFunc = func;
             this.IsDisposed = false;
         }
@@ -99,16 +105,20 @@ namespace Afx.DynamicProxy
             return result;
         }
 
+        public bool Register(Type interfaceType)
+        {
+            var proxyType = this.GetProxyType(interfaceType);
+
+            return proxyType != null;
+        }
+
         private Type GetProxyType(Type interfaceType)
         {
             Type proxyType = null;
             if (interfaceType == null) throw new ArgumentNullException("targetType");
             if (!interfaceType.IsInterface) throw new ArgumentException(interfaceType.FullName + "不是interface!", "interfaceType");
-            using (this.m_rwInterfaceLock.GetReadLock())
-            {
-                this.m_interfaceProxyDic.TryGetValue(interfaceType, out proxyType);
-            }
-            if (proxyType != null) return proxyType;
+
+            if (this.m_interfaceProxyDic.TryGetValue(interfaceType, out proxyType)) return proxyType;
 
             var typeDynamicBuilder = this.assemblyDynamicBuilder.DefineType(this.assemblyDynamicBuilder.GetDynamicName(interfaceType), TypeAttributes.Class | TypeAttributes.Public, typeof(object), new Type[] { interfaceType });
             typeDynamicBuilder.AddInterfaceImplementation(typeof(IProxy));
@@ -308,10 +318,7 @@ namespace Afx.DynamicProxy
             }
 
             proxyType = typeDynamicBuilder.CreateType();
-            using (this.m_rwInterfaceLock.GetWriteLock())
-            {
-                this.m_interfaceProxyDic[interfaceType] = proxyType;
-            }
+            this.m_interfaceProxyDic.TryAdd(interfaceType, proxyType);
 
             return proxyType;
         }
@@ -323,8 +330,6 @@ namespace Afx.DynamicProxy
             this.assemblyDynamicBuilder = null;
             this.m_interfaceProxyDic.Clear();
             this.m_interfaceProxyDic = null;
-            this.m_rwInterfaceLock.Dispose();
-            this.m_rwInterfaceLock = null;
         }
     }
 }
