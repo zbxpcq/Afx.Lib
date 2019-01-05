@@ -166,16 +166,18 @@ namespace Afx.Sockets
         /// 启动监听，端口占用异常
         /// </summary>
         /// <param name="port">本地端口号</param>
-        public void Start(int port)
+        /// <param name="isBackground">是否后台监听连接</param>
+        public void Start(int port, bool isBackground = true)
         {
-            this.Start(IPAddress.Any, port);
+            this.Start(IPAddress.Any, port, isBackground);
         }
         /// <summary>
         /// 启动监听，端口占用异常
         /// </summary>
         /// <param name="ipAddress">监听ip</param>
         /// <param name="port">本地端口号</param>
-        public void Start(IPAddress ipAddress, int port)
+        /// <param name="isBackground">是否后台监听连接</param>
+        public void Start(IPAddress ipAddress, int port, bool isBackground = true)
         {
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             //this.socket.ExclusiveAddressUse = this.exclusiveAddressUse;
@@ -184,7 +186,10 @@ namespace Afx.Sockets
             this.socket.Bind(local);
             this.socket.Listen(ushort.MaxValue);
             this.isAccept = true;
-            ThreadPool.QueueUserWorkItem(this.BeginAccept);
+            if (isBackground)
+                ThreadPool.QueueUserWorkItem(this.BeginAccept);
+            else
+                this.BeginAccept(null);
         }
         
         private void BeginAccept(object obj)

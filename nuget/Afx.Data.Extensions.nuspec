@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Data.Extensions</id>
-    <version>8.0.0.1</version>
+    <version>8.0.1.0</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,14 +12,20 @@
     <tags>Afx.Data.Extensions Database SQL Entity Afx</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.0">
-        <dependency id="Afx.Data" version="8.0.0.1" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.0.1.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Afx.Data" version="8.0.0.1" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.0.1.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Afx.Data" version="8.0.0.1" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.0.1.0" exclude="Build,Analyzers" />
         <dependency id="System.Reflection.Emit" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp2.1">
+        <dependency id="Afx.Data" version="8.0.1.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp2.2">
+        <dependency id="Afx.Data" version="8.0.1.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
@@ -27,6 +33,12 @@
     <file src="..\Publish\Afx.Data.Extensions\netstandard2.0\Afx.Data.Extensions.dll" target="lib\netstandard2.0\Afx.Data.Extensions.dll" />
     <file src="..\Publish\Afx.Data.Extensions\netstandard2.0\Afx.Data.Extensions.xml" target="lib\netstandard2.0\Afx.Data.Extensions.xml" />
     <file src="..\Publish\Afx.Data.Extensions\netstandard2.0\Afx.Data.Extensions.deps.json" target="lib\netstandard2.0\Afx.Data.Extensions.deps.json" />
+    <file src="..\Publish\Afx.Data.Extensions\netcoreapp2.1\Afx.Data.Extensions.dll" target="lib\netcoreapp2.1\Afx.Data.Extensions.dll" />
+    <file src="..\Publish\Afx.Data.Extensions\netcoreapp2.1\Afx.Data.Extensions.xml" target="lib\netcoreapp2.1\Afx.Data.Extensions.xml" />
+    <file src="..\Publish\Afx.Data.Extensions\netcoreapp2.1\Afx.Data.Extensions.deps.json" target="lib\netcoreapp2.1\Afx.Data.Extensions.deps.json" />
+    <file src="..\Publish\Afx.Data.Extensions\netcoreapp2.2\Afx.Data.Extensions.dll" target="lib\netcoreapp2.2\Afx.Data.Extensions.dll" />
+    <file src="..\Publish\Afx.Data.Extensions\netcoreapp2.2\Afx.Data.Extensions.xml" target="lib\netcoreapp2.2\Afx.Data.Extensions.xml" />
+    <file src="..\Publish\Afx.Data.Extensions\netcoreapp2.2\Afx.Data.Extensions.deps.json" target="lib\netcoreapp2.2\Afx.Data.Extensions.deps.json" />
     <file src="..\Publish\Afx.Data.Extensions\net452\Afx.Data.Extensions.dll" target="lib\net452\Afx.Data.Extensions.dll" />
     <file src="..\Publish\Afx.Data.Extensions\net452\Afx.Data.Extensions.xml" target="lib\net452\Afx.Data.Extensions.xml" />
     <file src="..\Publish\Afx.Data.Extensions\net40\Afx.Data.Extensions.dll" target="lib\net40\Afx.Data.Extensions.dll" />

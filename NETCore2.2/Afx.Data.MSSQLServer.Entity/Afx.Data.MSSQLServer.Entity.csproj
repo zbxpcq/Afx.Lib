@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Authors>jerrylai@aliyun.com</Authors>
+    <Version>8.0.1.0</Version>
+    <Company>mycsv.cn</Company>
+    <Product>Afx.Data.MSSQLServer.Entity for .NET Core 2.2</Product>
+    <Description>Afx.Data.MSSQLServer.Entity for .NET Core 2.2</Description>
+    <Copyright>Copyright © mycsv 2018</Copyright>
+    <PackageReleaseNotes>Afx.Data.MSSQLServer.Entity for .NET Core 2.2</PackageReleaseNotes>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Publish\Afx.Data.MSSQLServer.Entity\</OutputPath>
+    <DocumentationFile>..\..\Publish\Afx.Data.MSSQLServer.Entity\netcoreapp2.2\Afx.Data.MSSQLServer.Entity.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Data.MSSQLServer.Entity\Schema\MsSqlDatabaseSchema.cs" Link="Schema\MsSqlDatabaseSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data.MSSQLServer.Entity\Schema\MsSqlModelSchema.cs" Link="Schema\MsSqlModelSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data.MSSQLServer.Entity\Schema\MsSqlTableSchema.cs" Link="Schema\MsSqlTableSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data\MsSqlDatabase.cs" Link="MsSqlDatabase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Schema\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Afx.Data.Entity\Afx.Data.Entity.csproj" />
+    <ProjectReference Include="..\Afx.Data\Afx.Data.csproj" />
+  </ItemGroup>
+</Project>

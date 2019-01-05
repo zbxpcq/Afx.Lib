@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Authors>jerrylai@aliyun.com</Authors>
+    <Version>8.0.1.0</Version>
+    <Copyright>Copyright © mycsv 2018</Copyright>
+    <Company>mycsv.cn</Company>
+    <Product>Afx.HttpClient for .NET Core 2.2</Product>
+    <Description>Afx.HttpClient for .NET Core 2.2</Description>
+    <PackageReleaseNotes>Afx.HttpClient for .NET Core 2.2</PackageReleaseNotes>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Publish\Afx.HttpClient\</OutputPath>
+    <DocumentationFile>..\..\Publish\Afx.HttpClient\netcoreapp2.2\Afx.HttpClient.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.HttpClient\Content\ByteContent.cs" Link="Content\ByteContent.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\Content\EmptyContent.cs" Link="Content\EmptyContent.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\Content\HtmlContent.cs" Link="Content\HtmlContent.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\Content\HttpContent.cs" Link="Content\HttpContent.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\Content\StreamContent.cs" Link="Content\StreamContent.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\FormData\ByteFormData.cs" Link="FormData\ByteFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\FormData\FormData.cs" Link="FormData\FormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\FormData\JsonFormData.cs" Link="FormData\JsonFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\FormData\MultipartFormData.cs" Link="FormData\MultipartFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\FormData\StreamFormData.cs" Link="FormData\StreamFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\FormData\StringFormData.cs" Link="FormData\StringFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\FormData\TextPlainFormData.cs" Link="FormData\TextPlainFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\FormData\UrlencodedFormData.cs" Link="FormData\UrlencodedFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\HttpClient.cs" Link="HttpClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FormData\" />
+    <Folder Include="Content\" />
+  </ItemGroup>
+</Project>

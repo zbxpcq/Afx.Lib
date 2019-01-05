@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Description>Afx.Data for .NET Core 2.1</Description>
+    <PackageReleaseNotes>Afx.Data for .NET Core 2.1</PackageReleaseNotes>
+    <Version>8.0.1.0</Version>
+    <Authors>jerrylai@aliyun.com</Authors>
+    <Company>mycsv.cn</Company>
+    <Copyright>Copyright © mycsv 2018</Copyright>
+    <Product>Afx.Data for .NET Core 2.1</Product>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Publish\Afx.Data\</OutputPath>
+    <DocumentationFile>..\..\Publish\Afx.Data\netcoreapp2.1\Afx.Data.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.Data\AfxDataReader.cs" Link="AfxDataReader.cs" />
+    <Compile Include="..\..\src\Afx.Data\Database.cs" Link="Database.cs" />
+    <Compile Include="..\..\src\Afx.Data\IDatabase.cs" Link="IDatabase.cs" />
+    <Compile Include="..\..\src\Afx.Data\Transaction.cs" Link="Transaction.cs" />
+  </ItemGroup>
+</Project>

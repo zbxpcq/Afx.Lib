@@ -83,11 +83,12 @@ namespace  Afx.Tcp.Host
         /// 启动host 监听客户端连接
         /// </summary>
         /// <param name="port"></param>
-        public virtual void Start(int port)
+        /// <param name="isBackground">是否后台监听连接</param>
+        public virtual void Start(int port, bool isBackground = true)
         {
             if (isStart) return;
             isStart = true;
-            this.server.Start(port);
+            this.server.Start(port, isBackground);
         }
         /// <summary>
         /// 停止监听客户端连接

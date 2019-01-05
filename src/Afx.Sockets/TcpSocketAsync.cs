@@ -35,7 +35,7 @@ namespace Afx.Sockets
         public int SetKeepAlive(int keepAliveTime, int keepAliveInterval)
         {
             int result = 0;
-            if (this.IsConnected)
+            if (SocketHelper.IsWindows() && this.IsConnected)
             {
                result = this.socket.IOControl(IOControlCode.KeepAliveValues, SocketHelper.GetTcpKeepAlive(keepAliveTime, keepAliveInterval), null);
             }

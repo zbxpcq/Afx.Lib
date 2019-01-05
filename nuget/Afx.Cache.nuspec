@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Cache</id>
-    <version>8.0.0.1</version>
+    <version>8.0.1.0</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -26,10 +26,28 @@
         <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
         <dependency id="StackExchange.Redis" version="2.0.519" exclude="Build,Analyzers" />
       </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="2.0.519" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="2.0.519" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp2.1">
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="2.0.519" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp2.2">
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="2.0.519" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
   <files>
     <file src="..\Publish\Afx.Cache\netstandard2.0\**" target="lib\netstandard2.0" />
+    <file src="..\Publish\Afx.Cache\netcoreapp2.1\**" target="lib\netcoreapp2.1" />
+    <file src="..\Publish\Afx.Cache\netcoreapp2.2\**" target="lib\netcoreapp2.2" />
     <file src="..\Publish\Afx.Cache\net452\Afx.Cache.dll" target="lib\net452\Afx.Cache.dll" />
     <file src="..\Publish\Afx.Cache\net452\Afx.Cache.xml" target="lib\net452\Afx.Cache.xml" />
     <file src="..\Publish\Afx.Cache\net452\CacheKey.xml" target="lib\net452\CacheKey.xml" />

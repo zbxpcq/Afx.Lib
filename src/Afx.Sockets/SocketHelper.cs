@@ -73,5 +73,22 @@ namespace Afx.Sockets
 
             return result;
         }
+
+        public static bool IsWindows()
+        {
+            bool result = false;
+            switch(Environment.OSVersion.Platform)
+            {
+#if !NETCOREAPP
+                case PlatformID.WinCE:
+                case PlatformID.Win32S:
+                case PlatformID.Win32Windows:
+#endif
+                case PlatformID.Win32NT:
+                    result = true;
+                    break;
+            }
+            return result;
+        }
     }
 }
