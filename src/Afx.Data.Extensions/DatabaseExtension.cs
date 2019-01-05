@@ -37,20 +37,15 @@ namespace Afx.Data
         {
             bool result = false;
             if (t.IsArray || t.IsAbstract || !(t.IsClass || t.IsValueType))
-                throw new ArgumentException("T is error!");
+                throw new ArgumentException(t.FullName + " is error!");
             if (t.IsGenericType)
             {
                 var gt = t.GetGenericTypeDefinition();
                 if (gt != typeof(Nullable<>))
                 {
-                    throw new ArgumentException("T is error!");
+                    throw new ArgumentException(t.FullName + " is error!");
                 }
-
-                var tt = t.GetGenericArguments()[0];
-                if (!convertDic.ContainsKey(tt))
-                {
-                    throw new ArgumentException("T is error!");
-                }
+                
                 result = true;
             }
 
@@ -99,30 +94,38 @@ namespace Afx.Data
         {
             if (o != null && o != DBNull.Value)
             {
-                if (o.GetType() == t || t == typeof(object))
+                var ot = o.GetType();
+                if (ot == t || t == typeof(object))
                 {
                     return o;
                 }
+                else if (t == typeof(string))
+                {
+                    return o.ToString();
+                }
                 else
                 {
+                    MethodInfo methodInfo;
+                    if (convertDic.TryGetValue(t, out methodInfo))
+                    {
+                        return methodInfo.Invoke(null, new object[] { o });
+                    }
+
                     var gt = t;
                     if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
                         var _gt = t.GetGenericArguments()[0];
+                        if (_gt == ot) return o;
                         if (gt.IsPrimitive && gt.IsValueType) gt = _gt;
                     }
 
-                    if (t == typeof(string))
-                    {
-                        return o.ToString();
-                    }
-                    else if (gt.IsPrimitive && gt.IsValueType)
+                    if (gt.IsPrimitive && gt.IsValueType)
                     {
                         return Convert.ChangeType(o, gt);
                     }
                     else
                     {
-                        throw new InvalidCastException("ChangeType " + o.GetType().FullName + " to " + t.FullName + " error!");
+                        throw new InvalidCastException("ChangeType " + ot.FullName + " to " + t.FullName + " error!");
                     }
                 }
             }
@@ -135,9 +138,12 @@ namespace Afx.Data
             db.Check(sql);
             T m = default(T);
             var t = typeof(T);
-            if (t.IsGenericType && t == typeof(Nullable<>)) t = t.GetGenericArguments()[0];
-            else throw new ArgumentException("T is error!");
-            if (!convertDic.ContainsKey(t)) throw new ArgumentException("T is error!");
+            if (t.IsGenericType)
+            {
+                if (t.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    t = t.GetGenericArguments()[0];
+                else throw new ArgumentException(t.FullName + " is error!");
+            }
 
             AddParam(db, sql, parameters, commandType);
             object o = db.ExecuteScalar();
@@ -180,6 +186,7 @@ namespace Afx.Data
         private static ModuleBuilder moduleBuilder;
         static AssemblyBuilder assbuilder;
         private static Dictionary<Type, MethodInfo> convertDic = new Dictionary<Type, MethodInfo>();
+        internal static Dictionary<Type, DbType> dbTypeDic = new Dictionary<Type, DbType>();
         static DatabaseExtension()
         {
             var t = typeof(Convert);
@@ -205,6 +212,51 @@ namespace Afx.Data
             AddConvert(ConvertToDateTimeOffset);
             AddConvert(ConvertToGuid);
             AddConvert(ConvertToTimeSpan);
+
+            dbTypeDic = new Dictionary<Type, DbType>
+            {
+                [typeof(byte)] = DbType.Byte,
+                [typeof(sbyte)] = DbType.SByte,
+                [typeof(short)] = DbType.Int16,
+                [typeof(ushort)] = DbType.UInt16,
+                [typeof(int)] = DbType.Int32,
+                [typeof(uint)] = DbType.UInt32,
+                [typeof(long)] = DbType.Int64,
+                [typeof(ulong)] = DbType.UInt64,
+                [typeof(float)] = DbType.Single,
+                [typeof(double)] = DbType.Double,
+                [typeof(decimal)] = DbType.Decimal,
+                [typeof(bool)] = DbType.Boolean,
+                [typeof(string)] = DbType.String,
+                [typeof(char)] = DbType.StringFixedLength,
+                [typeof(Guid)] = DbType.Guid,
+                [typeof(DateTime)] = DbType.DateTime,
+                [typeof(DateTimeOffset)] = DbType.DateTimeOffset,
+                [typeof(TimeSpan)] = DbType.Time,
+                [typeof(byte[])] = DbType.Binary,
+                [typeof(byte?)] = DbType.Byte,
+                [typeof(sbyte?)] = DbType.SByte,
+                [typeof(short?)] = DbType.Int16,
+                [typeof(ushort?)] = DbType.UInt16,
+                [typeof(int?)] = DbType.Int32,
+                [typeof(uint?)] = DbType.UInt32,
+                [typeof(long?)] = DbType.Int64,
+                [typeof(ulong?)] = DbType.UInt64,
+                [typeof(float?)] = DbType.Single,
+                [typeof(double?)] = DbType.Double,
+                [typeof(decimal?)] = DbType.Decimal,
+                [typeof(bool?)] = DbType.Boolean,
+                [typeof(char?)] = DbType.StringFixedLength,
+                [typeof(Guid?)] = DbType.Guid,
+                [typeof(DateTime?)] = DbType.DateTime,
+                [typeof(DateTimeOffset?)] = DbType.DateTimeOffset,
+                [typeof(TimeSpan?)] = DbType.Time
+            };
+        }
+
+        public static void AddDbType<T>(DbType dbType)
+        {
+            dbTypeDic[typeof(T)] = dbType;
         }
 
         public static void AddConvert<T>(Func<object, T> func)

@@ -17,6 +17,9 @@ namespace Afx.Collections
 #if NET20 || NET40
         static class Volatile
         {
+            [System.Runtime.Versioning.ResourceExposure(System.Runtime.Versioning.ResourceScope.None)]
+            [System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)]
+            [System.Security.SecuritySafeCritical]
             public static T Read<T>(ref T location) where T : class
             {
                 var value = location;
@@ -24,6 +27,9 @@ namespace Afx.Collections
                 return value;
             }
 
+            [System.Runtime.Versioning.ResourceExposure(System.Runtime.Versioning.ResourceScope.None)]
+            [System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)]
+            [System.Security.SecuritySafeCritical]
             public static void Write<T>(ref T location, T value) where T : class
             {
                 Thread.MemoryBarrier();
