@@ -13,6 +13,7 @@ namespace Afx.HttpClient
         private Dictionary<string, string> paramDic;
 
         private Dictionary<string, string> fileDic;
+        private int ver = 0;
 
         private const string NEW_LINE = "\r\n";
 
@@ -46,6 +47,7 @@ namespace Afx.HttpClient
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
             this.paramDic[key] = value ?? "";
+            this.ver++;
         }
 
         /// <summary>
@@ -70,7 +72,7 @@ namespace Afx.HttpClient
         public void RemoveParam(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            this.paramDic.Remove(key);
+            if(this.paramDic.Remove(key)) this.ver++;
         }
         /// <summary>
         /// 添加上传文件
@@ -84,6 +86,7 @@ namespace Afx.HttpClient
             if (!File.Exists(fileName)) throw new FileNotFoundException(fileName + " not found!", fileName);
 
             this.fileDic[key] = fileName;
+            this.ver++;
         }
         /// <summary>
         /// 获取上传文件
@@ -107,7 +110,7 @@ namespace Afx.HttpClient
         public void RemoveFile(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            this.fileDic.Remove(key);
+            if(this.fileDic.Remove(key)) this.ver++;
         }
         /// <summary>
         /// Serialize
@@ -131,10 +134,13 @@ namespace Afx.HttpClient
                 stream.Write(buffer, 0, buffer.Length);
             }
 
-            text = new StringBuilder();
             foreach (var kv in this.fileDic)
             {
-                //text.Clear();
+#if NET20
+                text.Remove(0, text.Length);
+#else
+                text.Clear();
+#endif
                 text.Append(BEGIN_BOUNDARY);
                 text.AppendFormat(FILE_CONTENT_DISPOSITION, kv.Key, kv.Value);
 
@@ -160,9 +166,6 @@ namespace Afx.HttpClient
                 buffer = this.ContentEncoding.GetBytes(END_BOUNDARY);
                 stream.Write(buffer, 0, buffer.Length);
             }
-
-           // text.Clear();
-            text = null;
         }
         /// <summary>
         /// GetLength
@@ -170,39 +173,7 @@ namespace Afx.HttpClient
         /// <returns></returns>
         public override long GetLength()
         {
-            long length = 0;
-            StringBuilder text = new StringBuilder();
-            foreach (var kv in this.paramDic)
-            {
-                text.Append(BEGIN_BOUNDARY);
-                text.AppendFormat(PARAM_CONTENT_DISPOSITION, kv.Key);
-                text.Append(kv.Value);
-                text.Append(NEW_LINE);
-            }
-
-            foreach (var kv in this.fileDic)
-            {
-                text.Append(BEGIN_BOUNDARY);
-                text.AppendFormat(FILE_CONTENT_DISPOSITION, kv.Key, kv.Value);
-
-                var fileInfo = new FileInfo(kv.Value);
-                length += fileInfo.Length;
-
-                text.Append(NEW_LINE);
-            }
-
-            if (paramDic.Count > 0 || fileDic.Count > 0)
-            {
-                text.Append(END_BOUNDARY);
-            }
-
-            if (text.Length > 0)
-            {
-                length += this.ContentEncoding.GetByteCount(text.ToString());
-            }
-
-           // text.Clear();
-            text = null;
+            long length = this.ContentEncoding.GetByteCount(this.ToString()) - this.fileDic.Count;
 
             return length;
         }
@@ -216,6 +187,44 @@ namespace Afx.HttpClient
             if (this.fileDic != null) this.fileDic.Clear();
             this.paramDic = null;
             this.fileDic = null;
+            this.formString = null;
+        }
+
+        private string formString;
+        private int formVer = -1;
+        public override string ToString()
+        {
+            if (this.ver != this.formVer)
+            {
+                StringBuilder text = new StringBuilder();
+                foreach (var kv in this.paramDic)
+                {
+                    text.Append(BEGIN_BOUNDARY);
+                    text.AppendFormat(PARAM_CONTENT_DISPOSITION, kv.Key);
+                    text.Append(kv.Value);
+                    text.Append(NEW_LINE);
+                }
+
+                foreach (var kv in this.fileDic)
+                {
+                    text.Append(BEGIN_BOUNDARY);
+                    text.AppendFormat(FILE_CONTENT_DISPOSITION, kv.Key, kv.Value);
+
+                    text.Append("*");
+
+                    text.Append(NEW_LINE);
+                }
+
+                if (paramDic.Count > 0 || fileDic.Count > 0)
+                {
+                    text.Append(END_BOUNDARY);
+                }
+
+                this.formString = text.ToString();
+                this.formVer = this.ver;
+            }
+
+            return this.formString ?? "";
         }
     }
 }

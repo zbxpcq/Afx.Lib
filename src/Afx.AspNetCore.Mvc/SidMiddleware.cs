@@ -13,17 +13,14 @@ namespace Afx.AspNetCore.Mvc
     public class SidMiddleware
     {
         private SidOption option;
-        private RequestDelegate next;
         /// <summary>
         /// SidMiddleware
         /// </summary>
-        /// <param name="next"></param>
         /// <param name="option"></param>
-        public SidMiddleware(RequestDelegate next, SidOption option)
+        public SidMiddleware(SidOption option)
         {
             if (option == null) throw new ArgumentNullException("option");
             this.option = option;
-            this.next = next;
         }
 
         private string OnEncrypt(string val)
@@ -55,7 +52,7 @@ namespace Afx.AspNetCore.Mvc
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public Task Invoke(HttpContext context)
+        public Task Invoke(HttpContext context, Func<Task> next)
         {
             string sid = null;
             if (this.option.IsQueryString)
@@ -119,7 +116,7 @@ namespace Afx.AspNetCore.Mvc
                 return Task.CompletedTask;
             }, (context, sid, iscreate));
 
-            return this.next.Invoke(context);
+            return next();
         }
     }
 }

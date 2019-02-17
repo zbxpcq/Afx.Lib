@@ -11,6 +11,7 @@ namespace Afx.HttpClient
     public class UrlencodedFormData : FormData
     {
         private Dictionary<string, string> paramDic;
+        private int ver = 0;
         /// <summary>
         /// 
         /// </summary>
@@ -27,11 +28,21 @@ namespace Afx.HttpClient
         /// <param name="value"></param>
         public void AddParam(string key, string value)
         {
-            if (!string.IsNullOrEmpty(key))
-            {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
                 this.paramDic[key] = value ?? "";
-            }
+                this.ver++;
         }
+
+        public void AddParam(Dictionary<string, string> dic)
+        {
+            if (dic != null) throw new ArgumentNullException("dic");
+            foreach (KeyValuePair<string, string> kv in dic)
+            {
+                this.paramDic[kv.Key] = kv.Value ?? "";
+            }
+            this.ver++;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -39,10 +50,8 @@ namespace Afx.HttpClient
         /// <returns></returns>
         public string GetParam(string key)
         {
-            if (this.paramDic.ContainsKey(key))
-            {
-                return this.paramDic[key];
-            }
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(this.paramDic.ContainsKey(key)) return this.paramDic[key];
 
             return null;
         }
@@ -52,10 +61,8 @@ namespace Afx.HttpClient
         /// <param name="key"></param>
         public void RemoveParam(string key)
         {
-            if (!string.IsNullOrEmpty(key))
-            {
-                this.paramDic.Remove(key);
-            }
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(this.paramDic.Remove(key)) this.ver++;
         }
         /// <summary>
         /// 
@@ -63,21 +70,12 @@ namespace Afx.HttpClient
         /// <param name="stream"></param>
         public override void Serialize(Stream stream)
         {
-            StringBuilder text = new StringBuilder();
-            foreach (var kv in this.paramDic)
+            var s = this.ToString();
+            if (!string.IsNullOrEmpty(s))
             {
-                text.AppendFormat("&{0}={1}", kv.Key, Uri.EscapeDataString(kv.Value));
-            }
-
-            if (text.Length > 0)
-            {
-                text.Remove(0, 1);
-                byte[] buffer = this.ContentEncoding.GetBytes(text.ToString());
+                byte[] buffer = this.ContentEncoding.GetBytes(s);
                 stream.Write(buffer, 0, buffer.Length);
             }
-
-           // text.Clear();
-            text = null;
         }
         /// <summary>
         /// 
@@ -85,22 +83,8 @@ namespace Afx.HttpClient
         /// <returns></returns>
         public override long GetLength()
         {
-            long length = 0;
-            StringBuilder text = new StringBuilder();
-            foreach (var kv in this.paramDic)
-            {
-                text.AppendFormat("&{0}={1}", kv.Key, Uri.EscapeDataString(kv.Value));
-            }
-
-            if (text.Length > 0)
-            {
-                text.Remove(0, 1);
-                length = this.ContentEncoding.GetByteCount(text.ToString());
-            }
-
-            //text.Clear();
-            text = null;
-
+            long length = this.ContentEncoding.GetByteCount(this.ToString());
+            
             return length;
         }
         /// <summary>
@@ -112,6 +96,28 @@ namespace Afx.HttpClient
             if (this.paramDic != null)
                 this.paramDic.Clear();
             this.paramDic = null;
+            this.formString = null;
+        }
+
+        private string formString;
+        private int formVer = -1;
+        public override string ToString()
+        {
+            if (this.ver != this.formVer)
+            {
+                StringBuilder text = new StringBuilder();
+                foreach (var kv in this.paramDic)
+                {
+                    text.AppendFormat("&{0}={1}", kv.Key, Uri.EscapeDataString(kv.Value));
+                }
+
+                if (text.Length > 0) text.Remove(0, 1);
+
+                this.formString = text.ToString();
+                this.formVer = this.ver;
+            }
+
+            return this.formString ?? "";
         }
     }
 }

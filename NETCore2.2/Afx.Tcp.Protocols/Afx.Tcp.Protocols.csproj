@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>8.0.1.0</Version>
+    <Version>8.0.2.0</Version>
     <Company>mycsv.cn</Company>
     <Product>Afx.Tcp.Protocols for .NET Core 2.2</Product>
     <Description>Afx.Tcp.Protocols for .NET Core 2.2</Description>

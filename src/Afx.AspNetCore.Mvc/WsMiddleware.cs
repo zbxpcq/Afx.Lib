@@ -34,16 +34,9 @@ namespace Afx.AspNetCore.Mvc
             {
                 if (context.WebSockets.IsWebSocketRequest)
                 {
-                    try
+                    using (var hander = Activator.CreateInstance(t) as IWsHandler)
                     {
-                        using (var hander = Activator.CreateInstance(t) as IWsHandler)
-                        {
-                            await hander.Invoke(context);
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        await hander.Invoke(context);
                     }
                 }
                 else
@@ -55,7 +48,6 @@ namespace Afx.AspNetCore.Mvc
             {
                 await next();
             }
-            await next();
         }
     }
 }

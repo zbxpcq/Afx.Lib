@@ -9,17 +9,17 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class WsExtensions
     {
         private static WsOptions wsOptions;
+        private static bool isconfig = true;
         public static IApplicationBuilder UseWs(this IApplicationBuilder app, Action<WsOptions> func)
         {
-            bool isconfig = false;
             if (wsOptions == null)
             {
                 wsOptions = new WsOptions();
-                isconfig = true;
             }
             func(wsOptions);
             if (isconfig)
             {
+                isconfig = false;
                 app.UseWebSockets(wsOptions.SocketOptions);
                 app.Use(wsOptions.Middleware.Invoke);
             }

@@ -12,7 +12,8 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
    public static  class SidExtensions
     {
-        private static SidOption option = null;
+        private static SidOption option;
+        private static SidMiddleware sidMiddleware;
         /// <summary>
         /// 添加 sid 保存 cookie的Middleware
         /// </summary>
@@ -24,7 +25,8 @@ namespace Microsoft.Extensions.DependencyInjection
             if(option == null)
             {
                 option = new SidOption();
-                app.Use(next => new SidMiddleware(next, option).Invoke);
+                sidMiddleware = new SidMiddleware(option);
+                app.Use(sidMiddleware.Invoke);
             }
 
             configAction?.Invoke(option);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Net;
 
 namespace Afx.HttpClient
 {
@@ -13,11 +14,13 @@ namespace Afx.HttpClient
         /// <summary>
         /// Stream
         /// </summary>
-        public Stream Stream { get; set; }
+        public Stream Stream { get; internal set; }
+        internal HttpWebResponse response { get; set; }
+
         /// <summary>
         /// StreamContent
         /// </summary>
-        public StreamContent()
+        internal StreamContent()
         {
             this.Stream = null;
         }
@@ -33,6 +36,11 @@ namespace Afx.HttpClient
                 catch { }
             }
             this.Stream = null;
+            if(this.response != null)
+            {
+                try { this.response.Close();} catch { }
+            }
+            this.response = null;
         }
     }
 }

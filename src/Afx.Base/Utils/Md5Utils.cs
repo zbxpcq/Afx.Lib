@@ -16,25 +16,41 @@ namespace Afx.Utils
         /// </summary>
         public static string GetMd5Hash(string input)
         {
-            string result = null;
-            try
+            if (input == null) throw new ArgumentNullException("input");
+            byte[] data = Encoding.UTF8.GetBytes(input);
+            byte[] buffer = GetMd5Hash(data);
+            var result = StringUtils.ByteToHexString(buffer);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 获取MD5值
+        /// </summary>
+        public static byte[] GetMd5Hash(byte[] input)
+        {
+            if (input == null) throw new ArgumentNullException("input");
+            byte[] result = null;
+            if (input.Length > 0)
             {
-                if (input != null)
+                try
                 {
                     using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
                     {
-                        byte[] data = Encoding.UTF8.GetBytes(input);
-                        byte[] buffer = md5.ComputeHash(data);
-                        result = StringUtils.ByteToHexString(buffer);
+                        result = md5.ComputeHash(input);
                     }
                 }
-            }
-            catch(Exception ex)
-            {
+                catch (Exception ex)
+                {
 #if !NETCOREAPP && !NETSTANDARD
-                SetFipsAlgorithmPolicy();
+                    SetFipsAlgorithmPolicy();
 #endif
-                throw ex;
+                    throw ex;
+                }
+            }
+            else
+            {
+                result = new byte[0];
             }
 
             return result;

@@ -7,7 +7,7 @@
     <Product>Afx.Dapper for .NET Core 2.2</Product>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <PackageReleaseNotes>Afx.Dapper for .NET Core 2.2</PackageReleaseNotes>
-    <Version>8.0.1.0</Version>
+    <Version>8.0.2.0</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Dapper\</OutputPath>

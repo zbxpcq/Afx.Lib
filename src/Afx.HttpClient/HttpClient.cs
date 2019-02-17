@@ -13,23 +13,24 @@ using System.Web;
 namespace Afx.HttpClient
 {
     /// <summary>
-    /// 进度回调
-    /// </summary>
-    /// <param name="length">数据总长度</param>
-    /// <param name="position">处理位置</param>
-    public delegate void ProgressCall(long length, long position);
-
-    /// <summary>
     /// HttpClient
     /// </summary>
     public sealed class HttpClient : IDisposable
     {
-        static HttpClient()
+        private static bool isSetServicePointManager = false;
+        private static void SetServicePointManager()
         {
+            if (isSetServicePointManager) return;
             if (ServicePointManager.DefaultConnectionLimit < 10)
                 ServicePointManager.DefaultConnectionLimit = 512;
             if (ServicePointManager.ServerCertificateValidationCallback == null)
                 ServicePointManager.ServerCertificateValidationCallback = OnServerCertificateValidationCallback;
+#if NET20 || NET40
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
+#else
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+#endif
+            isSetServicePointManager = true;
         }
 
         private static bool OnServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -68,7 +69,7 @@ namespace Afx.HttpClient
         /// UseDefaultCredentials
         /// </summary>
         public bool? UseDefaultCredentials { get; set; }
-#if !NET40 &&  !NET20
+#if !NET40 && !NET20
         /// <summary>
         /// ServerCertificateValidationCallback
         /// </summary>
@@ -80,6 +81,10 @@ namespace Afx.HttpClient
         public X509CertificateCollection ClientCertificates {  get; private set; }
 
         public Version ProtocolVersion { get; set; }
+
+        public ICredentials Credentials { get; set; }
+
+        public bool? AllowAutoRedirect { get; set; }
 
         private Dictionary<string, string> headersDic;
 
@@ -123,15 +128,18 @@ namespace Afx.HttpClient
         /// </summary>
         public HttpClient()
         {
-            this.KeepAlive = false;
+            SetServicePointManager();
             this.Accept = "text/html, application/xhtml+xml, */*";
             this.AcceptLanguage = "zh-CN";
             this.AcceptCharset = "utf-8";
             this.UserAgent = "Afx.HttpClient";
+            this.AllowAutoRedirect = true;
+            this.KeepAlive = false;
             //this.Timeout = 10 * 1000;
+            //this.UseDefaultCredentials = true;
+            //this.Credentials = CredentialCache.DefaultCredentials;
             this.Cookies = new CookieContainer();
             this.headersDic = new Dictionary<string, string>();
-            //this.UseDefaultCredentials = true;
             this.ClientCertificates = new X509CertificateCollection();
         }
 
@@ -227,7 +235,7 @@ namespace Afx.HttpClient
         {
             url = this.BuildUrl(url);
             HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
-            request.AllowAutoRedirect = true;
+            if(this.AllowAutoRedirect.HasValue) request.AllowAutoRedirect = this.AllowAutoRedirect.Value;
             request.AllowWriteStreamBuffering = this.AllowWriteStreamBuffering;
             request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
            if(this.KeepAlive.HasValue)  request.KeepAlive = this.KeepAlive.Value;
@@ -251,11 +259,10 @@ namespace Afx.HttpClient
                     request.Headers.Add(kv.Key, kv.Value);
                 }
             }
-
             if (this.UseDefaultCredentials.HasValue) request.UseDefaultCredentials = this.UseDefaultCredentials.Value;
-            request.Credentials = CredentialCache.DefaultCredentials;
+            if(this.Credentials != null) request.Credentials = this.Credentials;
 
-#if !NET40 &&  !NET20
+#if !NET40 && !NET20
             if (this.ServerCertificateValidationCallback != null) request.ServerCertificateValidationCallback = this.ServerCertificateValidationCallback;
 #endif
             if (this.ClientCertificates.Count > 0)
@@ -295,6 +302,7 @@ namespace Afx.HttpClient
                     using (Stream requestStream = request.GetRequestStream())
                     {
                         formData.Serialize(requestStream);
+                        requestStream.Close();
                     }
                 }
                 else
@@ -467,19 +475,6 @@ namespace Afx.HttpClient
         /// <returns></returns>
         public EmptyContent DownloadFile(string url, string method, FormData formData, string saveFileName)
         {
-            return DownloadFile(url, method, formData, saveFileName);
-        }
-        /// <summary>
-        /// DownloadFile
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="method"></param>
-        /// <param name="formData"></param>
-        /// <param name="saveFileName"></param>
-        /// <param name="call"></param>
-        /// <returns></returns>
-        public EmptyContent DownloadFile(string url, string method, FormData formData, string saveFileName, ProgressCall call)
-        {
             EmptyContent result = new EmptyContent();
             try
             {
@@ -489,34 +484,20 @@ namespace Afx.HttpClient
                 {
                     using (var responseStream = this.GetResponseStream(response))
                     {
-                        long length = response.ContentLength > 0 ? response.ContentLength : responseStream.Length;
-                        long position = 0;
-                        this.OnProgressCall(call, length, position);
                         using (var fs = File.Create(saveFileName))
                         {
-                            byte[] buffer = new byte[8 * 1024];
+#if NET20
+                            var buffer = new byte[8 * 1024];
                             int count = 0;
-                            int trycount = 0;
-                            do
+                            while((count = responseStream.Read(buffer, 0, buffer.Length)) > 0
+                                || response.ContentLength> fs.Position)
                             {
-                                count = responseStream.Read(buffer, 0, buffer.Length);
-                                if (count > 0)
-                                {
-                                    fs.Write(buffer, 0, count);
-                                    fs.Flush();
-                                    position = position + count;
-                                    trycount = 0;
-                                    this.OnProgressCall(call, length, position);
-                                }
-                                else if ((response.ContentLength == 0 || response.ContentLength > position)
-                                    && trycount < 5)
-                                {
-                                    System.Threading.Thread.Sleep(50);
-                                    trycount++;
-                                    count = 1;
-                                }
+                                if (count > 0) fs.Write(buffer, 0, count);
+                                else System.Threading.Thread.SpinWait(10);
                             }
-                            while (count > 0);
+#else
+                            responseStream.CopyTo(fs);
+#endif
                         }
                         this.SetContent(response, result);
                     }
@@ -558,28 +539,18 @@ namespace Afx.HttpClient
                     {
                         using (MemoryStream ms = new MemoryStream())
                         {
-                            byte[] buffer = new byte[8 * 1024];
+#if NET20
+                            var buffer = new byte[8 * 1024];
                             int count = 0;
-                            long position = 0;
-                            int trycount = 0;
-                            do
+                            while ((count = responseStream.Read(buffer, 0, buffer.Length)) > 0
+                                || response.ContentLength > ms.Position)
                             {
-                                count = responseStream.Read(buffer, 0, buffer.Length);
-                                if (count > 0)
-                                {
-                                    ms.Write(buffer, 0, count);
-                                    position += count;
-                                    trycount = 0;
-                                }
-                                else if((response.ContentLength == 0 || response.ContentLength > position)
-                                    && trycount < 5)
-                                {
-                                    System.Threading.Thread.Sleep(50);
-                                    trycount++;
-                                    count = 1;
-                                }
+                                if (count > 0) ms.Write(buffer, 0, count);
+                                else System.Threading.Thread.SpinWait(10);
                             }
-                            while (count > 0);
+#else
+                            responseStream.CopyTo(ms);
+#endif
                             result.Buffer = ms.ToArray();
                         }
 
@@ -617,9 +588,9 @@ namespace Afx.HttpClient
             {
                 HttpWebRequest request = this.CreateRequest(url, method);
                 this.SetFormData(request, formData);
-                HttpWebResponse response = this.GetResponse(request);
-                result.Stream = this.GetResponseStream(response);
-                this.SetContent(response, result);
+                result.response = this.GetResponse(request);
+                result.Stream = this.GetResponseStream(result.response);
+                this.SetContent(result.response, result);
             }
             catch (Exception ex)
             {
@@ -629,14 +600,6 @@ namespace Afx.HttpClient
             return result;
         }
 
-        private void OnProgressCall(ProgressCall call, long length, long position)
-        {
-            if (call != null)
-            {
-                try { call(length, position); }
-                catch { }
-            }
-        }
         /// <summary>
         /// Dispose
         /// </summary>
