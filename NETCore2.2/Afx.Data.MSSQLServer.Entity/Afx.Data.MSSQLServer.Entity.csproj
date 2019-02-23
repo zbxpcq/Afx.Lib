@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>8.0.2.0</Version>
+    <Version>8.0.3.0</Version>
     <Company>mycsv.cn</Company>
     <Product>Afx.Data.MSSQLServer.Entity for .NET Core 2.2</Product>
     <Description>Afx.Data.MSSQLServer.Entity for .NET Core 2.2</Description>
@@ -29,7 +29,7 @@
     <Folder Include="Schema\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
     <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>

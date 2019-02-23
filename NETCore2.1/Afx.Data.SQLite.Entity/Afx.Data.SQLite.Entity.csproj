@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>8.0.2.0</Version>
+    <Version>8.0.3.0</Version>
     <Company>mycsv.cn</Company>
     <Product>Afx.Data.SQLite.Entity for .NET Core 2.1</Product>
     <Description>Afx.Data.SQLite.Entity for .NET Core 2.1</Description>
@@ -29,8 +29,8 @@
     <Folder Include="Schema\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="2.1.4" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="2.1.8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Afx.Data.Entity\Afx.Data.Entity.csproj" />

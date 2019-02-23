@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>8.0.2.0</Version>
+    <Version>8.0.3.0</Version>
     <Company>mycsv.cn</Company>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <Product>Afx.Data.MySql.Entity for .NET Core 2.1</Product>
@@ -29,7 +29,7 @@
     <Folder Include="Schema\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MySqlConnector" Version="0.49.0" />
+    <PackageReference Include="MySqlConnector" Version="0.49.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
   </ItemGroup>
   <ItemGroup>
