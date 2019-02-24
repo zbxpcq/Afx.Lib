@@ -12,11 +12,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.HttpClient\</OutputPath>
     <DocumentationFile>..\..\Publish\Afx.HttpClient\netcoreapp2.1\Afx.HttpClient.xml</DocumentationFile>
+    <DefineConstants>TRACE;NETCORE2_1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
+    <DefineConstants>TRACE;NETCORE2_1</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\src\Afx.HttpClient\Content\ByteContent.cs" Link="Content\ByteContent.cs" />
