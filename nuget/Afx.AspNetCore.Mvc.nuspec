@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.AspNetCore.Mvc</id>
-    <version>8.0.3.0</version>
+    <version>8.2.2.3</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -11,11 +11,8 @@
     <copyright>Copyright © mycsv 2018</copyright>
     <tags>Afx.AspNetCore.Mvc SID Afx</tags>
     <dependencies>
-      <group targetFramework=".NETCoreApp2.1">
-        <dependency id="Microsoft.AspNetCore.App" version="2.1.8" exclude="Build,Analyzers" />
-      </group>
       <group targetFramework=".NETCoreApp2.2">
-        <dependency id="Microsoft.AspNetCore.App" version="2.2.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.App" version="2.2.3" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

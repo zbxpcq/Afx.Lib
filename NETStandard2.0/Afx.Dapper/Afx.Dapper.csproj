@@ -7,7 +7,7 @@
     <Product>Afx.Dapper for .NET Standard 2.0</Product>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <PackageReleaseNotes>Afx.Dapper for .NET Standard 2.0</PackageReleaseNotes>
-    <Version>8.0.3.0</Version>
+    <Version>8.2.2.3</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\Publish\Afx.Dapper\</OutputPath>
@@ -18,6 +18,6 @@
     <Compile Include="..\..\src\Afx.Dapper\IAfxDapper.cs" Link="IAfxDapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="1.50.7" />
+    <PackageReference Include="Dapper" Version="1.60.1" />
   </ItemGroup>
 </Project>
