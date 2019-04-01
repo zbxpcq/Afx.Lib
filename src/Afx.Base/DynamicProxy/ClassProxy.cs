@@ -424,11 +424,31 @@ namespace Afx.DynamicProxy
             List<MethodInfo> list = new List<MethodInfo>(interfaceTypes != null ? interfaceTypes.Length : 0);
             if (interfaceTypes != null && interfaceTypes.Length > 0)
             {
+                var paramArr = ProxyUtil.GetParameterType(meth);
                 foreach (var t in interfaceTypes)
                 {
-                    var interfaceMeth = t.GetMethod(meth.Name, ProxyUtil.GetParameterType(meth));
-                    if (interfaceMeth != null && interfaceMeth.ReturnType == meth.ReturnType)
-                        list.Add(interfaceMeth);
+                    MethodInfo interfaceMeth = null;
+                    var arr = t.GetMethods();
+                    foreach(var item in arr)
+                    {
+                        if(item.Name == meth.Name && item.ReturnType == meth.ReturnType)
+                        {
+                            var iarr = ProxyUtil.GetParameterType(item);
+                            if (paramArr.Length == iarr.Length)
+                            {
+                                bool isok = true;
+                                for(var i = 0; i< paramArr.Length; i++)
+                                {
+                                    if(paramArr[i] != iarr[i])
+                                    {
+                                        isok = false;
+                                        break;
+                                    }
+                                }
+                                if (isok) list.Add(interfaceMeth);
+                            }
+                        }
+                    } 
                 }
             }
 

@@ -314,7 +314,29 @@ namespace Afx.Ioc
                         {
                             if (baseServiceType != f && baseServiceType.IsAssignableFrom(f))
                             {
-                                result.Add(this.Register(f, t));
+                                if (t.IsGenericTypeDefinition && f.IsGenericType)
+                                {
+                                    var tarr = t.GetGenericArguments();
+                                    var farr = f.GetGenericArguments();
+                                    if(tarr.Length == farr.Length)
+                                    {
+                                        bool isok = true;
+                                        for(int i=0; i<tarr.Length; i++)
+                                        {
+                                            if(tarr[i] != farr[i])
+                                            {
+                                                isok = false;
+                                                break;
+                                            }
+                                        }
+
+                                        if(isok) result.Add(this.Register(f.GetGenericTypeDefinition(), t));
+                                    }
+                                }
+                                else
+                                {
+                                    result.Add(this.Register(f, t));
+                                }
                             }
                         }
                     }

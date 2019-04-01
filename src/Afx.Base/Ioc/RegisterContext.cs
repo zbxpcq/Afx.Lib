@@ -115,7 +115,7 @@ namespace Afx.Ioc
         {
             this.CheckAop();
             this.Context.EnabledAop = enabled;
-            if(enabled)
+            if(enabled && !this.ServiceType.IsGenericTypeDefinition)
             {
                 var container = this.Container as Container;
                 switch(this.Context.Mode)
