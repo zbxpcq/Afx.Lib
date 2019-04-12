@@ -17,10 +17,10 @@ namespace Afx.Data.Entity.Schema
         Action<string> Log { get; set; }
 
         /// <summary>
-        /// 获取所有表名
+        /// 获取所有表
         /// </summary>
         /// <returns></returns>
-        List<string> GetTables();
+        List<TableInfoModel> GetTables();
 
         /// <summary>
         /// 创建表
@@ -28,7 +28,7 @@ namespace Afx.Data.Entity.Schema
         /// <param name="table">表名</param>
         /// <param name="columns">列信息</param>
         /// <returns>是否创建成功</returns>
-        bool CreateTable(string table, List<ColumnInfoModel> columns);
+        bool CreateTable(TableInfoModel table, List<ColumnInfoModel> columns);
 
         //bool DeleteTable(string table);
 
@@ -98,7 +98,7 @@ namespace Afx.Data.Entity.Schema
         /// </summary>
         /// <param name="modelType">model type</param>
         /// <returns>表名</returns>
-        string GetTableName(Type modelType);
+        TableInfoModel GetTableName(Type modelType);
 
         /// <summary>
         /// 获取model 属性列信息

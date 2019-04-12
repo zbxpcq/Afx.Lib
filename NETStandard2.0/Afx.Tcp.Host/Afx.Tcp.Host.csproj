@@ -7,7 +7,7 @@
     <Authors>jerrylai@aliyun.com</Authors>
     <Product>Afx.Tcp.Host .NET Standard 2.0</Product>
     <PackageReleaseNotes>Afx.Tcp.Host .NET Standard 2.0</PackageReleaseNotes>
-    <Version>8.2.2.3</Version>
+    <Version>8.2.2.31</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

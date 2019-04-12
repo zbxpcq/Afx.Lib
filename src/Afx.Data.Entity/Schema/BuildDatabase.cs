@@ -41,20 +41,20 @@ namespace Afx.Data.Entity.Schema
             if (count == false)
                 databaseSchema.CreateDatabase();
 
-            List<string> tables = tableSchema.GetTables();
+            List<TableInfoModel> tables = tableSchema.GetTables();
             List<Type> modelTypes = tableSchema.GetModelType<T>();
             foreach (var t in modelTypes)
             {
-                string tb = tableSchema.GetTableName(t);
-                if (!tables.Contains(tb, StringComparer.OrdinalIgnoreCase))
+                var tb = tableSchema.GetTableName(t);
+                if (!tables.Exists(q=>string.Equals(q.Name, tb.Name, StringComparison.OrdinalIgnoreCase)))
                 {
-                    var columns = tableSchema.GetModelColumns(t, tb);
+                    var columns = tableSchema.GetModelColumns(t, tb.Name);
                     tableSchema.CreateTable(tb, columns);
                 }
                 else
                 {
-                    var tableColumns = tableSchema.GetTableColumns(tb);
-                    var modelColumns = tableSchema.GetModelColumns(t, tb);
+                    var tableColumns = tableSchema.GetTableColumns(tb.Name);
+                    var modelColumns = tableSchema.GetModelColumns(t, tb.Name);
                     List<IndexModel> addIndexs = new List<IndexModel>();
                     List<string> delIndexs = new List<string>();
                     foreach (var mColumn in modelColumns)
@@ -62,7 +62,7 @@ namespace Afx.Data.Entity.Schema
                         var tColumn = tableColumns.Find(q => q.Name.Equals(mColumn.Name, StringComparison.OrdinalIgnoreCase));
                         if (tColumn == null)
                         {
-                            tableSchema.AddColumn(tb, mColumn);
+                            tableSchema.AddColumn(tb.Name, mColumn);
                             if(mColumn.Indexs != null && mColumn.Indexs.Count > 0)
                             {
                                 foreach(var index in mColumn.Indexs)
@@ -121,10 +121,10 @@ namespace Afx.Data.Entity.Schema
                     }
                     foreach(var indexs in delIndexs)
                     {
-                        tableSchema.DeleteIndex(tb, indexs);
+                        tableSchema.DeleteIndex(tb.Name, indexs);
                     }
 
-                    if(addIndexs.Count > 0) tableSchema.AddIndex(tb, addIndexs);
+                    if(addIndexs.Count > 0) tableSchema.AddIndex(tb.Name, addIndexs);
                 }
             }
         }

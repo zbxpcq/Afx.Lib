@@ -11,15 +11,30 @@ namespace Afx.Data.Entity.Schema
     public abstract class ModelSchema : IModelSchema
     {
         /// <summary>
+        /// 是否自动修改类名，默认true
+        /// </summary>
+        public virtual bool IsAutoModelName { get; set; }
+        /// <summary>
+        /// 是否自动修改属性名，默认true
+        /// </summary>
+        public virtual bool IsAutoPropertyName { get; set; }
+
+        public ModelSchema()
+        {
+            this.IsAutoModelName = true;
+            this.IsAutoPropertyName = true;
+        }
+
+        /// <summary>
         /// 获取 model .cs 文件源代码
         /// </summary>
-        /// <param name="modelName">model名称</param>
+        /// <param name="table">model名称</param>
         /// <param name="columns">表列信息</param>
         /// <param name="namespace">model 命名空间</param>
         /// <returns>model .cs 文件源代码</returns>
-        public virtual string GetModelCode(string modelName, List<ColumnInfoModel> columns, string @namespace)
+        public virtual string GetModelCode(TableInfoModel table, List<ColumnInfoModel> columns, string @namespace)
         {
-            if (string.IsNullOrEmpty(modelName)) throw new ArgumentNullException("modelName");
+            if (string.IsNullOrEmpty(table.Name)) throw new ArgumentNullException("tableName");
             if(columns == null) throw new ArgumentNullException("columns");
             if (string.IsNullOrEmpty(@namespace)) throw new ArgumentNullException("namespace");
             StringBuilder propertysString = new StringBuilder();
@@ -27,14 +42,13 @@ namespace Afx.Data.Entity.Schema
             {
                 foreach (var column in columns)
                 {
-                    propertysString.Append(this.GetAttributeCode(column));
                     propertysString.Append(this.GetPropertyCode(column));
                     propertysString.Append("\r\n\r\n");
                 }
                 propertysString.Remove(propertysString.Length - 4, 4);
             }
 
-            return string.Format(ModelFormat, @namespace, modelName, this.GetModelName(modelName), propertysString.ToString());
+            return string.Format(ModelFormat, @namespace, table, this.GetModelName(table.Name), propertysString.ToString(), table.Comment ?? "");
         }
 
         /// <summary>
@@ -46,25 +60,28 @@ namespace Afx.Data.Entity.Schema
         {
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
             string name = table;
-            if (name.Contains('_'))
+            if (this.IsAutoModelName)
             {
-                var arr = name.Split('_');
-                name = "";
-                foreach (var s in arr)
+                if (name.Contains('_'))
                 {
-                    if (!string.IsNullOrEmpty(s))
+                    var arr = name.Split('_');
+                    name = "";
+                    foreach (var s in arr)
                     {
-                        name = name + s.Substring(0, 1).ToUpper();
-                        if (s.Length > 1) name = name + s.Substring(1, s.Length - 1);
+                        if (!string.IsNullOrEmpty(s))
+                        {
+                            name = name + s.Substring(0, 1).ToUpper();
+                            if (s.Length > 1) name = name + s.Substring(1, s.Length - 1);
+                        }
                     }
                 }
-            }
 
-            name.Replace('.', '_');
-            char c = name[0];
-            if ('0' <= c && c <= '9' || c == '#' || c == '$')
-            {
-                name = "_" + name;
+                name.Replace('.', '_');
+                char c = name[0];
+                if ('0' <= c && c <= '9' || c == '#' || c == '$')
+                {
+                    name = "_" + name;
+                }
             }
 
             return name;
@@ -80,6 +97,7 @@ namespace Afx.Data.Entity.Schema
             if (column == null) throw new ArgumentNullException("column");
             StringBuilder attsString = new StringBuilder();
             string attrFormat = this.GetPropertyAttribute();
+            if (string.IsNullOrEmpty(attrFormat)) return string.Empty;
             if (column.IsKey)
             {
                 attsString.AppendLine(string.Format(attrFormat, "Key"));
@@ -143,25 +161,28 @@ namespace Afx.Data.Entity.Schema
         {
             if (string.IsNullOrEmpty(column)) throw new ArgumentNullException("column");
             string name = column;
-            if (name.Contains('_'))
+            if (this.IsAutoPropertyName)
             {
-                var arr = name.Split('_');
-                name = "";
-                foreach (var s in arr)
+                if (name.Contains('_'))
                 {
-                    if (!string.IsNullOrEmpty(s))
+                    var arr = name.Split('_');
+                    name = "";
+                    foreach (var s in arr)
                     {
-                        name = name + s.Substring(0, 1).ToUpper();
-                        if (s.Length > 1) name = name + s.Substring(1, s.Length - 1);
+                        if (!string.IsNullOrEmpty(s))
+                        {
+                            name = name + s.Substring(0, 1).ToUpper();
+                            if (s.Length > 1) name = name + s.Substring(1, s.Length - 1);
+                        }
                     }
                 }
-            }
 
-            name.Replace('.', '_');
-            char c = name[0];
-            if ('0' <= c && c <= '9' || c == '#' || c == '$')
-            {
-                name = "_" + name;
+                name.Replace('.', '_');
+                char c = name[0];
+                if ('0' <= c && c <= '9' || c == '#' || c == '$')
+                {
+                    name = "_" + name;
+                }
             }
 
             return name;
@@ -177,8 +198,10 @@ namespace Afx.Data.Entity.Schema
             if (column == null) throw new ArgumentNullException("column");
             string type = this.GetPropertyType(column);
             string propertyName = this.GetPropertyName(column.Name);
+            string attrs = this.GetAttributeCode(column);
+            if (!string.IsNullOrEmpty(attrs)) attrs = "\r\n" + attrs;
 
-            return string.Format(this.GetPropertyFormat(), type ?? "", propertyName ?? ""); 
+            return string.Format(this.GetPropertyFormat(), type ?? "", propertyName ?? "", column.Comment ?? "", attrs); 
         }
 
         /// <summary>
@@ -205,7 +228,7 @@ namespace Afx.Data.Entity.Schema
         /// <returns></returns>
         protected virtual string GetDbContextFormat()
         {
-            if (string.IsNullOrEmpty(this.modelFormat))
+            if (this.modelFormat == null)
             {
                 try
                 {
@@ -214,6 +237,7 @@ namespace Afx.Data.Entity.Schema
                     if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
                     if (!System.IO.File.Exists(file))
                     {
+                        this.modelFormat = ModelFormat;
                         System.IO.File.WriteAllText(file, ModelFormat, Encoding.UTF8);
                     }
                     else
@@ -222,7 +246,6 @@ namespace Afx.Data.Entity.Schema
                     }
                 }
                 catch { }
-                if (string.IsNullOrEmpty(this.modelFormat)) this.modelFormat = ModelFormat;
             }
 
             return this.modelFormat;
@@ -235,7 +258,7 @@ namespace Afx.Data.Entity.Schema
         /// <returns></returns>
         protected string GetPropertyFormat()
         {
-            if (string.IsNullOrEmpty(this.modelPropertyFormat))
+            if (this.modelPropertyFormat == null)
             {
                 try
                 {
@@ -244,6 +267,7 @@ namespace Afx.Data.Entity.Schema
                     if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
                     if (!System.IO.File.Exists(file))
                     {
+                        this.modelPropertyFormat = ModelPropertyFormat;
                         System.IO.File.WriteAllText(file, ModelPropertyFormat, Encoding.UTF8);
                     }
                     else
@@ -252,7 +276,6 @@ namespace Afx.Data.Entity.Schema
                     }
                 }
                 catch { }
-                if (string.IsNullOrEmpty(this.modelPropertyFormat)) this.modelPropertyFormat = ModelPropertyFormat;
             }
 
             return this.modelPropertyFormat;
@@ -265,7 +288,7 @@ namespace Afx.Data.Entity.Schema
         /// <returns></returns>
         protected virtual string GetPropertyAttribute()
         {
-            if (string.IsNullOrEmpty(this.modelAttribute))
+            if (this.modelAttribute == null)
             {
                 try
                 {
@@ -274,6 +297,7 @@ namespace Afx.Data.Entity.Schema
                     if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
                     if (!System.IO.File.Exists(file))
                     {
+                        this.modelAttribute = ModelAttributeFormat;
                         System.IO.File.WriteAllText(file, ModelAttributeFormat, Encoding.UTF8);
                     }
                     else
@@ -282,7 +306,6 @@ namespace Afx.Data.Entity.Schema
                     }
                 }
                 catch { }
-                if (string.IsNullOrEmpty(this.modelAttribute)) this.modelAttribute = ModelAttributeFormat;
             }
 
             return this.modelAttribute;
@@ -294,7 +317,10 @@ namespace Afx.Data.Entity.Schema
 
         private const string ModelAttributeFormat = @"        [{0}]";
 
-        private const string ModelPropertyFormat = @"        public {0} {1} {{ get; set; }}";
+        private const string ModelPropertyFormat = @"		/// <summary>
+		/// {2}
+		/// </summary>{3}
+        public {0} {1} {{ get; set; }}";
 
         private const string ModelFormat = @"using System;
 using System.Collections.Generic;
@@ -303,6 +329,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace {0}
 {{
+    /// <summary>
+    /// {4}
+    /// </summary>
     [Table(""{1}"")]
     public partial class {2}
     {{

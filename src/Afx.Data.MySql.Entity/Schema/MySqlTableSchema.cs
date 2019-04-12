@@ -46,20 +46,27 @@ namespace Afx.Data.MySql.Entity.Schema
         /// 获取数据库所有表名
         /// </summary>
         /// <returns>数据库所有表名</returns>
-        public override List<string> GetTables()
+        public override List<TableInfoModel> GetTables()
         {
-            List<string> list = new List<string>();
+            List<TableInfoModel> list = null;
             this.db.ClearParameters();
-            this.db.CommandText = "SELECT table_name FROM information_schema.tables tb WHERE tb.table_schema=?database  AND table_type = 'BASE TABLE';";
+            this.db.CommandText = "SELECT table_name,table_comment FROM information_schema.tables tb WHERE tb.table_schema=?database  AND table_type = 'BASE TABLE';";
             this.db.AddParameter("?database", this.database);
             using (DataTable dt = new DataTable())
             {
                 db.Fill(dt);
+                list = new List<TableInfoModel>(dt.Rows.Count);
                 foreach (DataRow row in dt.Rows)
                 {
                     string s = row[0].ToString();
                     if (!string.IsNullOrEmpty(s))
-                        list.Add(s);
+                    {
+                        list.Add(new TableInfoModel()
+                        {
+                            Name = s,
+                            Comment = row[1].ToString()
+                        });
+                    }
                 }
             }
 
@@ -97,20 +104,21 @@ namespace Afx.Data.MySql.Entity.Schema
         /// <param name="table">表名</param>
         /// <param name="columns">列信息</param>
         /// <returns>是否成功</returns>
-        public override bool CreateTable(string table, List<ColumnInfoModel> columns)
+        public override bool CreateTable(TableInfoModel table, List<ColumnInfoModel> columns)
         {
-            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (table == null || string.IsNullOrEmpty(table.Name)) throw new ArgumentNullException("table");
             if (columns == null) throw new ArgumentNullException("columns");
             if (columns.Count == 0) return false;
             int count = 0;
             StringBuilder createTableSql = new StringBuilder();
             List<ColumnInfoModel> keyColumns = columns.Where(q => q.IsKey).ToList();
             List<IndexModel> indexs = new List<IndexModel>();
-            createTableSql.AppendFormat("CREATE TABLE `{0}`(", table);
+            createTableSql.AppendFormat("CREATE TABLE `{0}`(", table.Name);
             foreach (var column in columns)
             {
                 createTableSql.AppendFormat("`{0}` {1} {2} NULL", column.Name, column.DataType, column.IsNullable ? "" : "NOT");
                 if (column.IsAutoIncrement) createTableSql.Append(" AUTO_INCREMENT");
+                if (!string.IsNullOrEmpty(column.Comment)) createTableSql.AppendFormat(" COMMENT '{0}'", column.Comment.Replace("'", ""));
                 createTableSql.Append(",");
 
                 if (column.Indexs != null && column.Indexs.Count > 0) indexs.AddRange(column.Indexs);
@@ -129,15 +137,17 @@ namespace Afx.Data.MySql.Entity.Schema
                 createTableSql.Append(")");
             }
 
-            createTableSql.Append(") ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_general_ci;");
+            createTableSql.Append(") ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_general_ci");
 
+            if(!string.IsNullOrEmpty(table.Comment)) createTableSql.AppendFormat(" COMMENT '{0}'", table.Comment.Replace("'", ""));
+            createTableSql.Append(";");
             this.db.ClearParameters();
             using (var tx = this.db.BeginTransaction())
             {
                 this.db.CommandText = createTableSql.ToString();
                 count = this.db.ExecuteNonQuery();
 
-                if (indexs.Count > 0) this.AddIndex(table, indexs);
+                if (indexs.Count > 0) this.AddIndex(table.Name, indexs);
 
                 tx.Commit();
             }
@@ -163,8 +173,8 @@ namespace Afx.Data.MySql.Entity.Schema
             if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
             if (column == null) throw new ArgumentNullException("column");
             this.db.ClearParameters();
-            this.db.CommandText = string.Format("ALTER TABLE `{0}` ADD COLUMN `{1}` {2} {3} NULL;",
-                table, column.Name, column.DataType, column.IsNullable ? "" : "NOT");
+            this.db.CommandText = string.Format("ALTER TABLE `{0}` ADD COLUMN `{1}` {2} {3} NULL Comment '{4}';",
+                table, column.Name, column.DataType, column.IsNullable ? "" : "NOT", (column.Comment ?? "").Replace("'", ""));
             int count = this.db.ExecuteNonQuery();
 
             return count > 0;
@@ -336,6 +346,7 @@ namespace Afx.Data.MySql.Entity.Schema
                         m.IsNonClustered = false;
                         m.IsNullable = Convert.ToBoolean(row["IsNullable"]);
                         m.Order = Convert.ToInt32(row["Order"]);
+                        m.Comment = row["Comment"].ToString();
                         var index_row = index_dt.Select("Order = " + m.Order);
                         if (index_row != null && index_row.Length > 0)
                         {
@@ -449,7 +460,8 @@ IFNULL((CASE WHEN col.`DATA_TYPE` IN('decimal', 'double', 'float', 'numeric', 'r
 IFNULL(col.`NUMERIC_SCALE`, 0) `MinLength`,
 IF(col.`IS_NULLABLE`='YES', 1, 0) `IsNullable`,
 IF(col.`COLUMN_KEY`='PRI', 1, 0) `IsKey`,
-IF(col.`EXTRA`='auto_increment', 1,0) `IsAutoIncrement`
+IF(col.`EXTRA`='auto_increment', 1,0) `IsAutoIncrement`,
+col.`COLUMN_COMMENT` `Comment`
 FROM information_schema.columns col
 WHERE col.table_schema=?database AND col.table_name=?table;";
 

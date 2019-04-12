@@ -55,17 +55,18 @@ namespace Afx.Data.SQLite.Entity.Schema
         /// 获取数据库所有表名
         /// </summary>
         /// <returns>数据库所有表名</returns>
-        public override List<string> GetTables()
+        public override List<TableInfoModel> GetTables()
         {
-            List<string> list = new List<string>();
+            List<TableInfoModel> list = null;
             this.db.ClearParameters();
             this.db.CommandText = @"SELECT [name] FROM [sqlite_master] WHERE [type]='table' AND [tbl_name] <> 'sqlite_sequence'";
             using (var dt = new DataTable())
             {
                 this.db.Fill(dt);
+                list = new List<TableInfoModel>(dt.Rows.Count);
                 foreach (DataRow row in dt.Rows)
                 {
-                    list.Add(row[0].ToString());
+                    list.Add(new TableInfoModel() { Name = row[0].ToString() });
                 }
             }
 
@@ -103,16 +104,16 @@ namespace Afx.Data.SQLite.Entity.Schema
         /// <param name="table">表名</param>
         /// <param name="columns">列信息</param>
         /// <returns>是否成功</returns>
-        public override bool CreateTable(string table, List<ColumnInfoModel> columns)
+        public override bool CreateTable(TableInfoModel table, List<ColumnInfoModel> columns)
         {
-            if (string.IsNullOrEmpty(table) || columns == null && columns.Count == 0)
+            if (string.IsNullOrEmpty(table.Name) || columns == null && columns.Count == 0)
                 return true;
 
             int count = 0;
             StringBuilder createTableSql = new StringBuilder();
             List<ColumnInfoModel> keyColumns = columns.Where(q=>q.IsKey).ToList();
             List<IndexModel> indexs = new List<IndexModel>();
-            createTableSql.AppendFormat("CREATE TABLE [{0}](", table);
+            createTableSql.AppendFormat("CREATE TABLE [{0}](", table.Name);
             foreach (var column in columns)
             { 
                 createTableSql.AppendFormat("[{0}] {1} {2} NULL", column.Name, column.DataType, column.IsNullable ? "" : "NOT");
@@ -129,7 +130,7 @@ namespace Afx.Data.SQLite.Entity.Schema
 
             if (keyColumns.Count > 1)
             {
-                createTableSql.AppendFormat(", CONSTRAINT PK_{0} PRIMARY KEY (", table);
+                createTableSql.AppendFormat(", CONSTRAINT PK_{0} PRIMARY KEY (", table.Name);
 
                 foreach (var column in keyColumns)
                 {
@@ -147,7 +148,7 @@ namespace Afx.Data.SQLite.Entity.Schema
                 this.db.CommandText = createTableSql.ToString();
                count = this.db.ExecuteNonQuery();
 
-                if (indexs.Count > 0) this.AddIndex(table, indexs);
+                if (indexs.Count > 0) this.AddIndex(table.Name, indexs);
 
                 tx.Commit();
             }

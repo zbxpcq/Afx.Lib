@@ -48,20 +48,31 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
         /// 获取数据库所有表名
         /// </summary>
         /// <returns>数据库所有表名</returns>
-        public override List<string> GetTables()
+        public override List<TableInfoModel> GetTables()
         {
-            List<string> list = new List<string>();
+            List<TableInfoModel> list = null;
             this.db.ClearParameters();
-            this.db.CommandText = @"SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_CATALOG=@database AND TABLE_TYPE='BASE TABLE'";
+            this.db.CommandText = @"SELECT t.TABLE_NAME, ex.value
+FROM information_schema.tables t
+LEFT JOIN sysobjects o on t.TABLE_NAME=o.name
+LEFT JOIN sys.extended_properties ex on o.id=ex.major_id and ex.minor_id=0
+WHERE t.TABLE_CATALOG=@database AND t.TABLE_TYPE='BASE TABLE'";
             this.db.AddParameter("@database", this.database);
             using (DataTable dt = new DataTable())
             {
                 db.Fill(dt);
+                list = new List<TableInfoModel>(dt.Rows.Count);
                 foreach (DataRow row in dt.Rows)
                 {
                     string s = row[0].ToString();
                     if (!string.IsNullOrEmpty(s))
-                        list.Add(s);
+                    {
+                        list.Add(new TableInfoModel()
+                        {
+                            Name = s,
+                            Comment = row[1].ToString()
+                        });
+                    }
                 }
             }
 
@@ -100,9 +111,9 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
         /// <param name="table">表名</param>
         /// <param name="columns">列信息</param>
         /// <returns>是否成功</returns>
-        public override bool CreateTable(string table, List<ColumnInfoModel> columns)
+        public override bool CreateTable(TableInfoModel table, List<ColumnInfoModel> columns)
         {
-            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (table == null || string.IsNullOrEmpty(table.Name)) throw new ArgumentNullException("table");
             if (columns == null) throw new ArgumentNullException("columns");
             if (columns.Count == 0)  return false;
             int count = 0;
@@ -110,7 +121,7 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
             StringBuilder createKeySql = new StringBuilder();
             List<ColumnInfoModel> keyColumns = columns.Where(q => q.IsKey).ToList();
             List<IndexModel> indexs = new List<IndexModel>();
-            createTableSql.AppendFormat("CREATE TABLE [{0}](", table);
+            createTableSql.AppendFormat("CREATE TABLE [{0}](", table.Name);
             foreach (var column in columns)
             {
                 createTableSql.AppendFormat("[{0}] {1} {2} NULL", column.Name, column.DataType, column.IsNullable ? "" : "NOT");
@@ -126,7 +137,7 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
             {
                 createTableSql.Append(" ON [PRIMARY]");
                 string s = keyColumns.Count(q => q.IsNonClustered == true) > 0 ? "NONCLUSTERED" : "CLUSTERED";
-                createKeySql.AppendFormat("ALTER TABLE [{0}] ADD CONSTRAINT PK_{0} PRIMARY KEY {1}(", table, s);
+                createKeySql.AppendFormat("ALTER TABLE [{0}] ADD CONSTRAINT PK_{0} PRIMARY KEY {1}(", table.Name, s);
                 foreach (var column in keyColumns)
                 {
                     createKeySql.AppendFormat("[{0}],", column.Name);
@@ -147,7 +158,38 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
                     this.db.ExecuteNonQuery();
                 }
 
-                if (indexs.Count > 0) this.AddIndex(table, indexs);
+                if (!string.IsNullOrEmpty(table.Comment))
+                {
+                    this.db.ClearParameters();
+                    this.db.CommandText = @"EXEC sys.sp_addextendedproperty";
+                    this.db.AddParameter("@name", "MS_Description");
+                    this.db.AddParameter("@value", table.Comment);
+                    this.db.AddParameter("@level0type", "SCHEMA");
+                    this.db.AddParameter("@level0name", "dbo");
+                    this.db.AddParameter("@level1type", "TABLE");
+                    this.db.AddParameter("@level1name", table.Name);
+                    this.db.ExecuteNonQuery();
+                }
+
+                foreach (var column in columns)
+                {
+                    if (!string.IsNullOrEmpty(column.Comment))
+                    {
+                        this.db.CommandText = @"EXEC sys.sp_addextendedproperty";
+                        this.db.ClearParameters();
+                        this.db.AddParameter("@name", "MS_Description");
+                        this.db.AddParameter("@value", column.Comment);
+                        this.db.AddParameter("@level0type", "SCHEMA");
+                        this.db.AddParameter("@level0name", "dbo");
+                        this.db.AddParameter("@level1type", "TABLE");
+                        this.db.AddParameter("@level1name", table.Name);
+                        this.db.AddParameter("@level2type", "COLUMN");
+                        this.db.AddParameter("@level2name", column.Comment);
+                        this.db.ExecuteNonQuery();
+                    }
+                }
+
+                if (indexs.Count > 0) this.AddIndex(table.Name, indexs);
 
                 tx.Commit();
             }
@@ -176,6 +218,21 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
             this.db.ClearParameters();
             this.db.CommandText = string.Format(AddColumnSql, table, column.Name, column.DataType, column.IsNullable ? "" : "NOT");
             int count = this.db.ExecuteNonQuery();
+
+            if (!string.IsNullOrEmpty(column.Comment))
+            {
+                this.db.CommandText = @"EXEC sys.sp_addextendedproperty";
+                this.db.ClearParameters();
+                this.db.AddParameter("@name", "MS_Description");
+                this.db.AddParameter("@value", column.Comment);
+                this.db.AddParameter("@level0type", "SCHEMA");
+                this.db.AddParameter("@level0name", "dbo");
+                this.db.AddParameter("@level1type", "TABLE");
+                this.db.AddParameter("@level1name", table);
+                this.db.AddParameter("@level2type", "COLUMN");
+                this.db.AddParameter("@level2name", column.Comment);
+                this.db.ExecuteNonQuery();
+            }
 
             return count > 0;
         }
@@ -342,6 +399,7 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
                         m.IsAutoIncrement = Convert.ToBoolean(row["IsAutoIncrement"]);
                         m.IsNullable = Convert.ToBoolean(row["IsNullable"]);
                         m.Order = Convert.ToInt32(row["Order"]);
+                        m.Comment = row["Comment"].ToString();
                         var index_row = index_dt.Select("IsKey = 1 and Order = " + m.Order);
                         m.IsKey = index_row != null && index_row.Length > 0;
                         m.IsNonClustered = false;
@@ -462,10 +520,12 @@ namespace Afx.Data.MSSQLServer.Entity.Schema
 ELSE (CASE WHEN t.name='decimal' OR t.name = 'numeric' THEN col.[precision] ELSE col.max_length END) END) [MaxLength],
 ISNULL(col.scale, 0) [MinLength],
 col.is_nullable IsNullable,
-col.is_identity IsAutoIncrement
+col.is_identity IsAutoIncrement,
+ex.value Comment
 FROM sys.columns col
 INNER JOIN sys.objects o ON col.object_id=o.object_id AND o.type='U'
 INNER JOIN sys.types t ON col.system_type_id=t.system_type_id AND col.user_type_id=t.user_type_id
+LEFT JOIN sys.extended_properties ex on col.object_id=ex.major_id and ex.minor_id=col.column_id
 WHERE o.name=@table";
         private const string SelectTableIndexSql = @"SELECT col.column_id [Order],
 ISNULL(idx.is_primary_key, 0) IsKey,

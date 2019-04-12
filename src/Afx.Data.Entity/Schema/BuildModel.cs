@@ -59,16 +59,16 @@ namespace Afx.Data.Entity.Schema
             //if (string.IsNullOrEmpty(dir)) dir = Path.Combine(Path.GetPathRoot(Directory.GetCurrentDirectory()), "BuildModels");
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            List<string> tables = tableSchema.GetTables();
+            List<TableInfoModel> tables = tableSchema.GetTables();
             List<string> models = new List<string>();
             string modeldir = Path.Combine(dir, "Models");
             if (!Directory.Exists(modeldir)) Directory.CreateDirectory(modeldir);
             foreach (var t in tables)
             {
-                var columnInfos = tableSchema.GetTableColumns(t);
+                var columnInfos = tableSchema.GetTableColumns(t.Name);
                 if (columnInfos.Count > 0)
                 {
-                    string modelName = modelSchema.GetModelName(t);
+                    string modelName = modelSchema.GetModelName(t.Name);
                     models.Add(modelName);
                     string code = modelSchema.GetModelCode(t, columnInfos, @namespase);
                     string csfile = Path.Combine(modeldir, modelName + ".cs");

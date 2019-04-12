@@ -11,13 +11,22 @@ namespace Afx.Data.Entity.Schema
     public interface IModelSchema : IDisposable
     {
         /// <summary>
+        /// 是否自动修改类名，默认true
+        /// </summary>
+        bool IsAutoModelName { get; set; }
+        /// <summary>
+        /// 是否自动修改属性名，默认true
+        /// </summary>
+        bool IsAutoPropertyName { get; set; }
+
+        /// <summary>
         /// 获取 model .cs 文件源代码
         /// </summary>
-        /// <param name="modelName">model名称</param>
+        /// <param name="table">model名称</param>
         /// <param name="columns">表列信息</param>
         /// <param name="namespace">model 命名空间</param>
         /// <returns>model .cs 文件源代码</returns>
-        string GetModelCode(string modelName, List<ColumnInfoModel> columns, string @namespace);
+        string GetModelCode(TableInfoModel table, List<ColumnInfoModel> columns, string @namespace);
 
         /// <summary>
         /// 获取model属性标记源代码

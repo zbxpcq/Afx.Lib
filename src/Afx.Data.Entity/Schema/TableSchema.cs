@@ -27,7 +27,7 @@ namespace Afx.Data.Entity.Schema
         /// 获取数据库所有表名
         /// </summary>
         /// <returns>数据库所有表名</returns>
-        public abstract List<string> GetTables();
+        public abstract List<TableInfoModel> GetTables();
 
         /// <summary>
         /// 创建数据库表
@@ -35,7 +35,7 @@ namespace Afx.Data.Entity.Schema
         /// <param name="table">表名</param>
         /// <param name="columns">列信息</param>
         /// <returns>是否成功</returns>
-        public abstract bool CreateTable(string table, List<ColumnInfoModel> columns);
+        public abstract bool CreateTable(TableInfoModel table, List<ColumnInfoModel> columns);
 
         //public abstract bool DeleteTable(string table);
 
@@ -120,12 +120,59 @@ namespace Afx.Data.Entity.Schema
             return list;
         }
 
+        private Dictionary<string, System.Xml.XmlDocument> dicDoc = new Dictionary<string, System.Xml.XmlDocument>();
+        protected virtual string GetComment(Assembly assembly, string name)
+        {
+            string comment = string.Empty;
+            System.Xml.XmlDocument xml = null;
+            var xmlFile = assembly.Location;
+            int i = xmlFile.LastIndexOf('.');
+            if(i > 0)
+            {
+                xmlFile = xmlFile.Substring(0, i) + ".xml";
+                if (!dicDoc.TryGetValue(xmlFile, out xml))
+                {
+                    if (System.IO.File.Exists(xmlFile))
+                    {
+                        using (var fs = System.IO.File.Open(xmlFile, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
+                        {
+                            xml = new System.Xml.XmlDocument();
+                            xml.Load(fs);
+                        }
+                    }
+                }
+            }
+
+            if(xml != null)
+            {
+                var nodes = xml.SelectNodes("/doc/members");
+                foreach (System.Xml.XmlNode node in nodes)
+                {
+                    if (node is System.Xml.XmlElement)
+                    {
+                        var el = node as System.Xml.XmlElement;
+                        if (el.GetAttribute("name") == name)
+                        {
+                            var cn = el.SelectSingleNode("summary");
+                            if (cn != null)
+                            {
+                                comment = cn.InnerText ?? string.Empty;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return comment;
+        }
+
         /// <summary>
         /// 获取表名
         /// </summary>
         /// <param name="modelType">model type</param>
         /// <returns>表名</returns>
-        public virtual string GetTableName(Type modelType)
+        public virtual TableInfoModel GetTableName(Type modelType)
         {
             if (modelType == null) throw new ArgumentNullException("modelType");
             string result = modelType.Name;
@@ -137,7 +184,7 @@ namespace Afx.Data.Entity.Schema
                     result = att.Name;
             }
 
-            return result;
+            return new TableInfoModel() { Name = result, Comment = GetComment(modelType.Assembly,"T:" + modelType.FullName) };
         }
 
         /// <summary>
@@ -292,6 +339,8 @@ namespace Afx.Data.Entity.Schema
                 }
             }
 
+            m.Comment = this.GetComment(property.DeclaringType.Assembly, "P:" + property.DeclaringType.FullName + "." + property.Name) ?? string.Empty;
+
             return m;
         }
 
@@ -309,7 +358,8 @@ namespace Afx.Data.Entity.Schema
         /// </summary>
         public virtual void Dispose()
         {
-            
+           if(this.dicDoc!= null) dicDoc.Clear();
+            dicDoc = null;
         }
     }
 }
