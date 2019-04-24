@@ -48,7 +48,7 @@ namespace Afx.Data.Entity.Schema
                 propertysString.Remove(propertysString.Length - 4, 4);
             }
 
-            return string.Format(ModelFormat, @namespace, table, this.GetModelName(table.Name), propertysString.ToString(), table.Comment ?? "");
+            return string.Format(GetModelFormat(), @namespace, table, this.GetModelName(table.Name), propertysString.ToString(), table.Comment ?? "");
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Afx.Data.Entity.Schema
         /// GetDbContextFormat
         /// </summary>
         /// <returns></returns>
-        protected virtual string GetDbContextFormat()
+        protected virtual string GetModelFormat()
         {
             if (this.modelFormat == null)
             {
