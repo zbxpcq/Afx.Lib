@@ -62,7 +62,7 @@ namespace Afx.Data.MySql.Entity.Schema
             dic.Add("text", new DataTypeModel() { DbDataType = "text", Type = "string", NullableType = "string" });
             dic.Add("enum", new DataTypeModel() { DbDataType = "enum", Type = "string", NullableType = "string" });
             dic.Add("tinytext", new DataTypeModel() { DbDataType = "tinytext", Type = "string", NullableType = "string" });
-            dic.Add("bit", new DataTypeModel() { DbDataType = "bit", Type = "string", NullableType = "string" });
+            dic.Add("bit", new DataTypeModel() { DbDataType = "bit", Type = "bool", NullableType = "Nullable<bool>" });
 
             dic.Add("binary", new DataTypeModel() { DbDataType = "binary", Type = "byte[]", NullableType = "byte[]" });
             dic.Add("varbinary", new DataTypeModel() { DbDataType = "varbinary", Type = "byte[]", NullableType = "byte[]" });
