@@ -123,6 +123,9 @@
     <Compile Include="..\..\src\Afx.Base\Utils\PathUtils.cs">
       <Link>Utils\PathUtils.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\Afx.Base\Utils\RsaUtils.cs">
+      <Link>Utils\RsaUtils.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Assembly.cs">
       <Link>Properties\Assembly.cs</Link>
     </Compile>

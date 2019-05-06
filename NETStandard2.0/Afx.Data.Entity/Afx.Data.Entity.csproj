@@ -4,7 +4,7 @@
     <Description>Afx.Data.Entity for .NET Standard 2.0</Description>
     <PackageReleaseNotes>Afx.Data.Entity for .NET Standard 2.0</PackageReleaseNotes>
     <Product>Afx.Data.Entity for .NET Standard 2.0</Product>
-    <Version>8.2.2.31</Version>
+    <Version>8.2.3.0</Version>
     <Authors>jerrylai@aliyun.com</Authors>
     <Company>mycsv.cn</Company>
     <Copyright>Copyright © mycsv 2018</Copyright>
@@ -39,6 +39,7 @@
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\interface\IModelSchema.cs" Link="Schema\interface\IModelSchema.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\interface\ITableSchema.cs" Link="Schema\interface\ITableSchema.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\ModelSchema.cs" Link="Schema\ModelSchema.cs" />
+    <Compile Include="..\..\src\Afx.Data.Entity\Schema\TableInfoModel.cs" Link="Schema\TableInfoModel.cs" />
     <Compile Include="..\..\src\Afx.Data.Entity\Schema\TableSchema.cs" Link="Schema\TableSchema.cs" />
   </ItemGroup>
   <ItemGroup>

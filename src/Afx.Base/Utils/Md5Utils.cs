@@ -14,12 +14,16 @@ namespace Afx.Utils
         /// <summary>
         /// 获取MD5值
         /// </summary>
-        public static string GetMd5Hash(string input)
+        /// <param name="input"></param>
+        /// <param name="resultType"></param>
+        /// <returns></returns>
+        public static string GetMd5Hash(string input, StringByteType resultType = StringByteType.Hex)
         {
             if (input == null) throw new ArgumentNullException("input");
             byte[] data = Encoding.UTF8.GetBytes(input);
             byte[] buffer = GetMd5Hash(data);
-            var result = StringUtils.ByteToHexString(buffer);
+            var result = resultType == StringByteType.Hex ? StringUtils.ByteToHexString(buffer)
+                : Convert.ToBase64String(buffer);
 
             return result;
         }

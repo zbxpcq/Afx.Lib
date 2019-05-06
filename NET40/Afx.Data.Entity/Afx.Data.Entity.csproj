@@ -49,6 +49,9 @@
     <Compile Include="..\..\src\Afx.Data.Entity\NonClusteredAttribute.cs">
       <Link>Attribute\NonClusteredAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\Afx.Data.Entity\Schema\TableInfoModel.cs">
+      <Link>Schema\TableInfoModel.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Assembly.cs">
       <Link>Properties\Assembly.cs</Link>
     </Compile>

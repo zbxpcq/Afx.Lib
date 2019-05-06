@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Data.SQLite.Entity</id>
-    <version>8.2.2.31</version>
+    <version>8.2.3.0</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,20 +12,20 @@
     <tags>Afx.Data.SQLite.Entity SQLite EF EntityFramework EntityFrameworkCore Afx</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.0">
-        <dependency id="Afx.Data.Entity" version="8.2.2.31" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="8.2.2.31" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="8.2.3.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.2.3.0" exclude="Build,Analyzers" />
         <dependency id="System.Data.SQLite.Core" version="1.0.109.2" exclude="Build,Analyzers" />
         <dependency id="System.Data.SQLite.EF6" version="1.0.109.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Afx.Data.Entity" version="8.2.2.31" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="8.2.2.31" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="8.2.3.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.2.3.0" exclude="Build,Analyzers" />
         <dependency id="System.Data.SQLite.Core" version="1.0.110.0" exclude="Build,Analyzers" />
         <dependency id="System.Data.SQLite.EF6" version="1.0.110.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Afx.Data.Entity" version="8.2.2.31" exclude="Build,Analyzers" />
-        <dependency id="Afx.Data" version="8.2.2.31" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data.Entity" version="8.2.3.0" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.2.3.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Data.Sqlite.Core" version="2.2.3" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.Sqlite.Core" version="2.2.3" exclude="Build,Analyzers" />
       </group>

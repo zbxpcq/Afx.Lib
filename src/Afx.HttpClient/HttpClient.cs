@@ -27,7 +27,7 @@ namespace Afx.HttpClient
                 ServicePointManager.ServerCertificateValidationCallback = OnServerCertificateValidationCallback;
 #if NET20 || NET40
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
-#elif NET452
+#else
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
@@ -36,8 +36,6 @@ namespace Afx.HttpClient
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             }
-#else
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 #endif
             isSetServicePointManager = true;
         }

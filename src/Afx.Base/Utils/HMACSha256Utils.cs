@@ -36,8 +36,9 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="input"></param>
         /// <param name="key"></param>
+        /// <param name="resultType"></param>
         /// <returns></returns>
-        public static string GetHash(string input, string key)
+        public static string GetHash(string input, string key, StringByteType resultType = StringByteType.Hex)
         {
             string result = null;
             if (input != null && !string.IsNullOrEmpty(key))
@@ -46,7 +47,8 @@ namespace Afx.Utils
                 using (var sha = new HMACSHA256(keybytes))
                 {
                     byte[] buffer = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
-                    result = StringUtils.ByteToHexString(buffer);
+                    result = resultType == StringByteType.Hex ? StringUtils.ByteToHexString(buffer)
+                        : Convert.ToBase64String(buffer);
                 }
             }
 

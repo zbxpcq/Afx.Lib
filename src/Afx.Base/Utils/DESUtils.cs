@@ -112,7 +112,7 @@ namespace Afx.Utils
             byte[] output = null;
             if (input != null && input.Length > 0)
             {
-                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (var des = DES.Create())
                 {
                     des.Mode = mode;
                     des.Padding = padding;
@@ -215,7 +215,7 @@ namespace Afx.Utils
             byte[] output = null;
             if (input != null && input.Length > 0)
             {
-                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (var des = DES.Create())
                 {
                     des.Mode = mode;
                     des.Padding = padding;
@@ -250,10 +250,11 @@ namespace Afx.Utils
         /// 加密 string
         /// </summary>
         /// <param name="input">string</param>
+        /// <param name="resultType"></param>
         /// <returns>加密成功返回string</returns>
-        public static string Encrypt(string input)
+        public static string Encrypt(string input, StringByteType resultType = StringByteType.Hex)
         {
-            return Encrypt(input, DefaultKey);
+            return Encrypt(input, DefaultKey, resultType);
         }
 
         /// <summary>
@@ -261,10 +262,11 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="input">string</param>
         /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="resultType"></param>
         /// <returns>加密成功返回string</returns>
-        public static string Encrypt(string input, string key)
+        public static string Encrypt(string input, string key, StringByteType resultType = StringByteType.Hex)
         {
-            return Encrypt(input, key, null, DefaultMode, DefaultPadding);
+            return Encrypt(input, key, null, DefaultMode, DefaultPadding, resultType);
         }
 
         /// <summary>
@@ -273,10 +275,11 @@ namespace Afx.Utils
         /// <param name="input">string</param>
         /// <param name="key">24个ASCII字符 key</param>
         /// <param name="iv">8个ASCII字符 iv</param>
+        /// <param name="resultType"></param>
         /// <returns>加密成功返回string</returns>
-        public static string Encrypt(string input, string key, string iv)
+        public static string Encrypt(string input, string key, string iv, StringByteType resultType = StringByteType.Hex)
         {
-            return Encrypt(input, key, iv, DefaultMode, DefaultPadding);
+            return Encrypt(input, key, iv, DefaultMode, DefaultPadding, resultType);
         }
 
         /// <summary>
@@ -286,10 +289,11 @@ namespace Afx.Utils
         /// <param name="key">8 个ASCII字符 key</param>
         /// <param name="mode">指定用于加密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
+        /// <param name="resultType"></param>
         /// <returns>加密成功返回string</returns>
-        public static string Encrypt(string input, string key, CipherMode mode, PaddingMode padding)
+        public static string Encrypt(string input, string key, CipherMode mode, PaddingMode padding, StringByteType resultType = StringByteType.Hex)
         {
-            return Encrypt(input, key, null, mode, padding);
+            return Encrypt(input, key, null, mode, padding, resultType);
         }
 
         /// <summary>
@@ -300,15 +304,17 @@ namespace Afx.Utils
         /// <param name="iv">8 个ASCII字符 iv</param>
         /// <param name="mode">指定用于加密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比加密操作所需的全部字节数短时应用的填充类型</param>
+        /// <param name="resultType"></param>
         /// <returns>加密成功返回string</returns>
-        public static string Encrypt(string input, string key, string iv, CipherMode mode, PaddingMode padding)
+        public static string Encrypt(string input, string key, string iv, CipherMode mode, PaddingMode padding, StringByteType resultType = StringByteType.Hex)
         {
             string output = null;
             if (!string.IsNullOrEmpty(input))
             {
                 byte[] inputdata = Encoding.UTF8.GetBytes(input);
                 byte[] outputdata = Encrypt(inputdata, key, iv, mode, padding);
-                output = StringUtils.ByteToHexString(outputdata);
+                output = resultType == StringByteType.Hex ? StringUtils.ByteToHexString(outputdata)
+                    : Convert.ToBase64String(outputdata);
             }
             else if(input == string.Empty)
             {
@@ -323,10 +329,11 @@ namespace Afx.Utils
         /// 解密 string
         /// </summary>
         /// <param name="input">string</param>
+        /// <param name="inputType"></param>
         /// <returns>解密成功返回string</returns>
-        public static string Decrypt(string input)
+        public static string Decrypt(string input, StringByteType inputType = StringByteType.Hex)
         {
-            return Decrypt(input, DefaultKey);
+            return Decrypt(input, DefaultKey, inputType);
         }
 
         /// <summary>
@@ -334,10 +341,11 @@ namespace Afx.Utils
         /// </summary>
         /// <param name="input">string</param>
         /// <param name="key">8 个ASCII字符 key</param>
+        /// <param name="inputType"></param>
         /// <returns>解密成功返回string</returns>
-        public static string Decrypt(string input, string key)
+        public static string Decrypt(string input, string key, StringByteType inputType = StringByteType.Hex)
         {
-            return Decrypt(input, key, null, DefaultMode, DefaultPadding);
+            return Decrypt(input, key, null, DefaultMode, DefaultPadding, inputType);
         }
 
         /// <summary>
@@ -346,10 +354,11 @@ namespace Afx.Utils
         /// <param name="input">string</param>
         /// <param name="key">24个ASCII字符 key</param>
         /// <param name="iv">8个ASCII字符 iv</param>
+        /// <param name="inputType"></param>
         /// <returns>解密成功返回string</returns>
-        public static string Decrypt(string input, string key, string iv)
+        public static string Decrypt(string input, string key, string iv, StringByteType inputType = StringByteType.Hex)
         {
-            return Decrypt(input, key, iv, DefaultMode, DefaultPadding);
+            return Decrypt(input, key, iv, DefaultMode, DefaultPadding, inputType);
         }
 
         /// <summary>
@@ -359,10 +368,11 @@ namespace Afx.Utils
         /// <param name="key">8 个ASCII字符 key</param>
         /// <param name="mode">指定用于解密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
+        /// <param name="inputType"></param>
         /// <returns>解密成功返回string</returns>
-        public static string Decrypt(string input, string key, CipherMode mode, PaddingMode padding)
+        public static string Decrypt(string input, string key, CipherMode mode, PaddingMode padding, StringByteType inputType = StringByteType.Hex)
         {
-            return Decrypt(input, key, null, mode, padding);
+            return Decrypt(input, key, null, mode, padding, inputType);
         }
 
         /// <summary>
@@ -373,14 +383,16 @@ namespace Afx.Utils
         /// <param name="iv">8 个ASCII字符 iv</param>
         /// <param name="mode">指定用于解密的块密码模式</param>
         /// <param name="padding">指定在消息数据块比解密操作所需的全部字节数短时应用的填充类型</param>
+        /// <param name="inputType"></param>
         /// <returns>解密成功返回string</returns>
-        public static string Decrypt(string input, string key, string iv, CipherMode mode, PaddingMode padding)
+        public static string Decrypt(string input, string key, string iv, CipherMode mode, PaddingMode padding, StringByteType inputType = StringByteType.Hex)
         {
             string output = null;
             if (!string.IsNullOrEmpty(input))
             {
                 if (input.Length % 2 != 0) throw new ArgumentException("input is error!", "input");
-                byte[] inputdata = StringUtils.HexStringToByte(input);
+                byte[] inputdata = inputType == StringByteType.Hex ? StringUtils.HexStringToByte(input)
+                    : Convert.FromBase64String(input);
                 byte[] outputdata = Decrypt(inputdata, key, iv, mode, padding);
                 if (outputdata != null && outputdata.Length > 0)
                 {
@@ -478,7 +490,7 @@ namespace Afx.Utils
             bool result = false;
             if (inputStream.Length > 0)
             {
-                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (var des = DES.Create())
                 {
                     des.Mode = mode;
                     des.Padding = padding;
@@ -584,7 +596,7 @@ namespace Afx.Utils
 
             if (inputStream.Length > 0)
             {
-                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (var des = DES.Create())
                 {
                     des.Mode = mode;
                     des.Padding = padding;

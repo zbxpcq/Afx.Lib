@@ -4,6 +4,12 @@ using System.Text;
 
 namespace Afx.Utils
 {
+    public enum StringByteType
+    {
+        Hex = 1,
+        Base64 = 2
+    }
+
     /// <summary>
     /// 字符串 Utils
     /// </summary>
