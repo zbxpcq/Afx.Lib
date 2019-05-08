@@ -154,7 +154,11 @@ namespace Afx.Configuration
 
         private void Refresh(FileStream fs)
         {
-            if(this.m_xmlDoc == null)  this.m_xmlDoc = new XmlDocument();
+            if (this.m_xmlDoc == null)
+            {
+                this.m_xmlDoc = new XmlDocument();
+                this.m_xmlDoc.XmlResolver = null;
+            }
             if(this.m_xmlDoc.DocumentElement != null) this.m_xmlDoc.DocumentElement.RemoveAll();
             if (fs != null && fs.Length > 0)
             {

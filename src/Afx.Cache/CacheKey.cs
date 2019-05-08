@@ -23,6 +23,7 @@ namespace Afx.Cache
             if (string.IsNullOrEmpty(xmlFile)) throw new ArgumentNullException(xmlFile);
             if (!System.IO.File.Exists(xmlFile)) throw new FileNotFoundException(xmlFile + " not found!", xmlFile);
             xmlDoc = new XmlDocument();
+            xmlDoc.XmlResolver = null;
             using (var fs = System.IO.File.Open(xmlFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 xmlDoc.Load(fs);
