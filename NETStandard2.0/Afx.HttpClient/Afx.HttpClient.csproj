@@ -19,23 +19,27 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Afx.HttpClient\Content\ByteContent.cs" Link="Content\ByteContent.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\Content\EmptyContent.cs" Link="Content\EmptyContent.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\Content\HtmlContent.cs" Link="Content\HtmlContent.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\Content\HttpContent.cs" Link="Content\HttpContent.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\Content\StreamContent.cs" Link="Content\StreamContent.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\FormData\ByteFormData.cs" Link="FormData\ByteFormData.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\FormData\FormData.cs" Link="FormData\FormData.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\FormData\JsonFormData.cs" Link="FormData\JsonFormData.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\FormData\MultipartFormData.cs" Link="FormData\MultipartFormData.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\FormData\StreamFormData.cs" Link="FormData\StreamFormData.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\FormData\StringFormData.cs" Link="FormData\StringFormData.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\FormData\TextPlainFormData.cs" Link="FormData\TextPlainFormData.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\FormData\UrlencodedFormData.cs" Link="FormData\UrlencodedFormData.cs" />
-    <Compile Include="..\..\src\Afx.HttpClient\HttpClient.cs" Link="HttpClient.cs" />
+    <Compile Remove="Content\**" />
+    <EmbeddedResource Remove="Content\**" />
+    <None Remove="Content\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Afx.HttpClient\new\Body\BytesBody.cs" Link="Body\BytesBody.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\Body\HttpBody.cs" Link="Body\HttpBody.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\Body\StreamBody.cs" Link="Body\StreamBody.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\Body\StringBody.cs" Link="Body\StringBody.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\FormData\BytesFormData.cs" Link="FormData\BytesFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\FormData\FormData.cs" Link="FormData\FormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\FormData\JsonFormData.cs" Link="FormData\JsonFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\FormData\MultipartFormData.cs" Link="FormData\MultipartFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\FormData\StreamFormData.cs" Link="FormData\StreamFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\FormData\TextPlainFormData.cs" Link="FormData\TextPlainFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\FormData\UrlencodedFormData.cs" Link="FormData\UrlencodedFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\FormData\XmlFormData.cs" Link="FormData\XmlFormData.cs" />
+    <Compile Include="..\..\src\Afx.HttpClient\new\WebApiClient.cs" Link="WebApiClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="FormData\" />
-    <Folder Include="Content\" />
+    <Folder Include="Body\" />
   </ItemGroup>
 </Project>
