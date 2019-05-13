@@ -117,35 +117,26 @@ namespace Afx.HttpClient
                 if (this.fileDic != null) this.fileDic.Clear();
                 this.paramDic = null;
                 this.fileDic = null;
-                if (disposables != null)
-                {
-                    foreach (var dis in disposables)
-                        dis.Dispose();
-                    this.disposables.Clear();
-                }
-                this.disposables = null;
             }
             base.Dispose(disposing);
         }
 
-        private List<IDisposable> disposables;
         public override HttpContent GetContent()
         {
             var result = new MultipartFormDataContent(BOUNDARY);
-            if (this.disposables == null) this.disposables = new List<IDisposable>();
-            this.disposables.Add(result);
+            this.AddDispose(result);
             foreach (KeyValuePair<string, string> kv in this.paramDic)
             {
                 StringContent content = new StringContent(kv.Value, this.ContentEncoding);
-                this.disposables.Add(content);
+                this.AddDispose(content);
                 result.Add(content, kv.Key);
             }
             foreach (KeyValuePair<string, string> kv in this.fileDic)
             {
                 var stream = System.IO.File.Open(kv.Value, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                this.disposables.Add(stream);
+                this.AddDispose(stream);
                 StreamContent content = new StreamContent(stream);
-                this.disposables.Add(content);
+                this.AddDispose(content);
                 result.Add(content, kv.Key, System.IO.Path.GetFileName(kv.Value));
             }
 

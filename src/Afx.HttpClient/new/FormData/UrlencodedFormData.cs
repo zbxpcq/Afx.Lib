@@ -66,7 +66,6 @@ namespace Afx.HttpClient
             if(this.paramDic.Remove(key)) this.ver++;
         }
 
-        private List<IDisposable> disposables;
         /// <summary>
         /// 
         /// </summary>
@@ -78,13 +77,6 @@ namespace Afx.HttpClient
                     this.paramDic.Clear();
                 this.paramDic = null;
                 this.formString = null;
-                if (disposables != null)
-                {
-                    foreach (var dis in disposables)
-                        dis.Dispose();
-                    this.disposables.Clear();
-                }
-                this.disposables = null;
             }
             base.Dispose(disposing);
         }
@@ -113,8 +105,7 @@ namespace Afx.HttpClient
         public override HttpContent GetContent()
         {
             var result = new FormUrlEncodedContent(this.paramDic);
-            if (this.disposables == null) this.disposables = new List<IDisposable>();
-            this.disposables.Add(result);
+            this.AddDispose(result);
 
             return result;
         }

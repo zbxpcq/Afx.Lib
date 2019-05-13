@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -259,6 +260,7 @@ namespace Afx.HttpClient
             var t = this.client.GetAsync(url);
 
             BytesBody result = new BytesBody(t);
+            this.AddDispose(result);
             await result.Proc();
 
             return result;
@@ -277,6 +279,7 @@ namespace Afx.HttpClient
             var t = this.client.GetAsync(url);
 
             StreamBody result = new StreamBody(t);
+            this.AddDispose(result);
             await result.Proc();
 
             return result;
@@ -295,6 +298,7 @@ namespace Afx.HttpClient
             var t = this.client.GetAsync(url);
 
             StringBody result = new StringBody(t);
+            this.AddDispose(result);
             await result.Proc();
 
             return result;
@@ -315,6 +319,7 @@ namespace Afx.HttpClient
             var t = this.client.DeleteAsync(url);
 
             BytesBody result = new BytesBody(t);
+            this.AddDispose(result);
             await result.Proc();
 
             return result;
@@ -333,6 +338,7 @@ namespace Afx.HttpClient
             var t = this.client.DeleteAsync(url);
 
             StreamBody result = new StreamBody(t);
+            this.AddDispose(result);
             await result.Proc();
 
             return result;
@@ -351,6 +357,7 @@ namespace Afx.HttpClient
             var t = this.client.DeleteAsync(url);
 
             StringBody result = new StringBody(t);
+            this.AddDispose(result);
             await result.Proc();
 
             return result;
@@ -368,11 +375,13 @@ namespace Afx.HttpClient
         #region post
         public async Task<BytesBody> PostBytesAsync(string url, FormData formData)
         {
+            this.AddDispose(formData);
             using (var content = formData?.GetContent())
             {
                 var t = this.client.PostAsync(url, content);
 
                 BytesBody result = new BytesBody(t);
+                this.AddDispose(result);
                 await result.Proc();
 
                 return result;
@@ -389,11 +398,13 @@ namespace Afx.HttpClient
 
         public async Task<StreamBody> PostStreamAsync(string url, FormData formData)
         {
+            this.AddDispose(formData);
             using (var content = formData?.GetContent())
             {
                 var t = this.client.PostAsync(url, content);
 
                 StreamBody result = new StreamBody(t);
+                this.AddDispose(result);
                 await result.Proc();
 
                 return result;
@@ -410,11 +421,13 @@ namespace Afx.HttpClient
 
         public async Task<StringBody> PostStringAsync(string url, FormData formData)
         {
+            this.AddDispose(formData);
             using (var content = formData?.GetContent())
             {
                 var t = this.client.PostAsync(url, content);
 
                 StringBody result = new StringBody(t);
+                this.AddDispose(result);
                 await result.Proc();
 
                 return result;
@@ -433,11 +446,13 @@ namespace Afx.HttpClient
         #region put
         public async Task<BytesBody> PutBytesAsync(string url, FormData formData)
         {
+            this.AddDispose(formData);
             using (var content = formData?.GetContent())
             {
                 var t = this.client.PutAsync(url, content);
 
                 BytesBody result = new BytesBody(t);
+                this.AddDispose(result);
                 await result.Proc();
 
                 return result;
@@ -454,11 +469,13 @@ namespace Afx.HttpClient
 
         public async Task<StreamBody> PutStreamAsync(string url, FormData formData)
         {
+            this.AddDispose(formData);
             using (var content = formData?.GetContent())
             {
                 var t = this.client.PutAsync(url, content);
 
                 StreamBody result = new StreamBody(t);
+                this.AddDispose(result);
                 await result.Proc();
 
                 return result;
@@ -475,11 +492,13 @@ namespace Afx.HttpClient
 
         public async Task<StringBody> PutStringAsync(string url, FormData formData)
         {
+            this.AddDispose(formData);
             using (var content = formData?.GetContent())
             {
                 var t = this.client.PutAsync(url, content);
 
                 StringBody result = new StringBody(t);
+                this.AddDispose(result);
                 await result.Proc();
 
                 return result;
@@ -495,13 +514,37 @@ namespace Afx.HttpClient
         }
         #endregion
 
+        private List<IDisposable> disposables;
+        private void AddDispose(IDisposable dis)
+        {
+            if (dis == null) return;
+            if (this.disposables == null) this.disposables = new List<IDisposable>();
+            this.disposables.Add(dis);
+        }
+
         /// <summary>
         /// Dispose
         /// </summary>
         public void Dispose()
         {
             if (this.client != null) this.client.Dispose();
-            if (this.handler != null) this.handler.Dispose();
+            if (this.handler != null)
+            {
+                try
+                {
+                    foreach (X509Certificate cer in this.handler.ClientCertificates)
+                        cer.Dispose();
+                }
+                catch { }
+
+                this.handler.Dispose();
+            }
+            if(this.disposables != null)
+            {
+                foreach (var dis in this.disposables)
+                    dis.Dispose();
+                this.disposables = null;
+            }
             this.client = null;
             this.handler = null;
         }

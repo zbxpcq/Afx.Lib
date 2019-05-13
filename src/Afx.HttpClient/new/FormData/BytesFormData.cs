@@ -68,8 +68,7 @@ namespace Afx.HttpClient
         public override HttpContent GetContent()
         {
             var result = new ByteArrayContent(this.buffer);
-            if (this.disposables == null) this.disposables = new List<IDisposable>();
-            this.disposables.Add(result);
+            this.AddDispose(result);
             if (!string.IsNullOrEmpty(this.ContentType))
             {
                 result.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(this.ContentType);
@@ -79,7 +78,6 @@ namespace Afx.HttpClient
             return result;
         }
 
-        private List<IDisposable> disposables;
         /// <summary>
         /// Dispose
         /// </summary>
@@ -88,13 +86,6 @@ namespace Afx.HttpClient
             if (disposing)
             {
                 this.buffer = null;
-                if(disposables != null)
-                {
-                    foreach (var dis in disposables)
-                        dis.Dispose();
-                    this.disposables.Clear();
-                }
-                this.disposables = null;
             }
             base.Dispose(disposing);
         }

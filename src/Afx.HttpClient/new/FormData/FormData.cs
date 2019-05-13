@@ -27,12 +27,26 @@ namespace Afx.HttpClient
         /// <param name="stream"></param>
         public abstract HttpContent GetContent();
 
+        private List<IDisposable> disposables;
+        protected void AddDispose(IDisposable dis)
+        {
+            if (dis == null) return;
+            if (this.disposables == null) this.disposables = new List<IDisposable>();
+            this.disposables.Add(dis);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
                 this.ContentEncoding = null;
                 this.ContentType = null;
+                if (this.disposables != null)
+                {
+                    foreach (var dis in this.disposables)
+                        dis.Dispose();
+                    this.disposables = null;
+                }
             }
         }
 
