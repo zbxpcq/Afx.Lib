@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 
 namespace Afx.HttpClient
@@ -9,6 +10,8 @@ namespace Afx.HttpClient
     /// </summary>
     public class JsonFormData : BytesFormData
     {
+
+
         /// <summary>
         /// JsonFormData
         /// </summary>
@@ -19,5 +22,6 @@ namespace Afx.HttpClient
             this.ContentType = "application/json";
             this.ContentEncoding = Encoding.UTF8;
         }
+
     }
 }

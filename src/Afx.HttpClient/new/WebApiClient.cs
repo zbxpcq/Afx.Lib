@@ -240,12 +240,17 @@ namespace Afx.HttpClient
             this.handler.Credentials = CredentialCache.DefaultCredentials;
             this.handler.ServerCertificateCustomValidationCallback = ServerCertificateValidation;
 
+            //text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+            this.client.DefaultRequestHeaders.Accept.Clear();
             this.client.DefaultRequestHeaders.Accept.TryParseAdd("text/html");
             this.client.DefaultRequestHeaders.Accept.TryParseAdd("application/xhtml+xml");
             this.client.DefaultRequestHeaders.Accept.TryParseAdd("*/*");
+            this.client.DefaultRequestHeaders.AcceptLanguage.Clear();
             this.client.DefaultRequestHeaders.AcceptLanguage.TryParseAdd("zh-CN");
             this.client.DefaultRequestHeaders.AcceptLanguage.TryParseAdd("zh");
+            this.client.DefaultRequestHeaders.AcceptCharset.Clear();
             this.client.DefaultRequestHeaders.AcceptCharset.TryParseAdd("utf-8");
+            this.client.DefaultRequestHeaders.UserAgent.Clear();
             this.client.DefaultRequestHeaders.UserAgent.TryParseAdd("Afx.HttpClient");
 
             this.client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue() { NoCache = true };
