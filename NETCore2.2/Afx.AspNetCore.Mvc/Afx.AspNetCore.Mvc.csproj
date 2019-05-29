@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <Authors>jerrylai@aliyun.com</Authors>
-    <Version>8.2.6.0</Version>
+    <Version>8.2.7.0</Version>
     <Copyright>Copyright © mycsv 2018</Copyright>
     <Company>mycsv.cn</Company>
     <PackageTags>
@@ -22,17 +22,11 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Afx.AspNetCore.Mvc\delegate.cs" Link="delegate.cs" />
-    <Compile Include="..\..\src\Afx.AspNetCore.Mvc\Extensions\NamespaceRouteExtensions.cs" Link="Extensions\NamespaceRouteExtensions.cs" />
-    <Compile Include="..\..\src\Afx.AspNetCore.Mvc\Extensions\SidExtensions.cs" Link="Extensions\SidExtensions.cs" />
     <Compile Include="..\..\src\Afx.AspNetCore.Mvc\Extensions\WsExtensions.cs" Link="Extensions\WsExtensions.cs" />
     <Compile Include="..\..\src\Afx.AspNetCore.Mvc\IWsHandler.cs" Link="IWsHandler.cs" />
-    <Compile Include="..\..\src\Afx.AspNetCore.Mvc\NamespaceRouteModelConvention.cs" Link="NamespaceRouteModelConvention.cs" />
-    <Compile Include="..\..\src\Afx.AspNetCore.Mvc\SidMiddleware.cs" Link="SidMiddleware.cs" />
-    <Compile Include="..\..\src\Afx.AspNetCore.Mvc\SidOption.cs" Link="SidOption.cs" />
     <Compile Include="..\..\src\Afx.AspNetCore.Mvc\WsMiddleware.cs" Link="WsMiddleware.cs" />
     <Compile Include="..\..\src\Afx.AspNetCore.Mvc\WsOptions.cs" Link="WsOptions.cs" />
   </ItemGroup>
