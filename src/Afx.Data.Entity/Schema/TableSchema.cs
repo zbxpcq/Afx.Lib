@@ -329,6 +329,7 @@ namespace Afx.Data.Entity.Schema
                     {
                         var att = o as IndexAttribute;
                         var index = new IndexModel();
+                        m.Indexs.Add(index);
                         index.ColumnName = m.Name;
                         index.IsUnique = att.IsUnique;
                         if (!string.IsNullOrEmpty(att.Name))
