@@ -32,6 +32,5 @@ namespace Afx.Tcp.Protocols
     /// </summary>
     /// <param name="msgClient"></param>
     /// <param name="length"></param>
-    /// <param name="position"></param>
-    public delegate void MsgClientReadingCall(MsgClient msgClient, long length, long position);
+    public delegate void MsgClientReadingCall(MsgClient msgClient, long length);
 }

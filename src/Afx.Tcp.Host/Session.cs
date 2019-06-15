@@ -21,7 +21,7 @@ namespace  Afx.Tcp.Host
         /// </summary>
         public virtual string Address { get; private set; }
 
-        internal TcpSocketAsync Client { get; set; }
+        internal ITcpClientAsync Client { get; set; }
         /// <summary>
         /// IsConnected
         /// </summary>
@@ -115,7 +115,7 @@ namespace  Afx.Tcp.Host
             }
         }
 
-        internal Session(TcpSocketAsync client)
+        internal Session(ITcpClientAsync client)
         {
             client.SetKeepAlive(15 * 1000, 15 * 1000);
             string address = client.RemoteEndPoint.ToString();

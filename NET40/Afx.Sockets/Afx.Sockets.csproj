@@ -41,14 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\Afx.Sockets\ITcpClientAsync.cs">
+      <Link>Interfaces\ITcpClientAsync.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\ITcpServer.cs">
+      <Link>Interfaces\ITcpServer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\TcpBaseClientAsync.cs">
+      <Link>Base\TcpBaseClientAsync.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Afx.Sockets\TcpBaseServer.cs">
+      <Link>Base\TcpBaseServer.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Assembly.cs">
       <Link>Properties\Assembly.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Sockets\BufferModel.cs">
-      <Link>BufferModel.cs</Link>
+      <Link>Models\BufferModel.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Sockets\CacheModel.cs">
-      <Link>CacheModel.cs</Link>
+      <Link>Models\CacheModel.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Sockets\Delegate.cs">
       <Link>Delegate.cs</Link>
@@ -57,10 +69,10 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Sockets\SocketHelper.cs">
-      <Link>SocketHelper.cs</Link>
+      <Link>Common\SocketHelper.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Sockets\TcpSendData.cs">
-      <Link>TcpSendData.cs</Link>
+      <Link>Models\TcpSendData.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Afx.Sockets\TcpServer.cs">
       <Link>TcpServer.cs</Link>
@@ -78,5 +90,6 @@
       <Link>UdpServer.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

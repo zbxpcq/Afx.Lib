@@ -4,6 +4,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using Afx.Sockets.Common;
 
 namespace Afx.Sockets
 {

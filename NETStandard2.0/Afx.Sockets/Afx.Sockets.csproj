@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>8.2.9.0</Version>
+    <Version>8.2.10.0</Version>
     <Authors>jerrylai@aliyun.com</Authors>
     <Company>mycsv.cn</Company>
     <Product>Afx.Sockets for .NET Standard 2.0</Product>
@@ -19,15 +19,25 @@
     <DocumentationFile>..\..\Publish\Afx.Sockets\netstandard2.0\Afx.Sockets.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Afx.Sockets\BufferModel.cs" Link="BufferModel.cs" />
-    <Compile Include="..\..\src\Afx.Sockets\CacheModel.cs" Link="CacheModel.cs" />
+    <Compile Include="..\..\src\Afx.Sockets\BufferModel.cs" Link="Models\BufferModel.cs" />
+    <Compile Include="..\..\src\Afx.Sockets\CacheModel.cs" Link="Models\CacheModel.cs" />
     <Compile Include="..\..\src\Afx.Sockets\Delegate.cs" Link="Delegate.cs" />
-    <Compile Include="..\..\src\Afx.Sockets\SocketHelper.cs" Link="SocketHelper.cs" />
-    <Compile Include="..\..\src\Afx.Sockets\TcpSendData.cs" Link="TcpSendData.cs" />
+    <Compile Include="..\..\src\Afx.Sockets\ITcpClientAsync.cs" Link="Interfaces\ITcpClientAsync.cs" />
+    <Compile Include="..\..\src\Afx.Sockets\ITcpServer.cs" Link="Interfaces\ITcpServer.cs" />
+    <Compile Include="..\..\src\Afx.Sockets\SocketHelper.cs" Link="Common\SocketHelper.cs" />
+    <Compile Include="..\..\src\Afx.Sockets\TcpBaseClientAsync.cs" Link="Base\TcpBaseClientAsync.cs" />
+    <Compile Include="..\..\src\Afx.Sockets\TcpBaseServer.cs" Link="Base\TcpBaseServer.cs" />
+    <Compile Include="..\..\src\Afx.Sockets\TcpSendData.cs" Link="Models\TcpSendData.cs" />
     <Compile Include="..\..\src\Afx.Sockets\TcpServer.cs" Link="TcpServer.cs" />
     <Compile Include="..\..\src\Afx.Sockets\TcpSocket.cs" Link="TcpSocket.cs" />
     <Compile Include="..\..\src\Afx.Sockets\TcpSocketAsync.cs" Link="TcpSocketAsync.cs" />
     <Compile Include="..\..\src\Afx.Sockets\UdpSendData.cs" Link="UdpSendData.cs" />
     <Compile Include="..\..\src\Afx.Sockets\UdpServer.cs" Link="UdpServer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Common\" />
+    <Folder Include="Base\" />
   </ItemGroup>
 </Project>

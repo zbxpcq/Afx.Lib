@@ -4,7 +4,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Net;
 
-namespace Afx.Sockets
+namespace Afx.Sockets.Models
 {
     /// <summary>
     /// tcp 发送数据对象

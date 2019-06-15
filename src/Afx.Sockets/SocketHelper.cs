@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Afx.Sockets
+namespace Afx.Sockets.Common
 {
     /// <summary>
     /// SocketHelper
@@ -13,6 +13,10 @@ namespace Afx.Sockets
         /// 数据包头长度
         /// </summary>
         public const int PREFIX_LENGTH = 4;
+        /// <summary>
+        /// 最大数据包10MB
+        /// </summary>
+        public const int MAX_PREFIX_LENGTH = 1024 * 1024 * 10;
         /// <summary>
         /// 数据长度byte[] 转换int
         /// </summary>

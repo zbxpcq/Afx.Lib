@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Afx.Sockets
+namespace Afx.Sockets.Models
 {
-    class CacheModel
+    public class CacheModel
     {
         public int Size { get; set; }
 

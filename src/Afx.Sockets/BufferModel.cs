@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Afx.Sockets
+namespace Afx.Sockets.Models
 {
     /// <summary>
-    /// BufferModel
+    /// Receive BufferModel
     /// </summary>
     public class BufferModel
     {

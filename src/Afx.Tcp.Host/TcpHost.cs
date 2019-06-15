@@ -69,7 +69,7 @@ namespace  Afx.Tcp.Host
             return buffer;
         }
 
-        private void OnClientReadingEvent(TcpSocketAsync client, int position, int length)
+        private void OnClientReadingEvent(ITcpClientAsync client, int length)
         {
             Session session = client.UserState as Session;
             if (session != null)
@@ -120,7 +120,7 @@ namespace  Afx.Tcp.Host
         /// 监听到客户端连接
         /// </summary>
         /// <param name="client"></param>
-        protected virtual void OnAccept(TcpSocketAsync client)
+        protected virtual void OnAccept(ITcpClientAsync client)
         {
             Session session = new Session(client);
             session.SendCall = this.SendMsg;
@@ -146,7 +146,7 @@ namespace  Afx.Tcp.Host
             }
         }
 
-        private void OnServerError(TcpServer server, Exception ex)
+        private void OnServerError(ITcpServer server, Exception ex)
         {
             this.OnMvcHostServerErrorEvent(ex);
         }
@@ -167,7 +167,7 @@ namespace  Afx.Tcp.Host
             }
         }
 
-        private void OnClientClosed(TcpSocketAsync client, Exception ex)
+        private void OnClientClosed(ITcpClientAsync client, Exception ex)
         {
             Session session = client.UserState as Session;
             this.OnClientClosedEvent(session);
@@ -196,36 +196,40 @@ namespace  Afx.Tcp.Host
             }
         }
 
-        private void OnClientReceive(TcpSocketAsync client, byte[] data, int length)
+        private void OnClientReceive(ITcpClientAsync client, List<byte[]> data)
         {
-            byte[] buffer = this.OnDecrypt(data);
-            MsgData msg = MsgData.Deserialize(buffer);
-            if (msg != null)
+            if (data == null || data.Count == 0) return;
+            foreach (var arr in data)
             {
-                try
+                byte[] buffer = this.OnDecrypt(arr);
+                MsgData msg = MsgData.Deserialize(buffer);
+                if (msg != null)
                 {
-                    if (cmdCallbackDic.ContainsKey(msg.Cmd))
+                    try
                     {
-                        var callModel = cmdCallbackDic[msg.Cmd];
-                        this.ExecCall(callModel, client, msg);
-                        return;
+                        if (cmdCallbackDic.ContainsKey(msg.Cmd))
+                        {
+                            var callModel = cmdCallbackDic[msg.Cmd];
+                            this.ExecCall(callModel, client, msg);
+                            return;
+                        }
+                        else
+                        {
+                            msg.Rest();
+                            msg.Status = (int)MsgStatus.Unknown;
+                            this.SendMsg(msg, client.UserState as Session);
+                            return;
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        msg.Rest();
-                        msg.Status = (int)MsgStatus.Unknown;
-                        this.SendMsg(msg, client.UserState as Session);
-                        return;
+                        this.OnMvcHostServerErrorEvent(ex);
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    this.OnMvcHostServerErrorEvent(ex);
+                    this.OnMvcHostServerErrorEvent(new Exception(string.Format("client({0}): msg is null!", client.RemoteEndPoint.ToString())));
                 }
-            }
-            else
-            {
-                this.OnMvcHostServerErrorEvent(new Exception(string.Format("client({0}): msg is null!", client.RemoteEndPoint.ToString())));
             }
         }
         /// <summary>
@@ -265,7 +269,7 @@ namespace  Afx.Tcp.Host
             }
         }
 
-        private void ExecCall(CmdMethodInfo cmdMethodInfo, TcpSocketAsync client, MsgData msg)
+        private void ExecCall(CmdMethodInfo cmdMethodInfo, ITcpClientAsync client, MsgData msg)
         {
             var session = client.UserState as Session;
             this.OnCmdExecutingEvent(session, msg);

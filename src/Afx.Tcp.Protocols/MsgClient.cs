@@ -99,19 +99,18 @@ namespace Afx.Tcp.Protocols
         /// <summary>
         /// 正在接收数据回调
         /// </summary>
-        /// <param name="position">当前读取位置</param>
         /// <param name="length">当前信息长度</param>
-        protected virtual void OnReadingCall(int position, int length)
+        protected virtual void OnReadingCall(int length)
         {
             if (this.ReadingCall != null)
             {
-                this.ReadingCall(this, position, length);
+                this.ReadingCall(this, length);
             }
         }
         
-        private void ReadingEvent(TcpSocketAsync client, int position, int length)
+        private void ReadingEvent(ITcpClientAsync client, int length)
         {
-            this.OnReadingCall(position, length);
+            this.OnReadingCall(length);
         }
         /// <summary>
         /// IsConnected
@@ -407,7 +406,7 @@ namespace Afx.Tcp.Protocols
             return result;
         }
 
-        private void OnAsyncConnectEvent(TcpSocketAsync client, bool isSuccess)
+        private void OnAsyncConnectEvent(ITcpClientAsync client, bool isSuccess)
         {
             if (isSuccess)
             {
@@ -433,35 +432,39 @@ namespace Afx.Tcp.Protocols
             }
         }
 
-        private void OnErrorEvent(TcpSocketAsync client, Exception ex)
+        private void OnErrorEvent(ITcpClientAsync client, Exception ex)
         {
             this.Close();
             this.OnClosedCall(ex);
         }
 
-        private void ReceiveEvent(TcpSocketAsync client, byte[] data, int length)
+        private void ReceiveEvent(ITcpClientAsync client, List<byte[]> data)
         {
-            if (data == null || data.Length == 0) return;
+            if (data == null || data.Count == 0) return;
             ThreadPool.QueueUserWorkItem((o) =>
             {
-                var buffer = o as byte[];
-                buffer = OnDecrypt(buffer);
-                MsgData msg = MsgData.Deserialize(buffer);
-                if (msg != null)
+                List<byte[]> list = o as List<byte[]>;
+                foreach (var buffer in list)
                 {
-                    if (msg.Id != 0)
+                    var arr = OnDecrypt(buffer);
+                    MsgData msg = MsgData.Deserialize(arr);
+                    if (msg != null)
                     {
-                        var callModel = this.GetMsgIdCall(msg.Id);
-                        if (callModel != null)
+                        if (msg.Id != 0)
                         {
-                            this.OnMsgIdCall(msg, callModel);
-                            return;
+                            var callModel = this.GetMsgIdCall(msg.Id);
+                            if (callModel != null)
+                            {
+                                this.OnMsgIdCall(msg, callModel);
+                                return;
+                            }
                         }
-                    }
 
-                    var call = this.GetCmdCall(msg.Cmd);
-                    this.OnMsgCmdCall(msg, call);
+                        var call = this.GetCmdCall(msg.Cmd);
+                        this.OnMsgCmdCall(msg, call);
+                    }
                 }
+                list.Clear();
             }, data);
         }
 
