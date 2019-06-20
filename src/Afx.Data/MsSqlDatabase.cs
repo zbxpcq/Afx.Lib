@@ -28,6 +28,7 @@ namespace Afx.Data.MSSQLServer
         public MsSqlDatabase(SqlConnection connection, bool isOwnsConnection = true)
            : base(connection, isOwnsConnection)
         {
+            
         }
 
         /// <summary>

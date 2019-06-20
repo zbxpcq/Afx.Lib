@@ -37,9 +37,9 @@ namespace Afx.HttpClient
                     dic[kv.Key] = kv.Value;
                 foreach (KeyValuePair<string, IEnumerable<string>> kv in this.httpResponse.Content.Headers)
                     dic[kv.Key] = kv.Value;
-                if (this.httpResponse.IsSuccessStatusCode)
+                //if (this.httpResponse.IsSuccessStatusCode)
                 {
-                    this.IsSucceed = await this.Read(this.httpResponse);
+                    this.IsSucceed = await this.Read(this.httpResponse) && this.httpResponse.IsSuccessStatusCode;
                 }
             }
             catch (Exception ex)
