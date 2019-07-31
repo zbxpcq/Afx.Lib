@@ -12,8 +12,8 @@ namespace Afx.Map
         /// <summary>
         /// to model
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="o"></param>
         /// <returns></returns>
-        object To(object obj);
+        object To(object fromObj);
     }
 }

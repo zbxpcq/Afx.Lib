@@ -84,173 +84,64 @@ namespace Afx.Map
             return string.Format("{0}_To_{1}_{2}", key.FromType.Name, key.ToType.Name, GetTypeId());
         }
 
-        private List<MemberModel> GetMembers(Type t)
-        {
-            List<MemberModel> list = new List<MemberModel>();
-            Type ot = typeof(Object);
-            while (t != null && t != ot)
-            {
-                var ps = t.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.GetProperty | BindingFlags.DeclaredOnly);
-                foreach (var p in ps)
-                {
-                    if (!list.Exists(q=>q.member.Name == p.Name))
-                    {
-                        list.Add(new MemberModel { type = p.PropertyType, member = p });
-                    }
-                }
-
-                var fs = t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-                foreach (var f in fs)
-                {
-                    if (!list.Exists(q => q.member.Name == f.Name))
-                    {
-                        list.Add(new MemberModel { type = f.FieldType, member = f });
-                    }
-                }
-
-                t = t.BaseType;
-            }
-
-            return list;
-        }
-
         private Type CreateMapType(TypeKey key)
         {
             Type toObjectType = null;
             if (key != null && key.FromType != null && key.ToType != null
-                && (key.FromType.IsClass || key.FromType.IsValueType && !key.ToType.IsPrimitive)
-                && (key.ToType.IsClass && key.ToType.GetConstructor(Type.EmptyTypes) != null
-                || key.ToType.IsValueType && !key.ToType.IsPrimitive))
+                && key.FromType.IsClass
+                && key.ToType.IsClass && key.ToType.GetConstructor(Type.EmptyTypes) != null
+                )
             {
-                var toObjectBaseType = typeof(ToObject);
+                var toObjectBaseType = typeof(object);
                 var typeBuilder = this.m_moduleBuilder.DefineType(this.GetDynamicName(key), toObjectBaseType.Attributes, toObjectBaseType, new Type[] { typeof(IToObject) });
 
-                var objectFactoryFieldBuilder = typeBuilder.DefineField("m_objectFactory", typeof(MapFactory), FieldAttributes.Private);
-
 #region ctor
-                var baseCtor = toObjectBaseType.GetConstructor(new Type[] { typeof(Type) });
-                ConstructorBuilder ctor = typeBuilder.DefineConstructor(baseCtor.Attributes, baseCtor.CallingConvention, new Type[] { typeof(Type), typeof(MapFactory) });
+                var baseCtor = toObjectBaseType.GetConstructor(Type.EmptyTypes);
+                ConstructorBuilder ctor = typeBuilder.DefineConstructor(baseCtor.Attributes, baseCtor.CallingConvention, Type.EmptyTypes);
                 ILGenerator ctorIL = ctor.GetILGenerator();
                 ctorIL.Emit(OpCodes.Ldarg_0);
-                ctorIL.Emit(OpCodes.Ldarg_1);
                 ctorIL.Emit(OpCodes.Call, baseCtor);
-                ctorIL.Emit(OpCodes.Ldarg_0);
-                ctorIL.Emit(OpCodes.Ldarg_2);
-                ctorIL.Emit(OpCodes.Stfld, objectFactoryFieldBuilder);
                 ctorIL.Emit(OpCodes.Ret);
 #endregion
 
-                List<MemberModel> objMemberList = this.GetMembers(key.FromType);
-                List<MemberModel> toMemberList = key.FromType != key.ToType ? this.GetMembers(key.ToType)
-                    : new List<MemberModel>(objMemberList);
+                var fromProperties = new List<PropertyInfo>(key.FromType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty));
+                var toProperties = new List<PropertyInfo>(key.ToType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.SetProperty));
 
-#region To(objec obj)
+                #region To(objec obj)
                 MethodAttributes methattr = MethodAttributes.FamANDAssem | MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.HideBySig;
-                MethodBuilder toMethodBuilder = typeBuilder.DefineMethod("To", methattr, CallingConventions.Standard, typeof(Object), new Type[] { typeof(Object) });
+                MethodBuilder toMethodBuilder = typeBuilder.DefineMethod("To", methattr, CallingConventions.Standard, typeof(object), new Type[] { typeof(object) });
 
                 ILGenerator il = toMethodBuilder.GetILGenerator();
-                var resultLocal = il.DeclareLocal(typeof(Object));
-                var nLocal = il.DeclareLocal(typeof(int));
-                var oLocal = il.DeclareLocal(typeof(Object));
-                var objLocal = il.DeclareLocal(key.FromType);
+                var resultLocal = il.DeclareLocal(typeof(object));
+                var oLocal = il.DeclareLocal(typeof(object));
+                var fromLocal = il.DeclareLocal(key.FromType);
                 var toLocal = il.DeclareLocal(key.ToType);
-
-                var endLocal = il.DefineLabel();
 
                 il.Emit(OpCodes.Ldnull);
                 il.Emit(OpCodes.Stloc, resultLocal);
 
-                il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Call, typeof(ToObject).GetMethod("IsTo", BindingFlags.Instance | BindingFlags.NonPublic));
-                il.Emit(OpCodes.Ldc_I4_0);
-                il.Emit(OpCodes.Ceq);
-                il.Emit(OpCodes.Brtrue, endLocal);
-
-                il.Emit(OpCodes.Ldc_I4_0);
-                il.Emit(OpCodes.Stloc, nLocal);
                 il.Emit(OpCodes.Ldnull);
                 il.Emit(OpCodes.Stloc, oLocal);
                 il.Emit(OpCodes.Ldarg_1);
                 il.Emit(OpCodes.Castclass, key.FromType);
-                il.Emit(OpCodes.Stloc, objLocal);
-                if (key.ToType.IsClass)
-                {
-                    il.Emit(OpCodes.Newobj, key.ToType.GetConstructor(Type.EmptyTypes));
-                    il.Emit(OpCodes.Stloc, toLocal);
-                }
-                else
-                {
-                    il.Emit(OpCodes.Ldloca, toLocal);
-                    il.Emit(OpCodes.Initobj, key.ToType);
-                }
+                il.Emit(OpCodes.Stloc, fromLocal);
 
-                foreach (var toMember in toMemberList)
+                il.Emit(OpCodes.Newobj, key.ToType.GetConstructor(Type.EmptyTypes));
+                il.Emit(OpCodes.Stloc, toLocal);
+
+                foreach (var fp in fromProperties)
                 {
-                    var objMember = objMemberList.Find(q => q.member.Name == toMember.member.Name);
-                    if (objMember == null) objMember = objMemberList.Find(q => q.member.Name.ToLower() == toMember.member.Name.ToLower());
-                    if (objMember != null)
+                    var tp = toProperties.Find(q => q.Name == fp.Name && q.PropertyType == fp.PropertyType);
+                    if (tp != null)
                     {
-                        objMemberList.Remove(objMember);
-                        if (objMember.type == toMember.type && objMember.type.IsValueType)
-                        {
-                            il.Emit(OpCodes.Ldloc, toLocal);
-                            il.Emit(OpCodes.Ldloc, objLocal);
+                        il.Emit(OpCodes.Ldloc, toLocal);
+                        il.Emit(OpCodes.Ldloc, fromLocal);
 
-                            if (objMember.member.MemberType == MemberTypes.Property)
-                                il.Emit(OpCodes.Callvirt, (objMember.member as PropertyInfo).GetGetMethod());
-                            else
-                                il.Emit(OpCodes.Ldfld, (objMember.member as FieldInfo));
-
-                            if (toMember.member.MemberType == MemberTypes.Property)
-                                il.Emit(OpCodes.Callvirt, (toMember.member as PropertyInfo).GetSetMethod());
-                            else
-                                il.Emit(OpCodes.Stfld, (toMember.member as FieldInfo));
-                            il.Emit(OpCodes.Ldc_I4_1);
-                            il.Emit(OpCodes.Stloc, nLocal);
-                        }
-                        else
-                        {
-                            il.Emit(OpCodes.Ldarg_0);
-                            il.Emit(OpCodes.Ldfld, objectFactoryFieldBuilder);
-                            il.Emit(OpCodes.Ldloc, objLocal);
-                            if (objMember.member.MemberType == MemberTypes.Property)
-                                il.Emit(OpCodes.Callvirt, (objMember.member as PropertyInfo).GetGetMethod());
-                            else
-                                il.Emit(OpCodes.Ldfld, (objMember.member as FieldInfo));
-                            if (objMember.type.IsValueType) il.Emit(OpCodes.Box, objMember.type);
-                            il.Emit(OpCodes.Ldtoken, toMember.type);
-                            il.Emit(OpCodes.Call, typeof(Type).GetMethod("GetTypeFromHandle", BindingFlags.Static | BindingFlags.Public));
-                            il.Emit(OpCodes.Callvirt, typeof(MapFactory).GetMethod("To", new Type[] { typeof(Object), typeof(Type) }));
-                            il.Emit(OpCodes.Stloc, oLocal);
-                            il.Emit(OpCodes.Ldloc, oLocal);
-                            il.Emit(OpCodes.Ldnull);
-                            il.Emit(OpCodes.Ceq);
-                            var isnulll = il.DefineLabel();
-                            il.Emit(OpCodes.Brtrue, isnulll);
-                            il.Emit(OpCodes.Ldloc, toLocal);
-                            il.Emit(OpCodes.Ldloc, oLocal);
-                            il.Emit(OpCodes.Castclass, toMember.type);
-                            if (toMember.member.MemberType == MemberTypes.Property)
-                                il.Emit(OpCodes.Callvirt, (toMember.member as PropertyInfo).GetSetMethod());
-                            else
-                                il.Emit(OpCodes.Stfld, (toMember.member as FieldInfo));
-                            il.Emit(OpCodes.Ldc_I4_1);
-                            il.Emit(OpCodes.Stloc, nLocal);
-
-                            il.MarkLabel(isnulll);
-                            il.Emit(OpCodes.Nop);
-                        }
-
+                        il.Emit(OpCodes.Callvirt, fp.GetGetMethod());
+                        il.Emit(OpCodes.Callvirt, tp.GetSetMethod());
                     }
                 }
 
-                il.Emit(OpCodes.Ldloc, nLocal);
-                il.Emit(OpCodes.Ldc_I4_0);
-                il.Emit(OpCodes.Cgt);
-                il.Emit(OpCodes.Ldc_I4_0);
-                il.Emit(OpCodes.Ceq);
-                il.Emit(OpCodes.Brtrue, endLocal);
                 il.Emit(OpCodes.Ldloc, toLocal);
                 if (key.ToType.IsValueType)
                 {
@@ -258,9 +149,6 @@ namespace Afx.Map
                 }
                 il.Emit(OpCodes.Stloc, resultLocal);
 
-                il.MarkLabel(endLocal);
-                il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Call, typeof(ToObject).GetMethod("Clear", BindingFlags.Instance | BindingFlags.NonPublic));
                 il.Emit(OpCodes.Ldloc, resultLocal);
                 il.Emit(OpCodes.Ret);
                 #endregion to2MethodBuilder end
@@ -286,7 +174,7 @@ namespace Afx.Map
                     var type = this.CreateMapType(key);
                     if (type == null) return toObject;
 
-                    object obj = Activator.CreateInstance(type, new object[] { key.FromType, this });
+                    object obj = Activator.CreateInstance(type);
                     toObject = obj as IToObject;
                     this.m_toObjectDic.TryAdd(key, toObject);
                 }
