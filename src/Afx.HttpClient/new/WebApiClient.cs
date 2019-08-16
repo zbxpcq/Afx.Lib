@@ -7,192 +7,173 @@ using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace Afx.HttpClient
 {
+    
+
     /// <summary>
     /// WebApiClient
     /// </summary>
     public sealed class WebApiClient : IDisposable
     {
-        private static HttpClientHandler m_handler;
-        private static System.Net.Http.HttpClient m_client;
-
-        /// <summary>
-        /// 获取或设置一个值，该值指示处理程序是否应跟随重定向响应。
-        /// 如果处理器应按照重定向响应，则为 true；否则为 false。 默认值为 true。
-        /// </summary>
-        public static bool AllowAutoRedirect
+        #region
+        class LifetimeTrackingHttpMessageHandler : DelegatingHandler
         {
-            get { return m_handler.AllowAutoRedirect; }
-            set { m_handler.AllowAutoRedirect = value; }
-        }
+            public LifetimeTrackingHttpMessageHandler(HttpMessageHandler innerHandler)
+                : base(innerHandler)
+            {
+            }
 
-        /// <summary>
-        /// 获取或设置此处理程序使用的身份验证信息。默认值为 null。
-        /// </summary>
-        public static ICredentials Credentials
-        {
-            get { return m_handler.Credentials; }
-            set { m_handler.Credentials = value; }
+            protected override void Dispose(bool disposing)
+            {
+                // The lifetime of this is tracked separately by ActiveHandlerTrackingEntry
+            }
         }
 
-        /// <summary>
-        /// 获取或设置一个值，该值控制默认凭据是否被处理程序随请求一起发送。
-        ///  如果使用默认凭据，则为 true；否则为 false。 默认值为false。
-        /// </summary>
-        public static bool UseDefaultCredentials
+        class CacheModel
         {
-            get { return m_handler.UseDefaultCredentials; }
-            set { m_handler.UseDefaultCredentials = value; }
+            public LifetimeTrackingHttpMessageHandler handler;
+            public DateTime createTime;
         }
 
-        /// <summary>
-        /// 获取或设置一个值，该值指示处理程序是否随请求发送一个“身份验证”标头。
-        /// 处理程序的 true 在发生身份验证之后随请求一起发送 HTTP 授权标头；否则为 false。 默认值为 false。
-        /// </summary>
-        public static bool PreAuthenticate
+        class ClearModel
         {
-            get { return m_handler.PreAuthenticate; }
-            set { m_handler.PreAuthenticate = value; }
+            public HttpClientHandler handler;
+            public WeakReference weak;
         }
 
-        /// <summary>
-        /// 获取或设置处理程序使用的代理信息。
-        /// 默认值为 null。
-        /// </summary>
-        public static IWebProxy Proxy
-        {
-            get { return m_handler.Proxy; }
-            set { m_handler.Proxy = value; }
-        }
+        private static int _handlerLifetime = 120;
+        private static ConcurrentDictionary<string, Lazy<CacheModel>> _activeHandlers = new ConcurrentDictionary<string, Lazy<CacheModel>>(StringComparer.OrdinalIgnoreCase);
+        private static Timer _clearTimer;
+        private static object _clearObj = new object();
+        private static volatile bool _isStartClear = false;
+        private static ConcurrentQueue<ClearModel> _clearQueue = new ConcurrentQueue<ClearModel>();
 
         /// <summary>
-        /// 获取或设置一个值，该值指示处理程序是否为请求使用代理。
-        /// 如果该管理器应为请求使用代理项，则为 true；否则为 false。 默认值为 true。
+        /// HttpClientHandler生存周期(秒)，默认120s
         /// </summary>
-        public static bool UseProxy
+        public static int HandlerLifetime
         {
-            get { return m_handler.UseProxy; }
-            set { m_handler.UseProxy = value; }
+            get { return _handlerLifetime; }
+            set
+            {
+                if (value < 1) throw new ArgumentOutOfRangeException("HandlerLifetime", "HandlerLifetime more than the 0!");
+                _handlerLifetime = value;
+            }
         }
 
-        /// <summary>
-        /// 获取或设置处理程序用于实现 HTTP 内容响应的自动解压缩的解压缩方法。
-        /// 默认值为 System.Net.DecompressionMethods.None。
-        /// </summary>
-        public static DecompressionMethods AutomaticDecompression
+        private static HttpMessageHandler GetHandler(string name, Action<HttpClientHandler> config)
         {
-            get { return m_handler.AutomaticDecompression; }
-            set { m_handler.AutomaticDecompression = value; }
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            var now = DateTime.Now;
+            var m = _activeHandlers.GetOrAdd(name, (k) =>
+            {
+                return new Lazy<CacheModel>(() =>
+                {
+                    var h = new HttpClientHandler();
+                    h.ServerCertificateCustomValidationCallback = ServerCertificateValidation;
+                    try { h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12; }
+                    catch { }
+                    if (config != null) try { config(h); } catch { }
+
+                    return new CacheModel() { handler = new LifetimeTrackingHttpMessageHandler(h), createTime = DateTime.Now };
+                }, LazyThreadSafetyMode.ExecutionAndPublication);
+            }).Value;
+            if((now - m.createTime).TotalSeconds > _handlerLifetime)
+            {
+                StartClear(name);
+            }
+
+            return m.handler;
         }
 
-        /// <summary>
-        /// 获取或设置与此处理程序关联的安全证书集合。
-        /// </summary>
-        public static ClientCertificateOption ClientCertificateOptions
+        private static void StartClear(string name)
         {
-            get { return m_handler.ClientCertificateOptions; }
-            set { m_handler.ClientCertificateOptions = value; }
+            if(_activeHandlers.TryRemove(name, out var v))
+            {
+                _clearQueue.Enqueue(new ClearModel { weak = new WeakReference(v.Value.handler), handler = v.Value.handler.InnerHandler as HttpClientHandler });
+                StartCleanupTimer();
+            }
         }
 
-        /// <summary>
-        /// 获取或设置用于存储处理程序产生的服务器 Cookie 的 Cookie 容器。
-        /// </summary>
-        public static CookieContainer CookieContainer
+        private static void StartCleanupTimer()
         {
-            get { return m_handler.CookieContainer; }
-            set { m_handler.CookieContainer = value; }
+            if (_isStartClear) return;
+            lock (_clearObj)
+            {
+                if (_isStartClear) return;
+                bool restoreFlow = false;
+                try
+                {
+                    if (!ExecutionContext.IsFlowSuppressed())
+                    {
+                        ExecutionContext.SuppressFlow();
+                        restoreFlow = true;
+                    }
+
+                    _clearTimer = new Timer(CleanupTimer, null, TimeSpan.FromSeconds(10), System.Threading.Timeout.InfiniteTimeSpan);
+                    _isStartClear = true;
+                }
+                finally
+                {
+                    if (restoreFlow)
+                    {
+                        ExecutionContext.RestoreFlow();
+                    }
+                }
+            }
         }
 
-        /// <summary>
-        /// 获取或设置一个值，该值指示发送请求时，处理程序是否使用CookieContainer来存储服务器 Cookie 并在发送请求时使用这些 Cookie，则为 true；否则为 false。默认值为 true。
-        /// </summary>
-        public static bool UseCookies
+        private static void CleanupTimer(object state)
         {
-            get { return m_handler.UseCookies; }
-            set { m_handler.UseCookies = value; }
+            _clearTimer.Dispose();
+            _clearTimer = null;
+
+            var count = _clearQueue.Count;
+            for (var i = 0; i < count; i++)
+            {
+                _clearQueue.TryDequeue(out var cm);
+                if (!cm.weak.IsAlive)
+                {
+                    try
+                    {
+                        foreach (var crt in cm.handler.ClientCertificates) try { crt.Dispose(); } catch { }
+                        cm.handler.ClientCertificates.Clear();
+                    }
+                    catch { }
+                    try { cm.handler.Dispose(); } catch { }
+                    cm.handler = null;
+                    cm.weak = null;
+                }
+                else
+                {
+                    _clearQueue.Enqueue(cm);
+                }
+            }
+
+            _isStartClear = false;
+            if (_clearQueue.Count > 0)
+            {
+                StartCleanupTimer();
+            }
         }
 
-        /// <summary>
-        /// 获取或设置将跟随的处理程序的重定向的最大数目。默认值为 50。
-        /// </summary>
-        public static int MaxAutomaticRedirections
+        private static bool ServerCertificateValidation(HttpRequestMessage httpRequestMessage, X509Certificate2 x509Certificate2, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
         {
-            get { return m_handler.MaxAutomaticRedirections; }
-            set { m_handler.MaxAutomaticRedirections = value; }
+            return true;
         }
-        
-        /// <summary>
-        /// 获取或设置处理程序的使用的请求内容的最大缓冲区大小。
-        /// 最大请求内容缓冲区大小（以字节为单位）。 默认值为 2 GB。
-        /// </summary>
-        public static long MaxRequestContentBufferSize
-        {
-            get { return m_handler.MaxRequestContentBufferSize; }
-            set { m_handler.MaxRequestContentBufferSize = value; }
-        }
-        /// <summary>
-        /// 使用默认（系统）代理时，获取或设置要提交到默认代理服务器进行身份验证的凭据。 只有在 UseProxy 设置为 true 且 Proxy 设置为 null 时才使用默认代理。
-        /// </summary>
-        public static ICredentials DefaultProxyCredentials
-        {
-            get { return m_handler.DefaultProxyCredentials; }
-            set { m_handler.DefaultProxyCredentials = value; }
-        }
+        #endregion
 
-        /// <summary>
-        /// 获取与对服务器的请求相关联的安全证书集合。
-        /// </summary>
-        public static X509CertificateCollection ClientCertificates
-        {
-            get { return m_handler.ClientCertificates; }
-        }
-
-        /// <summary>
-        /// 获取或设置 HttpClientHandler 对象管理的 HttpClient 对象所用的 TLS/SSL 协议,仅限 .NET Framework 4.7.1：不实现此属性。
-        /// </summary>
-        public static SslProtocols SslProtocols
-        {
-            get { return m_handler.SslProtocols; }
-            set { m_handler.SslProtocols = value; }
-        }
-        /// <summary>
-        /// 获取或设置响应标头的最大长度，以千字节（1024 字节）为单位。 例如，如果该值为 64，那么允许的最大响应标头长度为 65536 字节。
-        /// </summary>
-        public static int MaxResponseHeadersLength
-        {
-            get { return m_handler.MaxResponseHeadersLength; }
-            set { m_handler.MaxResponseHeadersLength = value; }
-        }
-        /// <summary>
-        /// 获取或设置使用 HttpClient 对象发出请求时允许的最大并发连接数（每个服务器终结点）。 请注意，该限制针对每个服务器终结点，例如，值为 256 表示允许 256 个到 http://www.adatum.com/ 的并发连接，以及另外 256 个到 http://www.adventure-works.com/ 的并发连接。
-        /// </summary>
-        public static int MaxConnectionsPerServer
-        {
-            get { return m_handler.MaxConnectionsPerServer; }
-            set { m_handler.MaxConnectionsPerServer = value; }
-        }
-        /// <summary>
-        /// 获取或设置一个值，该值指示是否根据证书颁发机构吊销列表检查证书。如果检查证书吊销列表，则为 true；否则为 false。
-        /// 仅限 .NET Framework 4.7.1：不实现此属性。
-        /// </summary>
-        public static bool CheckCertificateRevocationList
-        {
-            get { return m_handler.CheckCertificateRevocationList; }
-            set { m_handler.CheckCertificateRevocationList = value; }
-        }
-
-        public static Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> ServerCertificateCustomValidationCallback
-        {
-            get { return m_handler.ServerCertificateCustomValidationCallback; }
-            set { m_handler.ServerCertificateCustomValidationCallback = value; }
-        }
+        private System.Net.Http.HttpClient m_client;
 
         /// <summary>
         /// 获取与每个请求一起发送的标题。
         /// </summary>
-        public static HttpRequestHeaders DefaultRequestHeaders
+        public HttpRequestHeaders DefaultRequestHeaders
         {
             get { return m_client.DefaultRequestHeaders; }
         }
@@ -200,7 +181,7 @@ namespace Afx.HttpClient
         /// <summary>
         /// 获取或设置请求超时前等待的毫秒数。
         /// </summary>
-        public static TimeSpan Timeout
+        public TimeSpan Timeout
         {
             get { return m_client.Timeout; }
             set { m_client.Timeout = value; }
@@ -209,41 +190,10 @@ namespace Afx.HttpClient
         /// <summary>
         /// 获取或设置读取响应内容时要缓冲的最大字节数。此属性的默认值为 2 GB。
         /// </summary>
-        public static long MaxResponseContentBufferSize
+        public long MaxResponseContentBufferSize
         {
             get { return m_client.MaxResponseContentBufferSize; }
             set { m_client.MaxResponseContentBufferSize = value; }
-        }
-
-        private static bool ServerCertificateValidation(HttpRequestMessage httpRequestMessage, X509Certificate2 x509Certificate2, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
-
-        static WebApiClient()
-        {
-            m_handler = new HttpClientHandler();
-            m_client = new System.Net.Http.HttpClient(m_handler);
-            m_handler.UseDefaultCredentials = true;
-            m_handler.Credentials = CredentialCache.DefaultCredentials;
-            m_handler.ServerCertificateCustomValidationCallback = ServerCertificateValidation;
-
-            //text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
-            m_client.DefaultRequestHeaders.Accept.Clear();
-            m_client.DefaultRequestHeaders.Accept.TryParseAdd("text/html");
-            m_client.DefaultRequestHeaders.Accept.TryParseAdd("*/*");
-            m_client.DefaultRequestHeaders.AcceptLanguage.Clear();
-            m_client.DefaultRequestHeaders.AcceptLanguage.TryParseAdd("zh-CN");
-            m_client.DefaultRequestHeaders.AcceptLanguage.TryParseAdd("zh");
-            m_client.DefaultRequestHeaders.AcceptCharset.Clear();
-            m_client.DefaultRequestHeaders.AcceptCharset.TryParseAdd("utf-8");
-            m_client.DefaultRequestHeaders.UserAgent.Clear();
-            m_client.DefaultRequestHeaders.UserAgent.TryParseAdd("Afx.HttpClient");
-
-            m_client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue() { NoCache = true };
-
-            try { m_handler.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12; }
-            catch { }
         }
 
         /// <summary>
@@ -305,11 +255,27 @@ namespace Afx.HttpClient
         /// </summary>
         public WebApiClient()
         {
-            this.Init();
+            this.Init(nameof(WebApiClient), null);
         }
 
-        private void Init()
+        private void Init(string name, Action<HttpClientHandler> config)
         {
+            var handler = GetHandler(name, config);
+            m_client = new System.Net.Http.HttpClient(handler, false);
+            //text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+            m_client.DefaultRequestHeaders.Accept.Clear();
+            m_client.DefaultRequestHeaders.Accept.TryParseAdd("text/html");
+            m_client.DefaultRequestHeaders.Accept.TryParseAdd("*/*");
+            m_client.DefaultRequestHeaders.AcceptLanguage.Clear();
+            m_client.DefaultRequestHeaders.AcceptLanguage.TryParseAdd("zh-CN");
+            m_client.DefaultRequestHeaders.AcceptLanguage.TryParseAdd("zh");
+            m_client.DefaultRequestHeaders.AcceptCharset.Clear();
+            m_client.DefaultRequestHeaders.AcceptCharset.TryParseAdd("utf-8");
+            m_client.DefaultRequestHeaders.UserAgent.Clear();
+            m_client.DefaultRequestHeaders.UserAgent.TryParseAdd("Afx.HttpClient");
+
+            m_client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue() { NoCache = true };
+
             this.Headers = new Dictionary<string, string>();
             this.IsDisposed = false;
         }
@@ -317,7 +283,13 @@ namespace Afx.HttpClient
         public WebApiClient(string baseAddress)
         {
             this.BaseAddress = baseAddress;
-            this.Init();
+            this.Init(nameof(WebApiClient), null);
+        }
+
+        public WebApiClient(string baseAddress, string name = null, Action<HttpClientHandler> config = null)
+        {
+            this.BaseAddress = baseAddress;
+            this.Init(name ?? nameof(WebApiClient), config);
         }
 
         private string BuildUrl(string url)
@@ -679,12 +651,15 @@ namespace Afx.HttpClient
         /// </summary>
         public void Dispose()
         {
-            if(this.disposables != null)
+            if (this.m_client != null) try { this.m_client.Dispose(); } catch { }
+            if (this.disposables != null)
             {
                 foreach (var dis in this.disposables)
-                    dis.Dispose();
+                    try { dis.Dispose(); } catch { }
+                this.disposables.Clear();
                 this.disposables = null;
             }
+            this.m_client = null;
             if (this.Headers != null) this.Headers.Clear();
             this.Headers = null;
             this.m_baseAddress = null;
@@ -698,4 +673,5 @@ namespace Afx.HttpClient
             this.Version = null;
         }
     }
+
 }
