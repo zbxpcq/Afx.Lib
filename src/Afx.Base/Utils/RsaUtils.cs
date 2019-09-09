@@ -59,9 +59,31 @@ namespace Afx.Utils
             return count;
         }
 
+        private static string GetKey(string key)
+        {
+            string str = key;
+            if (str.StartsWith("---") && str.EndsWith("---") && str.Contains("---BEGIN"))
+            {
+                StringBuilder stringBuilder = new StringBuilder(key.Length);
+                using (var rd = new StringReader(key))
+                {
+                    var s = rd.ReadLine();
+                    while (s != null)
+                    {
+                        if (!s.StartsWith("---")) stringBuilder.Append(s);
+                        s = rd.ReadLine();
+                    }
+                }
+                str = stringBuilder.ToString();
+            }
+
+            return str;
+        }
+
         private static RSAParameters GetRsaParameterByPrivateKey(string privateKey)
         {
-            var privateKeyBits = Convert.FromBase64String(privateKey);
+            var str = GetKey(privateKey);
+            var privateKeyBits = Convert.FromBase64String(str);
             var rsaParameters = new RSAParameters();
             using (var ms = new MemoryStream(privateKeyBits))
             {
@@ -120,7 +142,8 @@ namespace Afx.Utils
             byte[] seqOid = { 0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00 };
             byte[] seq = new byte[15];
 
-            var x509Key = Convert.FromBase64String(publicKey);
+            var str = GetKey(publicKey);
+            var x509Key = Convert.FromBase64String(str);
 
             // ---------  Set up stream to read the asn.1 encoded SubjectPublicKeyInfo blob  ------
             using (MemoryStream mem = new MemoryStream(x509Key))

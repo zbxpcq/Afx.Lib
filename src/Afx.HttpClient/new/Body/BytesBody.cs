@@ -19,8 +19,8 @@ namespace Afx.HttpClient
         /// <summary>
         /// ByteContent
         /// </summary>
-        internal BytesBody(Task<HttpResponseMessage> task)
-            : base(task)
+        internal BytesBody(HttpResponseMessage httpResponse)//Task<HttpResponseMessage> task)
+            : base(httpResponse)//(task)
         {
             
         }

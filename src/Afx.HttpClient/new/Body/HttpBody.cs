@@ -13,11 +13,12 @@ namespace Afx.HttpClient
     /// </summary>
     public abstract class HttpBody : IDisposable
     {
-        private Task<HttpResponseMessage> task;
+        //private Task<HttpResponseMessage> task;
         private HttpResponseMessage httpResponse;
-        protected HttpBody(Task<HttpResponseMessage> task)
+        protected HttpBody(HttpResponseMessage httpResponse)//Task<HttpResponseMessage> task)
         {
-            this.task = task;
+            //this.task = task;
+            this.httpResponse = httpResponse;
             this.IsSucceed = false;
         }
 
@@ -25,7 +26,7 @@ namespace Afx.HttpClient
         {
             try
             {
-                this.httpResponse = await this.task;
+                //this.httpResponse = await this.task;
                 this.CharacterSet = this.httpResponse.Content.Headers?.ContentType?.CharSet;
                 this.ContentLength = this.httpResponse.Content.Headers?.ContentLength;
                 this.ContentType = this.httpResponse.Content.Headers?.ContentType?.MediaType;
@@ -106,7 +107,7 @@ namespace Afx.HttpClient
             {
                 if (this.httpResponse?.Content != null) this.httpResponse.Content.Dispose();
                 if (this.httpResponse != null) this.httpResponse.Dispose();
-                if (this.task != null) this.task.Dispose();
+                //if (this.task != null) this.task.Dispose();
                 if (this.dic != null) this.dic.Clear();
                 this.httpResponse = null;
                 this.Exception = null;
