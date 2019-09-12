@@ -6,5 +6,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © mycsv 2018")]
 [assembly: AssemblyTrademark("jerrylai@aliyun.com")]
 
-[assembly: AssemblyVersion("8.2.16")]
-[assembly: AssemblyFileVersion("8.2.16")]
+[assembly: AssemblyVersion("8.2.18")]
+[assembly: AssemblyFileVersion("8.2.18")]

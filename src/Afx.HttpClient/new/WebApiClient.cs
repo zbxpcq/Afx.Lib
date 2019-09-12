@@ -74,11 +74,21 @@ namespace Afx.HttpClient
             {
                 return new Lazy<CacheModel>(() =>
                 {
-                    SetServicePointManager();
                     var h = new HttpClientHandler();
                     h.ServerCertificateCustomValidationCallback = ServerCertificateValidation;
-                    try { h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Ssl2 | SslProtocols.Ssl3; }
-                    catch(Exception ex) { Console.WriteLine(ex.Message + ex.StackTrace); }
+                    try
+                    {
+                        var platform = Environment.OSVersion.Platform;
+                        if (platform == PlatformID.Unix)
+                        {
+                            h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Ssl2 | SslProtocols.Ssl3;
+                        }
+                        else if (platform == PlatformID.Win32NT)
+                        {
+                            h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12;
+                        }
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message + ex.StackTrace); }
                     if (config != null) try { config(h); } catch { }
 
                     return new CacheModel() { handler = new LifetimeTrackingHttpMessageHandler(h), createTime = DateTime.Now };
@@ -166,30 +176,6 @@ namespace Afx.HttpClient
         private static bool ServerCertificateValidation(HttpRequestMessage httpRequestMessage, X509Certificate2 x509Certificate2, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
-        }
-
-        private static volatile bool isSetServicePointManager = false;
-        private static void SetServicePointManager()
-        {
-            if (isSetServicePointManager) return;
-            if (ServicePointManager.DefaultConnectionLimit < 10)
-                ServicePointManager.DefaultConnectionLimit = 512;
-            if (ServicePointManager.ServerCertificateValidationCallback == null)
-                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-#if NET20 || NET40
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
-#else
-            try
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message + ex.StackTrace);
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-            }
-#endif
-            isSetServicePointManager = true;
         }
         #endregion
 
