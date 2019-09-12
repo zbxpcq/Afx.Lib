@@ -78,15 +78,7 @@ namespace Afx.HttpClient
                     h.ServerCertificateCustomValidationCallback = ServerCertificateValidation;
                     try
                     {
-                        var platform = Environment.OSVersion.Platform;
-                        if (platform == PlatformID.Unix)
-                        {
-                            h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Ssl2 | SslProtocols.Ssl3;
-                        }
-                        else if (platform == PlatformID.Win32NT)
-                        {
-                            h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12;
-                        }
+                        h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12;
                     }
                     catch (Exception ex) { Console.WriteLine(ex.Message + ex.StackTrace); }
                     if (config != null) try { config(h); } catch { }
