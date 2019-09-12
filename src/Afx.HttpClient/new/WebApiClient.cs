@@ -76,7 +76,7 @@ namespace Afx.HttpClient
                 {
                     var h = new HttpClientHandler();
                     h.ServerCertificateCustomValidationCallback = ServerCertificateValidation;
-                    try { h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12; }
+                    try { h.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Ssl2 | SslProtocols.Ssl3; }
                     catch { }
                     if (config != null) try { config(h); } catch { }
 
