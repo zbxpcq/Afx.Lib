@@ -35,7 +35,7 @@ namespace Afx.HttpClient
 
         public void AddParam(Dictionary<string, string> dic)
         {
-            if (dic != null) throw new ArgumentNullException("dic");
+            if (dic == null) throw new ArgumentNullException("dic");
             foreach (KeyValuePair<string, string> kv in dic)
             {
                 this.paramDic[kv.Key] = kv.Value ?? "";
