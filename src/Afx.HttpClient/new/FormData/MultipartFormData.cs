@@ -40,6 +40,15 @@ namespace Afx.HttpClient
             this.paramDic[key] = value ?? "";
         }
 
+        public void AddParam(Dictionary<string, string> dic)
+        {
+            if (dic == null) throw new ArgumentNullException("dic");
+            foreach (KeyValuePair<string, string> kv in dic)
+            {
+                this.paramDic[kv.Key] = kv.Value ?? "";
+            }
+        }
+
         /// <summary>
         /// 获取参数
         /// </summary>
