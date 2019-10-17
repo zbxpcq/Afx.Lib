@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Afx.Data.Extensions</id>
-    <version>8.2.21</version>
+    <version>8.2.22</version>
     <authors>jerrylai</authors>
     <owners>jerrylai</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,13 +12,13 @@
     <tags>Afx.Data.Extensions Database SQL Entity Afx</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.0">
-        <dependency id="Afx.Data" version="8.2.21" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.2.22" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Afx.Data" version="8.2.21" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.2.22" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Afx.Data" version="8.2.21" exclude="Build,Analyzers" />
+        <dependency id="Afx.Data" version="8.2.22" exclude="Build,Analyzers" />
         <dependency id="System.Reflection.Emit" version="4.3.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
