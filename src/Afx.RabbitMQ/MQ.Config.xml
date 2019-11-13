@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xml>
+    <Exchange>
+        <Key exchange="afx.test" type="topic" durable="true" autoDelete="false" >
+            <Arguments key="1" value="1" />
+        </Key>
+    </Exchange>
+    <Queue>
+        <Key queue="afx.test.webapi" routingKey="afx.test.push"
+             durable="true" exclusive="false"  autoDelete="false" exchange="afx.test"
+             isQueueParam="true" >
+            <QueueArguments key="1" value="1" />
+            <BindArguments key="1" value="1" />
+        </Key>
+        
+        <Key queue="afx.test.webapi" routingKey="afx.test.result.webapi"
+             durable="true" exclusive="false" autoDelete="false" exchange="afx.test"
+             isQueueParam="false" isRoutingKeyParam="false" />
+    </Queue>
+    <PubMsg>
+        <Key name="ExecCmdDto" routingKey="afx.test.exec" exchange="afx.test" isRoutingKeyParam="true" />
+    </PubMsg>
+    <SubMsg>
+        <Key name="PushDto" queue="afx.test.push" isQueueParam="false" />
+        <Key name="ExecCmdResultDto" queue="afx.test.result.webapi" isQueueParam="false" />
+    </SubMsg>
+</xml>

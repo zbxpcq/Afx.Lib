@@ -27,7 +27,7 @@
     <Compile Include="..\..\src\Afx.Data.Extensions\ReaderToModel.cs" Link="ReaderToModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Afx.Data\Afx.Data.csproj" />

@@ -79,6 +79,6 @@
     <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.6.0" />
   </ItemGroup>
 </Project>

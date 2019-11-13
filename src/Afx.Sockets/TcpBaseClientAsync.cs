@@ -20,6 +20,7 @@ namespace Afx.Sockets
         public const int SEND_QUEUE_SIZE = 50; 
 
         private Socket m_socket;
+        private NetworkStream networkStream;
         private BufferModel m_buffer;
         private CacheModel m_cache = new CacheModel();
         private volatile bool isClose = true;
@@ -317,8 +318,8 @@ namespace Afx.Sockets
             {
                 this.m_buffer.Clear();
                 this.m_cache.Clear();
-                this.m_socket.BeginReceive(this.m_buffer.Data, this.m_buffer.Position, this.m_buffer.Size,
-                    SocketFlags.None, this.OnReceive, null);
+                this.networkStream = new NetworkStream(this.m_socket);
+                this.networkStream.BeginRead(this.m_buffer.Data, this.m_buffer.Position, this.m_buffer.Size, this.OnReceive, null);
             }
             catch (Exception ex)
             {
@@ -359,7 +360,7 @@ namespace Afx.Sockets
                 TcpSendData state = new TcpSendData();
                 state.Buffer = data;
                 state.BufferIndex = 0;
-                try { this.m_socket.BeginSend(state.Buffer, 0, state.Buffer.Length, SocketFlags.None, this.OnSend, state); }
+                try { this.networkStream.BeginWrite(state.Buffer, 0, state.Buffer.Length, this.OnSend, state); }
                 catch (Exception ex) { this.OnErrorEvent(ex); }
             }
         }
@@ -368,19 +369,23 @@ namespace Afx.Sockets
         {
             try
             {
-                int sendLength = this.m_socket.EndSend(ar);
-                TcpSendData state = ar.AsyncState as TcpSendData;
-                state.BufferIndex += sendLength;
-                if (state.BufferIndex < state.Buffer.Length)
-                {
-                    this.m_socket.BeginSend(state.Buffer, state.BufferIndex, state.Buffer.Length - state.BufferIndex, SocketFlags.None,
-                        this.OnSend, state);
-                }
-                else
-                {
-                    this.isSend = false;
-                    this.BeginSend();
-                }
+                this.networkStream.EndWrite(ar);
+                this.isSend = false;
+                this.BeginSend();
+
+                //int sendLength = this.m_socket.EndSend(ar);
+                //TcpSendData state = ar.AsyncState as TcpSendData;
+                //state.BufferIndex += sendLength;
+                //if (state.BufferIndex < state.Buffer.Length)
+                //{
+                //    this.m_socket.BeginSend(state.Buffer, state.BufferIndex, state.Buffer.Length - state.BufferIndex, SocketFlags.None,
+                //        this.OnSend, state);
+                //}
+                //else
+                //{
+                //    this.isSend = false;
+                //    this.BeginSend();
+                //}
             }
             catch (Exception ex)
             {
@@ -397,10 +402,12 @@ namespace Afx.Sockets
             this.isClose = true;
             if (this.IsConnected || this.isStartConnect)
             {
-this.isStartConnect = false;
+                this.isStartConnect = false;
+                if(this.networkStream != null) try { this.networkStream.Close(); } catch { }
                 try { this.m_socket.Shutdown(SocketShutdown.Both); }
                 catch { }
                 this.m_socket.Close();
+                this.networkStream = null;
             }
         }
 
@@ -410,7 +417,7 @@ this.isStartConnect = false;
         {
             try
             {
-                int readLength = this.m_socket.EndReceive(ar);
+                int readLength = this.networkStream.EndRead(ar);
 
                 if (readLength == 0)
                 {
@@ -426,8 +433,8 @@ this.isStartConnect = false;
                 if (this.ReceiveData(this.m_buffer, this.m_cache, out data))
                 {
                     if (data != null) this.OnReceiveEvent(data);
-                    this.m_socket.BeginReceive(this.m_buffer.Data, this.m_buffer.Position, this.m_buffer.Size - this.m_buffer.Position,
-                        SocketFlags.None, this.OnReceive, null);
+                    this.networkStream.BeginRead(this.m_buffer.Data, this.m_buffer.Position, this.m_buffer.Size - this.m_buffer.Position,
+                        this.OnReceive, null);
                 }
                 else
                 {
@@ -440,14 +447,11 @@ this.isStartConnect = false;
             }
         }
 
-        /// <summary>
-        /// 释放所有资源
-        /// </summary>
-        public void Dispose()
+        protected void Dispose(bool dispose)
         {
-            this.Close();
-            if (!this.isDisposed)
+            if (dispose)
             {
+                this.Close();
                 this.isDisposed = true;
                 this.m_socket = null;
                 this.isSend = false;
@@ -463,6 +467,14 @@ this.isStartConnect = false;
                 this.ReceiveEvent = null;
                 this.sendLock = null;
             }
+        }
+
+        /// <summary>
+        /// 释放所有资源
+        /// </summary>
+        public virtual void Dispose()
+        {
+            this.Dispose(true);
         }
     }
 }

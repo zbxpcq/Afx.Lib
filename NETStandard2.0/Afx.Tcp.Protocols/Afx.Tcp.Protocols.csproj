@@ -40,7 +40,7 @@
     <Folder Include="Langue\Enum\zh-CN\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="protobuf-net" Version="2.4.0" />
+    <PackageReference Include="protobuf-net" Version="2.4.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Afx.Sockets\Afx.Sockets.csproj" />
